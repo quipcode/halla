@@ -1,9 +1,14 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const { optimize } = require("webpack");
+const webpack = require("webpack");
+const dotenv = require('dotenv');
 
 
 const devMode = process.env.NODE_ENV !== 'production'
+
+const dotEnvConfig = new webpack.DefinePlugin({
+       'process.env': JSON.stringify(dotenv.config().parsed) 
+    })
 
 
 const htmlWebpackPlugin = new HtmlWebPackPlugin({
@@ -50,10 +55,11 @@ module.exports = {
 
         ]
     },
-    plugins: [htmlWebpackPlugin, miniCssExtractPlugin,],
+    plugins: [dotEnvConfig, htmlWebpackPlugin, miniCssExtractPlugin,],
     resolve: {
         extensions: ['.js', '.jsx'],
     },
+    devtool: 'source-map',
 
     devServer: {
         compress: true,
