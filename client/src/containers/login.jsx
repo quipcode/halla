@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 
 import { loginUser } from '../store/redux/auth/actions';
 const validationSchema = Yup.object({
-    usernameOrEmail: Yup.string().required("Required"),
+    username: Yup.string().required("Required"),
     password: Yup.string().required("Required")
 })
 
@@ -14,7 +14,7 @@ class Login extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            usernameOrEmail: "",
+            username: "",
             password: "",
             invalidCredential: false,
             errorMessage: "",
@@ -49,7 +49,7 @@ class Login extends Component {
         return null
     }
     onSubmit(values) {
-        let { usernameOrEmail } = values
+        let { username } = values
 
 
         this.props.loginUser(values)
@@ -72,7 +72,7 @@ class Login extends Component {
     }
 
     render() {
-        let { usernameOrEmail, password } = this.state
+        let { username, password } = this.state
 
 
         return (
@@ -102,7 +102,7 @@ class Login extends Component {
                                         this.onSubmit(values);
                                         resetForm({ values: "" });
                                     }}
-                                    initialValues={{ usernameOrEmail, password }}
+                                    initialValues={{ username, password }}
                                     validationSchema={validationSchema}
                                     validateOnChange={false}
                                     // validateOnBlur={false}
@@ -115,9 +115,9 @@ class Login extends Component {
 
 
                                                 <fieldset className="form-group login_form_fields">
-                                                    <label htmlFor="usernameOrEmail">Email/Username</label>
-                                                    <Field className={'form-control' + (errors.usernameOrEmail && touched.usernameOrEmail ? ' is-invalid' : '')} type="text" name="usernameOrEmail" placeholder="Email/Username" />
-                                                    <ErrorMessage name="usernameOrEmail" component="div" className="invalid-feedback" />
+                                                    <label htmlFor="username">Email/Username</label>
+                                                    <Field className={'form-control' + (errors.username && touched.username ? ' is-invalid' : '')} type="text" name="username" placeholder="Email/Username" />
+                                                    <ErrorMessage name="username" component="div" className="invalid-feedback" />
                                                 </fieldset>
                                                 <fieldset className="form-group login_form_fields">
                                                     <label htmlFor="password">Password</label>

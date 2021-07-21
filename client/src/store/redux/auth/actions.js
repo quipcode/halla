@@ -32,7 +32,7 @@ export const loginUser = (credentials) => dispatch => {
             dispatch(loginSuccess(res))
             dispatch(successfulJwtLogin(res.data.username, res.data.accessToken))
             document.title = "Halla-Blogs"
-            history.push('/home')
+            history.push('/')
         })
         .catch((error) => dispatch(loginFailed(error)))
 }
