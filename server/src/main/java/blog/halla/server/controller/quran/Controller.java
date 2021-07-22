@@ -4,6 +4,7 @@ import blog.halla.server.models.quote.Quote;
 import blog.halla.server.models.quran.chapters.Chapter;
 import blog.halla.server.models.quran.chapters.ChapterInfo;
 import blog.halla.server.models.quran.chapters.Chapters;
+import blog.halla.server.models.quran.verses.Translation;
 import blog.halla.server.models.quran.verses.Uthmani;
 import blog.halla.server.payload.response.MessageResponse;
 import com.google.gson.Gson;
@@ -59,5 +60,15 @@ public class Controller {
         InputStreamReader reader = new InputStreamReader(url.openStream());
         Uthmani verse = gson.fromJson(reader, Uthmani.class);
         return new ResponseEntity<Uthmani>(verse, HttpStatus.OK);
+    }
+
+    @GetMapping("/verse/translation/{verse_key}")
+    public ResponseEntity<?> getQuranVerseTranslationYusufAli(@PathVariable("verse_key") String verseKey) throws IOException{
+        String urlString = "https://api.quran.com/api/v4/quran/translations/22?verse_key=" + verseKey;
+        URL url = new URL(urlString);
+        InputStreamReader reader = new InputStreamReader((url.openStream()));
+        Translation translation = gson.fromJson(reader, Translation.class);
+        return new ResponseEntity<Translation>(translation, HttpStatus.OK);
+
     }
 }
