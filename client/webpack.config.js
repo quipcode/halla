@@ -1,15 +1,13 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const webpack = require("webpack");
-const dotenv = require('dotenv');
+const Dotenv = require('dotenv-webpack');
 
 
 const devMode = process.env.NODE_ENV !== 'production'
 
-const dotEnvConfig = new webpack.DefinePlugin({
-       'process.env': JSON.stringify(dotenv.config().parsed) 
-    })
 
+const dotEnvConfig  = new Dotenv();
 
 const htmlWebpackPlugin = new HtmlWebPackPlugin({
     template: './src/index.html',

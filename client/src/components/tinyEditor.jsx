@@ -1,5 +1,6 @@
 import React from 'react';
 import { Editor } from '@tinymce/tinymce-react';
+import constants from '../utils/constants'; 
 
 
 class TinyEditor extends React.Component {
@@ -18,7 +19,7 @@ class TinyEditor extends React.Component {
         var useDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
         return (
             <Editor
-                apiKey=""
+                apiKey= {constants.TINYMCE_API_KEY}
                 initialValue="<p>Initial content</p>"
                 init={{
                     selector: 'textarea#full-featured-non-premium',
