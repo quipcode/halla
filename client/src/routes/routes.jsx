@@ -1,6 +1,7 @@
 import Home from '../containers/home'
 import Login from '../containers/login'
 import Register from '../containers/register'
+import Tadabor from '../containers/tadabor'
 
 const routes = [
     {
@@ -16,6 +17,11 @@ const routes = [
     {
         path: '/register',
         component: Register,
+        privateRoute: false
+    },
+    {
+        path: '/tadabor',
+        component: Tadabor,
         privateRoute: false
     }
 ]
