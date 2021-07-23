@@ -4,9 +4,6 @@ import constants from '../utils/constants';
 
 
 class TinyEditor extends React.Component {
-    
-    
-
 
     handleEditorChange = (e) => {
         console.log(
