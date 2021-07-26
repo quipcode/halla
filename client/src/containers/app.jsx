@@ -1,16 +1,16 @@
 import React, {useEffect} from 'react';
-import routes from './routes/routes'
+import routes from '../routes/routes'
 import { connect } from 'react-redux';
-import { loginUser, logoutUser, registerUser } from './store/redux/auth/actions';
-import alertActions from './store/redux/alert/actions'
+import { loginUser, logoutUser, registerUser } from '../store/redux/auth/actions';
+import alertActions from '../store/redux/alert/actions'
 import {withRouter} from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
-import history from './utils/history';
+import history from '../utils/history';
 import { Switch, Route } from 'react-router-dom'
 // import {constants} from './utils/constants';
 
-import logo from './assets/logo.svg';
-import './App.css';
+import logo from '../assets/logo.svg';
+
 
 const mapDispatchToProps = {
     loginUser: () => (loginUser()),

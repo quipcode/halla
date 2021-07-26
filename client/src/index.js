@@ -6,7 +6,8 @@ import { Provider } from 'react-redux';
 import { AppContainer } from 'react-hot-loader';
 
 import configureStore from './store/store';
-import App from './App';
+import App from './containers/app';
+import main from './styles/main.scss'
 
 import history from './utils/history'
 
