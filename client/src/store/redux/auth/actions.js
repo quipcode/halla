@@ -30,7 +30,7 @@ export const loginUser = (credentials) => dispatch => {
         .post(`${constants.API_BASE_URL}/auth/login`, credentials)
         .then(res => {
             dispatch(loginSuccess(res))
-            dispatch(successfulJwtLogin(res.data.username, res.data.accessToken))
+            dispatch(successfulJwtLogin(res.data.username, res.data.token))
             document.title = "Halla-Blogs"
             history.push('/')
         })

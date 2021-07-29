@@ -16,13 +16,37 @@ export const getScriptSuccess = (script) =>({
     payload: script
 })
 
-export const getScript = (reqBody) => dispatch => {
+export const getScript = (reqBody, header) => dispatch => {
     dispatch(getScriptLoading())
     console.log("in getscript action reqbody is ")
-    console.log(reqBody)
+    
+    let data = {};
+    console.log(header)
+    header["Access-Control-Allow-Origin"] = '*';
+    console.log(header, reqBody.verseKey)
+    
+    
+    if (reqBody.uthmaniChecked){
+        const params = new URLSearchParams({
+            verseKey: reqBody.verseKey
+        }).toString();
+
+        const url = `${constants.API_BASE_URL}/quran/verse/` + reqBody.verseKey;
+        console.log(url, params)
+        axios
+            .post(url, data, {
+                headers: header
+            })
+            .then(res => {
+                console.log(JSON.parse(res.data))
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
     // https://stackoverflow.com/questions/53501185/how-to-post-query-parameters-with-axios
 
-    
+
     
     // let {verseKey} = reqBody
     // var data = {};

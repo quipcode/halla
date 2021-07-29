@@ -68,5 +68,6 @@ module.exports = {
         inline: true,
         hot: true,
         port: '3000',
+        proxy: { "/api/**": { target: 'http://localhost:5000', secure: false } }
     }
 };

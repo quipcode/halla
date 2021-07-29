@@ -29,8 +29,11 @@ class VerseKey extends React.Component{
         
         
         
+        let token = "Bearer " + localStorage.getItem("hallaAuthToken")
+        let header = {Authorization: token}
+        
         let { verseKey, uthmaniChecked, translationChecked, tafsirChecked } = values
-        this.props.getScript(verseKey)
+        this.props.getScript(values, header)
         let reqbody = { verseKey, uthmaniChecked, translationChecked, tafsirChecked }
 
     }
