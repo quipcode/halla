@@ -2,6 +2,8 @@ import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup'
 
+import { getScript } from '../store/redux/tadabor/actions'
+import { connect } from "react-redux";
 let verseKeyRegex = /^(\d+):(\d+)$/
 let validationSchema = yup.object({
     verseKey: yup.string().required("Verse Key is required").matches(verseKeyRegex, "Provided Verse Key does not match proper format")
@@ -24,7 +26,11 @@ class VerseKey extends React.Component{
     
 
     onSubmit(values) {
+        
+        
+        
         let { verseKey, uthmaniChecked, translationChecked, tafsirChecked } = values
+        this.props.getScript(verseKey)
         let reqbody = { verseKey, uthmaniChecked, translationChecked, tafsirChecked }
 
     }
@@ -93,4 +99,11 @@ class VerseKey extends React.Component{
     }
 }
 
-export default VerseKey;
+
+
+const mapStateToProps = state => ({
+    tadabor: state.tadabor
+});
+
+
+export default connect(mapStateToProps, { getScript })(VerseKey);

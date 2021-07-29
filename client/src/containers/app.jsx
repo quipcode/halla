@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import routes from '../routes/routes'
 import { connect } from 'react-redux';
 import { loginUser, logoutUser, registerUser } from '../store/redux/auth/actions';
+import { getScript } from '../store/redux/tadabor/actions';
 import alertActions from '../store/redux/alert/actions'
 import {withRouter} from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
@@ -15,7 +16,8 @@ import logo from '../assets/logo.svg';
 const mapDispatchToProps = {
     loginUser: () => (loginUser()),
     logoutUser: () => (logoutUser()),
-    registerUser: () => (registerUser())
+    registerUser: () => (registerUser()),
+    getScript: () => (getScript())
 }
 
 const mapStateToProps = state => {
