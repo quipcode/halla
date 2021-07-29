@@ -1,5 +1,11 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as yup from 'yup'
+
+let verseKeyRegex = /^(\d+):(\d+)$/
+let validationSchema = yup.object({
+    verseKey: yup.string().required("Verse Key is required").matches(verseKeyRegex, "Provided Verse Key does not match proper format")
+})
 
 class VerseKey extends React.Component{
 
@@ -15,6 +21,7 @@ class VerseKey extends React.Component{
             tafsirChecked: false,
         }
     }
+    
 
     onSubmit(values) {
         let { verseKey, uthmaniChecked, translationChecked, tafsirChecked } = values
@@ -43,6 +50,8 @@ class VerseKey extends React.Component{
                 initialValues={{ verseKey, uthmaniChecked, translationChecked, tafsirChecked }}
                 enableReinitialize={true}
                 className="form-parent"
+                validationSchema={validationSchema}
+                validateOnBlur={false}
             >
                 {
                     ({ errors, touched }) => (
