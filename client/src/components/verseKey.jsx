@@ -2,7 +2,7 @@ import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup'
 
-import { getScript } from '../store/redux/tadabor/actions'
+import { getVerse } from '../store/redux/tadabor/actions'
 import { connect } from "react-redux";
 let verseKeyRegex = /^(\d+):(\d+)$/
 let validationSchema = yup.object({
@@ -33,7 +33,9 @@ class VerseKey extends React.Component{
         let header = {Authorization: token}
         
         let { verseKey, uthmaniChecked, translationChecked, tafsirChecked } = values
-        this.props.getScript(values, header)
+        let result = this.props.getVerse(values, header)
+        console.log("result is ")
+        console.log(result)
         let reqbody = { verseKey, uthmaniChecked, translationChecked, tafsirChecked }
 
     }
@@ -109,4 +111,4 @@ const mapStateToProps = state => ({
 });
 
 
-export default connect(mapStateToProps, { getScript })(VerseKey);
+export default connect(mapStateToProps, { getVerse })(VerseKey);

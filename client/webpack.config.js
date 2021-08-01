@@ -67,7 +67,6 @@ module.exports = {
         overlay: true,
         inline: true,
         hot: true,
-        port: '3000',
-        proxy: { "/api/**": { target: 'http://localhost:5000', secure: false } }
+        port: '3000'
     }
 };

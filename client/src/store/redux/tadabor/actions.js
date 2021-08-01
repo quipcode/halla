@@ -16,34 +16,70 @@ export const getScriptSuccess = (script) =>({
     payload: script
 })
 
-export const getScript = (reqBody, header) => dispatch => {
+export const getVerse = (reqBody, header) => dispatch => {
     dispatch(getScriptLoading())
     console.log("in getscript action reqbody is ")
+    console.log(reqBody)
+    let script = ""
+    let tafsir = ""
+    let translation = ""
+    let error
     
+    let packet = {};
     let data = {};
-    console.log(header)
-    header["Access-Control-Allow-Origin"] = '*';
-    console.log(header, reqBody.verseKey)
-    
-    
-    if (reqBody.uthmaniChecked){
-        const params = new URLSearchParams({
-            verseKey: reqBody.verseKey
-        }).toString();
 
-        const url = `${constants.API_BASE_URL}/quran/verse/` + reqBody.verseKey;
-        console.log(url, params)
+    const uthmaniURL = `${constants.API_BASE_URL}/quran/verse/` + reqBody.verseKey;
+    const translationURL = `${constants.API_BASE_URL}/quran/verse/translation/` + reqBody.verseKey;
+    const tafsirURL = `${constants.API_BASE_URL}/quran/verse/tafsir/` + reqBody.verseKey;
+    
+    
+    if (reqBody.uthmaniChecked && !reqBody.translationChecked && !reqBody.tafsirChecked){
+
         axios
-            .post(url, data, {
+            .get(uthmaniURL, data, {
                 headers: header
             })
             .then(res => {
-                console.log(JSON.parse(res.data))
+                 script = res.data.verses[0].text_uthmani
+                 packet.script = script
             })
             .catch(err => {
-                console.log(err);
+                error = err
+                packet.error = error
+            });
+    } 
+    if (reqBody.translationChecked){
+        axios
+            .get(translationURL, data, {
+                headers: header
+            })
+            .then(res => {
+                translation = res.data.translations[0].text
+                packet.translation = translation
+            })
+            .catch(err => {
+                error = err
+                packet.error = error
             });
     }
+
+    if (reqBody.tafsirChecked){
+        axios
+            .get(tafsirURL, data, {
+                headers: header
+            })
+            .then(res => {
+                tafsir = res.data.tafsirs[0].text
+                packet.tafsir = tafsir
+            })
+            .catch(err => {
+                error = err
+            });
+    }
+
+    return packet
+
+}
     // https://stackoverflow.com/questions/53501185/how-to-post-query-parameters-with-axios
 
 
@@ -91,7 +127,7 @@ export const getScript = (reqBody, header) => dispatch => {
 
     // return axios
     //     .post(`${constants.API_BASE_URL}/api/quran/verse/`)
-}
+
 
 export const getTranslationLoading = () => ({
     type: ActionTypes.GET_TRANSLATION_LOADING
