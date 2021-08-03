@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import routes from '../routes/routes'
 import { connect } from 'react-redux';
 import { loginUser, logoutUser, registerUser } from '../store/redux/auth/actions';
-import { getScript } from '../store/redux/tadabor/actions';
+import { getVerse } from '../store/redux/tadabor/actions';
 import alertActions from '../store/redux/alert/actions'
 import {withRouter} from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
@@ -17,7 +17,7 @@ const mapDispatchToProps = {
     loginUser: () => (loginUser()),
     logoutUser: () => (logoutUser()),
     registerUser: () => (registerUser()),
-    getScript: () => (getScript())
+    getVerse: () => (getVerse())
 }
 
 const mapStateToProps = state => {

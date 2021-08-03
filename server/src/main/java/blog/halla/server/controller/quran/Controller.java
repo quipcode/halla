@@ -1,6 +1,5 @@
 package blog.halla.server.controller.quran;
 
-import blog.halla.server.models.quote.Quote;
 import blog.halla.server.models.quran.chapters.Chapter;
 import blog.halla.server.models.quran.chapters.ChapterInfo;
 import blog.halla.server.models.quran.chapters.Chapters;

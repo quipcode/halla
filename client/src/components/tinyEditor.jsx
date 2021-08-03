@@ -17,6 +17,7 @@ function TinyEditor(props){
     const [initContentTitle, setInitContentTitle] = useState("");
 
     const editor = useRef(null);
+    const editorRef = useRef(null);
 
     const handleEditorChange = (content, editor) => {
         // console.log('Content was updated:', content, editor);
@@ -28,7 +29,9 @@ function TinyEditor(props){
         setContentTitle(event.target.value)
     }
 
-
+    const handleEditorSave = () => {
+        setContentEditor(editor.current.props.value)
+    };
 
 
     const handlePublish = (event) => {
@@ -39,23 +42,16 @@ function TinyEditor(props){
     }
     
     const handleSubmit = (event) => {
-        window.alert("whats good w/ u")
-        console.log("what up though")
-        // event.preventDefault()
-        // setDisplayIsSaving(true)
-        // throttledSaveToServer();
-        // console.log("handle submit was pressed: ", contentEditor, contentTitle)
-        
-        // console.log("in handle submit")
-        // console.log(event)
+        event.preventDefault()
+        setDisplayIsSaving(true)
+        throttledSaveToServer();
     }
 
     const handleCancel = (event) => {
         event.preventDefault();
-        console.log("cancel button")
-        console.log(event)
     }
-    const editorRef = useRef(null);
+    
+    const saveToServer 
 
     const throttledSaveToServer = _.throttle(() => {
         setTimeout(() => {
@@ -74,17 +70,16 @@ function TinyEditor(props){
         throttledSaveToServer.cancel();
     }
 
-    const onButtonClick = () => {
-        console.log(editor.current.props.value)
-        // setEditorContent(editor.current.props.value);
-    };
-
     return (
         <div className="document-editor">
             <form>
 
               
-
+                
+                <StatusBar
+                    displayIsSaving={displayIsSaving}
+                />
+                
                 <TextField
                     fullWidth
                     id="contentTitle"
@@ -96,15 +91,13 @@ function TinyEditor(props){
                 <Editor
                     apiKey={constants.TINYMCE_API_KEY}
                     ref={editor}
-                    //initialvalue must be some value...else cursor keeps resetting its position to begining of line on re-render...eyeroll...considered implementing tracking cursor location...but tinymce don't provide typical event.target.selectionstart associatied with events
-                    // initialValue=""
                     onInit={(evt, editor) => editorRef.current = editor}
                     init={{
                         selector: 'textarea#full-featured-non-premium',
                         plugins: 'save print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
                         imagetools_cors_hosts: ['picsum.photos'],
                         menubar: 'file edit view insert format tools table help',
-                        toolbar: ' testBTN save undo redo | bold italic underline strikethrough  | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
+                        toolbar: 'save undo redo | bold italic underline strikethrough  | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
                         toolbar_sticky: true,
                         autosave_ask_before_unload: true,
                         autosave_interval: '30s',
@@ -157,22 +150,21 @@ function TinyEditor(props){
                         // skin: useDarkMode ? 'oxide-dark' : 'oxide',
                         // content_css: useDarkMode ? 'dark' : 'default',
                         content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-                        
-                        
-                        setup: function (editor) {
-                            editor.ui.registry.addButton("testBTN", {
-                                text: "My Button",
-                                onAction: onButtonClick
-                            });
-                        },
-
-                        save_onsavecallback: onButtonClick
+                        save_onsavecallback: handleEditorSave
                     }}
                     value={contentEditor}
                     onEditorChange={handleEditorChange}
                 />
-
-               
+                <Button color="secondary" variant="contained" type="submit" disabled={!contentTitle} onClick={(e) => { handlePublish(e) }}>
+                    Publish
+                </Button>
+                <Button color="primary" variant="contained" type="submit" onClick={(e) => { handleSubmit(e) }} >
+                    Save
+                </Button>
+                <Button color="default" variant="contained" type="reset" onClick={(e) => { handleCancel(e) }}>
+                    Cancel
+                </Button>
+                    
             
             </form>
         </div>

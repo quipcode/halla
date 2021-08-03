@@ -1,4 +1,4 @@
-package blog.halla.server.payload.request;
+package blog.halla.server.payload.request.auth;
 
 
 import java.util.Set;

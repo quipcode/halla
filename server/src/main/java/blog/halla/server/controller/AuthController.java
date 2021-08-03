@@ -30,8 +30,8 @@ import blog.halla.server.repository.security.RoleRepository;
 import blog.halla.server.services.UserDetailsImpl;
 import blog.halla.server.security.jwt.JwtUtils;
 
-import blog.halla.server.payload.request.LoginRequest;
-import blog.halla.server.payload.request.SignupRequest;
+import blog.halla.server.payload.request.auth.LoginRequest;
+import blog.halla.server.payload.request.auth.SignupRequest;
 
 import blog.halla.server.payload.response.JwtResponse;
 import blog.halla.server.payload.response.MessageResponse;
