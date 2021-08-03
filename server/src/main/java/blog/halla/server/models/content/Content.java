@@ -24,7 +24,6 @@ public class Content {
 
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String uuid = UUID.randomUUID().toString().replaceAll("-", "");
 
     private String title;
