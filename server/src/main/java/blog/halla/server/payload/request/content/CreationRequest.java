@@ -9,4 +9,8 @@ public class CreationRequest {
     private String title;
 
     private String content;
+
+    private Long author_id;
+
+    private String parent_uuid;
 }

@@ -1,12 +1,12 @@
 package blog.halla.server.models.content;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import blog.halla.server.models.User;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -25,6 +25,21 @@ public class Content {
 
     @Id
     private String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+
+    @Singular
+    @ManyToOne(cascade= CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinTable(name="user_content",
+            joinColumns={@JoinColumn(name="content_uuid", referencedColumnName="uuid")},
+            inverseJoinColumns={@JoinColumn(name="user_id", referencedColumnName="id")})
+    private User author_id;
+
+    @OneToOne
+    @JoinColumn(name = "parent_uuid")
+    private Content parent;
+
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+    private Set<Content> children = new HashSet<>();
+
 
     private String title;
 

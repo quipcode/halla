@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface ContentRepository extends JpaRepository<Content, Integer> {
-    Optional<Content> findByTitle(String titlse);
+public interface ContentRepository extends JpaRepository<Content, String> {
+    Optional<Content> findByTitle(String title);
 }
