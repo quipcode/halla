@@ -3,6 +3,8 @@ package blog.halla.server.models.content;
 
 import blog.halla.server.models.User;
 import lombok.*;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -14,6 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Audited(withModifiedFlag = true)
 @Table(name = "content",
         uniqueConstraints = {
             @UniqueConstraint(columnNames = "uuid")
@@ -26,6 +29,7 @@ public class Content {
     @Id
     private String uuid = UUID.randomUUID().toString().replaceAll("-", "");
 
+    @NotAudited
     @Singular
     @ManyToOne(cascade= CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(name="user_content",
