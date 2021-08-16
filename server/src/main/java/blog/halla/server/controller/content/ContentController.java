@@ -9,6 +9,7 @@ import blog.halla.server.repository.content.ContentRepository;
 import blog.halla.server.repository.security.UserRepository;
 import blog.halla.server.services.content.ContentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,12 @@ public class ContentController {
 
     @Autowired
     ContentRepository contentRepository;
+    
+    @DeleteMapping("/delete/{uuid}")
+    public ResponseEntity<?> deleteContent(@PathVariable("uuid")String uuid){
+        contentRepository.deleteById(uuid);
+        return ResponseEntity.ok(new MessageResponse("content has been deleted"));
+    }
 
     @PutMapping("/update/{uuid}")
     public ResponseEntity<?> updateContent(@Valid @RequestBody ContentRequest contentRequest, @PathVariable("uuid") String uuid){
@@ -41,10 +48,8 @@ public class ContentController {
         }
 
         content.setAuthor_id(author);
-
         content.setTitle(contentRequest.getTitle());
         content.setContent(contentRequest.getContent());
-
         contentService.updateContent(uuid, content);
 
         return ResponseEntity.ok(new MessageResponse("content has been updated"));
