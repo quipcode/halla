@@ -3,6 +3,7 @@ package blog.halla.server.models.content;
 
 import blog.halla.server.models.User;
 import lombok.*;
+import org.hibernate.envers.AuditTable;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
@@ -17,6 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Audited(withModifiedFlag = true)
+@AuditTable("content_audit")
 @Table(name = "content",
         uniqueConstraints = {
             @UniqueConstraint(columnNames = "uuid")
