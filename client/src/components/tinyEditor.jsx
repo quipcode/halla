@@ -6,6 +6,8 @@ import StatusBar from './statusbar';
 import * as _ from "lodash";
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import { saveContentToServer} from '../store/redux/content/actions'
+import {connect} from  "react-redux"
 
 function TinyEditor(props){
 
@@ -44,6 +46,8 @@ function TinyEditor(props){
     const handleSubmit = (event) => {
         event.preventDefault()
         setDisplayIsSaving(true)
+        // console.log("save was pressed: ", contentEditor, contentTitle, localStorage.getItem("hallaAuthUser"), localStorage.getItem("hallaAuthToken"))
+        props.saveContentToServer(contentTitle, contentEditor)
         throttledSaveToServer();
     }
 
@@ -51,7 +55,7 @@ function TinyEditor(props){
         event.preventDefault();
     }
     
-    const saveToServer 
+    // const saveToServer = this.props.saveContentToServer;
 
     const throttledSaveToServer = _.throttle(() => {
         setTimeout(() => {
@@ -174,4 +178,9 @@ function TinyEditor(props){
 
 }
 
-export default TinyEditor;
+const mapStateToProps = state => ({
+    content: state.content
+})
+
+// export default TinyEditor;
+export default connect(mapStateToProps, { saveContentToServer })(TinyEditor);

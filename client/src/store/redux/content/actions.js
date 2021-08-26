@@ -12,13 +12,43 @@ export const saveContentToServerFailed = (error) => ({
     payload: error
 })
 
-export const saveContentToServerLoading = (content) => ({
+export const saveContentToServerSuccess = (content) => ({
     type: ActionTypes.SAVE_CONTENT_TO_SERVER_SUCCESS,
     payload: content
 })
 
-export const saveContentToServer = (reqbody) =>{
-    dispatch(saveContentToServerLoading())
-    console.log("in save content to server")
-    console.log(reqbody)
+export const saveContentToServer = (contentTitle, contentEditor) => dispatch => {
+    // dispatch(saveContentToServerLoading())
+    let authToken = localStorage.getItem("hallaAuthToken")
+    
+    // console.log("content title is " + contentTitle, "contentEditor is " + contentEditor )
+    // console.log(localStorage.getItem("hallaAuthUser"), localStorage.getItem("hallaAuthToken"))
+    // let auth = "Bearer " + authToken
+    // console.log("beare token" , auth)
+    const config = {
+        headers: { Authorization: `Bearer ${authToken}`}
+    }
+    const bodyParameters = {
+        title : contentTitle,
+        content: contentEditor
+    }
+    
+    axios.post(
+        `${constants.API_BASE_URL}/content/new`,
+        bodyParameters,
+        config
+    ).then(console.log).catch(console.log);
+    // console.log(reqbody)
+    // return axios
+    //     .post(`${constants.API_BASE_URL/content}`, reqbody)
+    //     .then(res => { dispatch(saveContentToServerSuccess(res))
+    //     })
+    //     .catch(error => {
+    //         if (error.message == 'Network Error') {
+    //             dispatch(saveContentToServerFailed(error))
+    //         }else{
+    //             dispatch(saveContentToServerFailed(error))
+    //         }
+    //     })
+
 }

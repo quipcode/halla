@@ -4,14 +4,12 @@ package blog.halla.server.models.content;
 import blog.halla.server.models.User;
 import com.fasterxml.jackson.annotation.*;
 import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.Type;
 import org.hibernate.envers.AuditTable;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -27,6 +25,9 @@ import java.util.UUID;
             @UniqueConstraint(columnNames = "uuid")
         }
 )
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "uuid")
 public class Content {
 
 
@@ -36,23 +37,9 @@ public class Content {
 
     @NotAudited
     @Singular
-//    @ManyToOne(cascade= CascadeType.MERGE, fetch = FetchType.EAGER)
     @ManyToOne( fetch = FetchType.EAGER)
-//    @JoinTable(name="user_content",
-//            joinColumns={@JoinColumn(name="content_uuid", referencedColumnName="uuid")},
-//            inverseJoinColumns={@JoinColumn(name="user_id", referencedColumnName="id")})
     @JoinColumn(name = "author_id", nullable = false)
     private User author_id;
-
-//    @NotAudited
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-//    @JoinColumn(name = "author_id", nullable = false)
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    @JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
-//    @JsonIdentityReference(alwaysAsId=true)
-//    @JsonProperty("author_id")
-//    private User author_id;
-
 
     @OneToOne
     @JoinColumn(name = "parent_uuid")
@@ -64,6 +51,14 @@ public class Content {
     @JsonManagedReference
     private Set<Content> children;
 
+
+    private String metaTitle;
+    private String slug;
+    private String summary;
+
+    @Column(nullable = false)
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private boolean published;
 
     private String title;
 

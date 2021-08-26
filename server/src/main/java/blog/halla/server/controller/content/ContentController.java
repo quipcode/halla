@@ -7,14 +7,15 @@ import blog.halla.server.payload.request.content.CreationRequest;
 import blog.halla.server.payload.response.MessageResponse;
 import blog.halla.server.repository.content.ContentRepository;
 import blog.halla.server.repository.security.UserRepository;
+import blog.halla.server.services.UserDetailsImpl;
 import blog.halla.server.services.content.ContentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -34,50 +35,14 @@ public class ContentController {
 
     Logger logger = LoggerFactory.getLogger(ContentController.class);
 
-//    @GetMapping("/{uuid}")
-//    public ResponseEntity<?> getMapping(@PathVariable("uuid") String uuid){
-//        logger.error("the get call content is ");
-//        Optional<Content> content1 = contentService.getContent(uuid);
-//        Content content = content1.get();
-//        String title = content.getTitle();
-//        String author = content.getAuthor_id().getId().toString();
-//        String username = content.getAuthor_id().getUsername().toString();
-//        User author1 = content.getAuthor_id();
-//
-//        logger.error("the content is ", content.getTitle());
-//        logger.info("the title is " + title);
-//        logger.info("the author id is " + author);
-//        logger.info("the username id is " + username);
-//        logger.info("the user is ",  author1);
-////        logger.info("An INFO Message");
-////        logger.warn("A WARN Message");
-//
-//        return  content;
-////        return ResponseEntity.ok(new MessageResponse("f u"));
-//    }
-//
-//    @GetMapping("/")
-//    public Page<Content> getAllContent(Pageable pageable){
-//        return contentRepository.findAll(pageable);
-//    }
-
-
-
     @GetMapping("/{uuid}")
     public Page<Content> getContentByUuid(@PathVariable("uuid") String uuid, Pageable pageable) {
         return contentRepository.findByUuid( uuid ,pageable);
     }
-
-//
-//    public Page<Comment> getAllCommentsByPostId(@PathVariable (value = "postId") Long postId,
-//                                                Pageable pageable) {
-//        return commentRepository.findByPostId(postId, pageable);
-//    }
-//    @GetMapping("/posts")
-//    public Page<Content> getAllPosts(Pageable pageable) {
-//        return contentRepository.findAll(pageable);
-//    }
-
+    @GetMapping("/")
+    public Page<Content> getAllContent(Pageable pageable) {
+        return contentRepository.findAll(pageable);
+    }
     
     @DeleteMapping("/delete/{uuid}")
     public ResponseEntity<?> deleteContent(@PathVariable("uuid")String uuid){
@@ -109,7 +74,12 @@ public class ContentController {
     @PostMapping("/new")
     public ResponseEntity<?> createNewContent(@Valid @RequestBody CreationRequest creationRequest){
         Content content = new Content(creationRequest.getTitle(), creationRequest.getContent());
-        Long author_id = creationRequest.getAuthor_id();
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long author_id  = null;
+        if (principal instanceof UserDetailsImpl) {
+            author_id  = ((UserDetailsImpl) principal).getId();
+        } 
         User author = null;
         Content parent = null;
         String parent_uuid = creationRequest.getParent_uuid();

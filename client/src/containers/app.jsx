@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import routes from '../routes/routes'
 import { connect } from 'react-redux';
 import { loginUser, logoutUser, registerUser } from '../store/redux/auth/actions';
+import { saveContentToServer} from '../store/redux/content/actions'
 import { getVerse } from '../store/redux/tadabor/actions';
 import alertActions from '../store/redux/alert/actions'
 import {withRouter} from 'react-router-dom'
@@ -17,13 +18,15 @@ const mapDispatchToProps = {
     loginUser: () => (loginUser()),
     logoutUser: () => (logoutUser()),
     registerUser: () => (registerUser()),
-    getVerse: () => (getVerse())
+    getVerse: () => (getVerse()),
+    saveContentToServer: () => (saveContentToServer())
 }
 
 const mapStateToProps = state => {
     return {
         auth: state.auth,
-        errors: state.errors
+        errors: state.errors,
+        content: state.content
     }
 }
 
