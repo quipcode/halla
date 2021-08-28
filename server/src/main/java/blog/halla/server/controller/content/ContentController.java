@@ -35,14 +35,22 @@ public class ContentController {
 
     Logger logger = LoggerFactory.getLogger(ContentController.class);
 
-    @GetMapping("/{uuid}")
-    public Page<Content> getContentByUuid(@PathVariable("uuid") String uuid, Pageable pageable) {
-        return contentRepository.findByUuid( uuid ,pageable);
-    }
     @GetMapping("/")
     public Page<Content> getAllContent(Pageable pageable) {
         return contentRepository.findAll(pageable);
     }
+
+    @GetMapping("/user/{authorId}")
+    public Page<Content> getAllUserContent(@PathVariable("authorId") Long authorId, Pageable pageable){
+        User author = userRepository.getById(authorId);
+        return contentRepository.findByAuthorId(author, pageable);
+    }
+
+    @GetMapping("/{uuid}")
+    public Page<Content> getContentByUuid(@PathVariable("uuid") String uuid, Pageable pageable) {
+        return contentRepository.findByUuid( uuid ,pageable);
+    }
+
     
     @DeleteMapping("/delete/{uuid}")
     public ResponseEntity<?> deleteContent(@PathVariable("uuid")String uuid){
@@ -63,7 +71,7 @@ public class ContentController {
             content.setParent(parent_content);
         }
 
-        content.setAuthor_id(author);
+        content.setAuthorId(author);
         content.setTitle(contentRequest.getTitle());
         content.setContent(contentRequest.getContent());
         contentService.updateContent(uuid, content);
@@ -79,7 +87,7 @@ public class ContentController {
         Long author_id  = null;
         if (principal instanceof UserDetailsImpl) {
             author_id  = ((UserDetailsImpl) principal).getId();
-        } 
+        }
         User author = null;
         Content parent = null;
         String parent_uuid = creationRequest.getParent_uuid();
@@ -92,7 +100,7 @@ public class ContentController {
             parent = contentRepository.getById(parent_uuid);
         }
 
-        content.setAuthor_id(author);
+        content.setAuthorId(author);
         content.setParent(parent);
         contentRepository.save(content);
         return ResponseEntity.ok(new MessageResponse("content saved successfully believe it"));

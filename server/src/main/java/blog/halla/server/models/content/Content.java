@@ -39,7 +39,7 @@ public class Content {
     @Singular
     @ManyToOne( fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id", nullable = false)
-    private User author_id;
+    private User authorId;
 
     @OneToOne
     @JoinColumn(name = "parent_uuid")
