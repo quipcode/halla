@@ -37,7 +37,7 @@ public class Content {
 
     @NotAudited
     @Singular
-    @ManyToOne( fetch = FetchType.EAGER)
+    @ManyToOne( fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", nullable = false)
     private User authorId;
 

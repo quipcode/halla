@@ -9,5 +9,9 @@ module.exports = {
     LOGIN_TITLE: "Halla - Login",
     REGISTER_TITLE: "Halla - Register",
     ERR_401: "Request failed with status code 401",
-    TINYMCE_API_KEY: process.env.TINYMCE_API_KEY
+    TINYMCE_API_KEY: process.env.TINYMCE_API_KEY,
+    CONTENT: "content",
+    MYCONTENT: "mycontent",
+    U: "u",
+    EDIT: "edit"
 }

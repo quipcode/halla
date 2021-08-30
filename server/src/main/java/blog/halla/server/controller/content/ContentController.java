@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -38,11 +41,24 @@ public class ContentController {
     @GetMapping("/")
     public Page<Content> getAllContent(Pageable pageable) {
         return contentRepository.findAll(pageable);
+//                .filter(content -> !content.isPublished());
+
     }
 
     @GetMapping("/user/{authorId}")
     public Page<Content> getAllUserContent(@PathVariable("authorId") Long authorId, Pageable pageable){
         User author = userRepository.getById(authorId);
+
+//        final var contentOptional = contentRepository.findByTitle("some-title");
+//        contentOptional.ifPresent(content -> {
+//            content.getParent()
+//        });
+//        var summary = contentRepository.findByTitle("some-title")
+//                .
+//                .map(Content::getSummary);
+
+
+
         return contentRepository.findByAuthorId(author, pageable);
     }
 
