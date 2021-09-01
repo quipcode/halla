@@ -3,6 +3,7 @@ import Login from '../containers/login'
 import Register from '../containers/register'
 import Tadabor from '../containers/tadabor'
 import MyContentTable from '../containers/myContentTable'
+import MyContentEdit from '../containers/myContentEdit'
 
 const routes = [
     {
@@ -28,6 +29,11 @@ const routes = [
     {
         path: '/mycontenttable',
         component: MyContentTable,
+        privateRoute: false
+    },
+    {
+        path: '/mycontentedit',
+        component: MyContentEdit,
         privateRoute: false
     }
 
