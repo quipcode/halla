@@ -10,20 +10,15 @@ import { saveContentToServer} from '../store/redux/content/actions'
 import {connect} from  "react-redux"
 
 function TinyEditor(props){
-
-
-    const [contentEditor, setContentEditor] = useState("");
-    const [contentTitle, setContentTitle] = useState("");
-    const [displayIsSaving, setDisplayIsSaving] = useState(false);
-    const [initContentEditor, setInitContentEditor] = useState("");
-    const [initContentTitle, setInitContentTitle] = useState("");
-
+    const [contentEditor, setContentEditor] = useState(props.value);
     const editor = useRef(null);
     const editorRef = useRef(null);
 
     const handleEditorChange = (content, editor) => {
         // console.log('Content was updated:', content, editor);
-        setContentEditor(content);
+        // console.log(content)
+        props.onChange(content);
+        // setContentEditor(content);
     }
 
     // const handleTitleChange = (event) => {
@@ -78,8 +73,17 @@ function TinyEditor(props){
 
                 <Editor
                     apiKey={constants.TINYMCE_API_KEY}
+                    // ref={props.referral}
+                    // onInit={props.onInit}
+                    // value={props.value}
+                    // onEditorChange={props.onEditorChange}
+                    
                     ref={editor}
                     onInit={(evt, editor) => editorRef.current = editor}
+                    value={contentEditor}
+                    onEditorChange={handleEditorChange}
+                    // onEditorChange={handleEditorChange}
+                    
                     init={{
                         selector: 'textarea#full-featured-non-premium',
                         plugins: 'save print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
@@ -138,10 +142,9 @@ function TinyEditor(props){
                         // skin: useDarkMode ? 'oxide-dark' : 'oxide',
                         // content_css: useDarkMode ? 'dark' : 'default',
                         content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+                        // save_onsavecallback: props.save_onsavecallback
                         save_onsavecallback: handleEditorSave
                     }}
-                    value={contentEditor}
-                    onEditorChange={handleEditorChange}
                 />
 
     );

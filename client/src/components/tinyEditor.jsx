@@ -96,6 +96,8 @@ function TinyEditor(props){
                     apiKey={constants.TINYMCE_API_KEY}
                     ref={editor}
                     onInit={(evt, editor) => editorRef.current = editor}
+                    value={contentEditor}
+                    onEditorChange={handleEditorChange}
                     init={{
                         selector: 'textarea#full-featured-non-premium',
                         plugins: 'save print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
@@ -156,8 +158,6 @@ function TinyEditor(props){
                         content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
                         save_onsavecallback: handleEditorSave
                     }}
-                    value={contentEditor}
-                    onEditorChange={handleEditorChange}
                 />
                 <Button color="secondary" variant="contained" type="submit" disabled={!contentTitle} onClick={(e) => { handlePublish(e) }}>
                     Publish
