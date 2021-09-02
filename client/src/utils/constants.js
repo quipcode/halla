@@ -13,5 +13,7 @@ module.exports = {
     CONTENT: "content",
     MYCONTENT: "mycontent",
     U: "u",
-    EDIT: "edit"
+    EDIT: "edit",
+    INCLUDE_SUMMARY:    "Include Summary",
+    INCLUDE_TITLE: "Include Title"
 }
