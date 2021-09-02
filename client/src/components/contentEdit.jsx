@@ -14,18 +14,12 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 
-import { withStyles } from '@material-ui/core/styles';
-import { green } from '@material-ui/core/colors';
-
-
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import Favorite from '@material-ui/icons/Favorite';
-import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
-
-
 import { makeStyles } from '@material-ui/core/styles';
 import constants from '../utils/constants';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,22 +32,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-
-
-const GreenCheckbox = withStyles({
-  root: {
-    color: green[400],
-    '&$checked': {
-      color: green[600],
-    },
-  },
-  checked: {},
-})((props) => <Checkbox color="default" {...props} />);
-
 const ContentEdit = () => {
   const classes = useStyles()
-  const sampleContentSections = { id: uuidv4(), isSummarySelected: false, summary: null, title: null, isTitleSelected: false, content: null, summaryType: [1, 2, 3] }
-  
+  const sampleContentSections = { id: uuidv4(), isSummarySelected: false, summary: null, title: "", isTitleSelected: true, content: null, sectionType: '', sectionTypes: [ {id: 1, name: "Hidden"}, {id: 2, name: "Visible"}] }
+  const options = sampleContentSections.sectionTypes.map((d, i) => 
+    <MenuItem value={d.id} key={i}>{d.name}</MenuItem>
+  );
 
   const [contentSections, setcontentSections] = useState([
     sampleContentSections
@@ -63,6 +47,16 @@ const ContentEdit = () => {
   );
 
   const [displayIsSaving, setDisplayIsSaving] = useState(false);
+
+  const [checkedState, setChecked] = useState(true);
+  const handleCheckChange = (event) => {
+    setChecked(event.target.checked);
+  };
+
+  // <FormControlLabel
+  //   control={<Checkbox checked={checkedState} onChange={handleCheckChange} />}
+  //   label="Check me"
+  // />
   
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -70,9 +64,11 @@ const ContentEdit = () => {
     console.log("contentSections", contentSections);
   };
 
+
+
   const handleChangeInput = (id, event) => {
     const newcontent = content.map(i => {
-      console.log(id, event, i)
+      // console.log(id, event, i)
       if (id === i.id) {
         i[event.target.name] = event.target.value
       }
@@ -80,6 +76,18 @@ const ContentEdit = () => {
     })
 
     setcontent(newcontent);
+  }
+
+  const handleCheckboxSelection = (id, event) => {
+    const newcontentSections = contentSections.map(i => {
+
+      if (id === i.id) {
+        i[event.target.name] = event.target.checked
+      }
+      return i;
+    })
+    console.log(newcontentSections)
+    setcontentSections(newcontentSections);
   }
 
   const handleSectionChangeInput = (id, event) => {
@@ -90,6 +98,7 @@ const ContentEdit = () => {
       }
       return i;
     })
+    console.log(newcontentSections)
     setcontentSections(newcontentSections);
   }
 
@@ -118,7 +127,7 @@ const ContentEdit = () => {
     setcontent({ ...content, contentSections })
   }, [contentSections])
   const handleAddFields = () => {
-    setcontentSections([...contentSections, { id: uuidv4(), isSummarySelected: false, summary: null, title: null, isTitleSelected: false, content: null, summaryType: [1, 2, 3] }]  )    
+    setcontentSections([...contentSections, { id: uuidv4(), isSummarySelected: false, summary: null, title: "", isTitleSelected: false, content: null, content: null, sectionType: '', sectionTypes: [{ id: 1, name: "hidden" }, { id: 2, name: "visible" }] }]  )
   }
   const handleRemoveFields = id => {
     const values = [...contentSections];
@@ -142,16 +151,12 @@ const ContentEdit = () => {
         {contentSections.map(sectionField => (
           <div key={sectionField.id}>
             <FormGroup row>
-              {/* <FormControlLabel
-                control={<Checkbox checked={state.checkedA} onChange={handleChange} name="checkedA" />}
-                label="Secondary"
-              /> */}
               <FormControlLabel
                 control={
                   <Checkbox
                     value={sectionField.isSummarySelected}
                     onChange={event => 
-                      handleSectionChangeInput(sectionField.id, event)
+                      handleCheckboxSelection(sectionField.id, event)
                     }
                     name="isSummarySelected"
                     color="primary"
@@ -161,20 +166,32 @@ const ContentEdit = () => {
               />
               <FormControlLabel
                 control={
-                  <Checkbox
-                    value={sectionField.isTitleSelected}
+                  <Checkbox                    
+                    checked={sectionField.isTitleSelected}
                     onChange={event =>
-                      handleSectionChangeInput(sectionField.id, event)
+                      handleCheckboxSelection(sectionField.id, event)
                     }
-                    name=""
+                    name="isTitleSelected"
                     color="primary"
                   />
                 }
                 label={constants.INCLUDE_TITLE}
-              />
+              />        
+              <FormControl className={classes.formControl}>
+                <Select
+                  value={sectionField.sectionType}
+                  onChange={(e) =>
+                    handleSectionChangeInput(sectionField.id, e)
+                  }
+                  name="sectionType"
+                >
+               {options}
+               </Select>
+                
+                <FormHelperText>Section Type</FormHelperText>
+              </FormControl>
             </FormGroup>
- 
-            <TextField
+            {sectionField.isTitleSelected ? <TextField
               fullWidth
               fullWidth
               name="title"
@@ -183,16 +200,19 @@ const ContentEdit = () => {
               onChange={event => {
                 handleSectionChangeInput(sectionField.id, event)
               }}
-            />
-{/* 
-            <SummaryEditor
+            /> : null }
+
+            {/* {console.log(sectionField )} */}
+            {sectionField.isSummarySelected ? <SummaryEditor
               name="summary"
               label="Summary"
               value={sectionField.summary}
               onChange={e =>
                 handleSummaryInput(sectionField.id, e)
               }
-            />
+            /> : null }
+
+
             <TinyEditor
               name="content"
               label="Content"
@@ -200,7 +220,7 @@ const ContentEdit = () => {
               onChange={e =>
                 handleContentInput(sectionField.id, e)
               }
-            /> */}
+            />
             
             <IconButton disabled={contentSections.length === 1} onClick={() => handleRemoveFields(sectionField.id)}>
               <RemoveIcon />
