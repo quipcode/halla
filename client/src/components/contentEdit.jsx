@@ -123,9 +123,11 @@ const ContentEdit = () => {
 
     setcontent(newcontentSections);
   }
+  
   useEffect(() => {
     setcontent({ ...content, contentSections })
   }, [contentSections])
+
   const handleAddFields = () => {
     setcontentSections([...contentSections, { id: uuidv4(), isSummarySelected: false, summary: null, title: "", isTitleSelected: false, content: null, content: null, sectionType: '', sectionTypes: [{ id: 1, name: "hidden" }, { id: 2, name: "visible" }] }]  )
   }

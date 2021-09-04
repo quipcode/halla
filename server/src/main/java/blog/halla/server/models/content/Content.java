@@ -2,6 +2,7 @@ package blog.halla.server.models.content;
 
 
 import blog.halla.server.models.User;
+import blog.halla.server.models.content_section.ContentSection;
 import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import org.hibernate.annotations.Type;
@@ -63,6 +64,15 @@ public class Content {
     private String title;
 
     private String content;
+
+    @Singular
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @JoinTable(name = "c_section",
+            joinColumns = {@JoinColumn(name = "content_uuid", referencedColumnName = "uuid")},
+            inverseJoinColumns = {@JoinColumn(name = "content_section_uuid", referencedColumnName = "uuid")})
+    private Set<ContentSection> contentSections;
+
+
 
     public Content(String title, String content){
         this.title = title;
