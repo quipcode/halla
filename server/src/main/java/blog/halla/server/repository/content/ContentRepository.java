@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface ContentRepository extends JpaRepository<Content, String> {
-    Optional<Content> findByTitle(String title);
     Page<Content> findByUuid(String uuid, Pageable pageable);
     Page<Content> findByAuthorId(User authorId, Pageable pageable);
 }

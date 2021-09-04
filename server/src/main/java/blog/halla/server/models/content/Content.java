@@ -34,7 +34,8 @@ public class Content {
 
 
     @Id
-    private String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+    private String uuid;
+//    private String uuid = UUID.randomUUID().toString().replaceAll("-", "");
 
     @NotAudited
     @Singular
@@ -55,15 +56,13 @@ public class Content {
 
     private String metaTitle;
     private String slug;
-    private String summary;
+
 
     @Column(nullable = false)
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean published;
 
-    private String title;
 
-    private String content;
 
     @Singular
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
@@ -74,8 +73,9 @@ public class Content {
 
 
 
-    public Content(String title, String content){
-        this.title = title;
-        this.content = content;
+    public Content(String uuid, Content parent, boolean published){
+        this.uuid = uuid;
+        this.parent = parent;
+        this.published = published;
     }
 }

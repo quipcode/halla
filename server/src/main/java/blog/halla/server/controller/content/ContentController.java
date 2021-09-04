@@ -88,8 +88,9 @@ public class ContentController {
         }
 
         content.setAuthorId(author);
-        content.setTitle(contentRequest.getTitle());
-        content.setContent(contentRequest.getContent());
+
+//        content.setTitle(contentRequest.getTitle());
+//        content.setContent(contentRequest.getContent());
         contentService.updateContent(uuid, content);
 
         return ResponseEntity.ok(new MessageResponse("content has been updated"));
@@ -97,8 +98,9 @@ public class ContentController {
 
     @PostMapping("/new")
     public ResponseEntity<?> createNewContent(@Valid @RequestBody CreationRequest creationRequest){
-        Content content = new Content(creationRequest.getTitle(), creationRequest.getContent());
-
+//        Content content = new Content(creationRequest.getTitle(), creationRequest.getContent());
+//        Content content = new Content(creationRequest.getUuid(), creationRequest.getParent_uuid(), false);
+        Content content = new Content();
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long author_id  = null;
         if (principal instanceof UserDetailsImpl) {
@@ -107,6 +109,7 @@ public class ContentController {
         User author = null;
         Content parent = null;
         String parent_uuid = creationRequest.getParent_uuid();
+        String uuid = creationRequest.getUuid();
         if(author_id == null){
             throw new RuntimeException("Error: Author_id required");
         }else{
@@ -115,7 +118,11 @@ public class ContentController {
         if(parent_uuid != null){
             parent = contentRepository.getById(parent_uuid);
         }
-
+        if(uuid != null){
+           content.setUuid(uuid);
+        }
+        
+        content.setPublished(false);
         content.setAuthorId(author);
         content.setParent(parent);
         contentRepository.save(content);

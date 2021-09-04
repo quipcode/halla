@@ -43,7 +43,7 @@ const ContentEdit = () => {
     sampleContentSections
   ])
   const [content, setcontent] = useState(
-    { id: uuidv4(), contentSections },
+    { uuid: uuidv4(), contentSections },
   );
 
   const [displayIsSaving, setDisplayIsSaving] = useState(false);
@@ -187,9 +187,9 @@ const ContentEdit = () => {
                   }
                   name="sectionType"
                 >
-               {options}
-               </Select>
-                
+                  {options}
+                </Select>
+
                 <FormHelperText>Section Type</FormHelperText>
               </FormControl>
             </FormGroup>
