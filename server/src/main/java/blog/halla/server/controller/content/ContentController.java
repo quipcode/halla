@@ -2,13 +2,16 @@ package blog.halla.server.controller.content;
 
 import blog.halla.server.models.User;
 import blog.halla.server.models.content.Content;
+import blog.halla.server.models.content_section.ContentSection;
 import blog.halla.server.payload.request.content.ContentRequest;
 import blog.halla.server.payload.request.content.CreationRequest;
 import blog.halla.server.payload.response.MessageResponse;
 import blog.halla.server.repository.content.ContentRepository;
+import blog.halla.server.repository.content_section.ContentSectionRepository;
 import blog.halla.server.repository.security.UserRepository;
 import blog.halla.server.services.UserDetailsImpl;
 import blog.halla.server.services.content.ContentService;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +22,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -35,6 +41,9 @@ public class ContentController {
 
     @Autowired
     ContentRepository contentRepository;
+
+    @Autowired
+    ContentSectionRepository contentSectionRepository;
 
     Logger logger = LoggerFactory.getLogger(ContentController.class);
 
@@ -96,10 +105,18 @@ public class ContentController {
         return ResponseEntity.ok(new MessageResponse("content has been updated"));
     }
 
-    @PostMapping("/new")
+//    @PostMapping("/new")
+//    public ResponseEntity<?> createContent(@Valid @RequestBody Content content) {
+//        Set< ContentSection > contentSections =  content.getContentSections();
+//        contentRepository.save(content.getUuid()).map(content - > {
+//            contentSections.stream().map(contentSection -> {
+//                contentSection.setContent_uuid(content.getUuid();
+//                return contentSectionRepository.save(contentSection);
+//            })
+//        });
+//    }
+    @PostMapping("")
     public ResponseEntity<?> createNewContent(@Valid @RequestBody CreationRequest creationRequest){
-//        Content content = new Content(creationRequest.getTitle(), creationRequest.getContent());
-//        Content content = new Content(creationRequest.getUuid(), creationRequest.getParent_uuid(), false);
         Content content = new Content();
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long author_id  = null;
@@ -121,11 +138,59 @@ public class ContentController {
         if(uuid != null){
            content.setUuid(uuid);
         }
-        
+
         content.setPublished(false);
         content.setAuthorId(author);
         content.setParent(parent);
-        contentRepository.save(content);
-        return ResponseEntity.ok(new MessageResponse("content saved successfully believe it"));
+        Set< ContentSection > contentSections =  creationRequest.getContentSections();
+//        ContentSection newContentSection = ContentSection();
+        logger.error("content Sections: {}", contentSections);
+
+        Content content2 = contentRepository.save(content);
+        contentSections.forEach(section -> {
+            section.setContent_uuid(content2);
+
+            contentSectionRepository.save(section);
+        });
+        return ResponseEntity.ok("Content saved");
+
+//                map(content - > {
+//                contentSections.stream().map(contentSection -> {
+//                    contentSection.setContent_uuid(content.getUuid();
+//                    return contentSectionRepository.save(contentSection);
+//                })
+//        });
+
+
+//        contentRepository.save(content);
+//        logger.error("wtf", contentSections.stream().count());
+//        logger.error(String.valueOf(contentSections.size()));
+//        List<ContentSection> listContentSection = new ArrayList<ContentSection>();
+//        listContentSection.addAll(contentSections);
+//
+//
+//        List<JSONObject> entities = new ArrayList<JSONObject>();
+//        for (ContentSection n : listContentSection) {
+//            JSONObject Entity = new JSONObject();
+//            entity.put("id", n.getId());
+//            entity.put("address", n.getAddress());
+//            entities.add(entity);
+//        }
+//        return ResponseEntity.ok().body(Set<ContentSection> contentSections);
+//        contentSections.stream(con -> {
+//            logger.error(con -);
+//
+//        });
+//        logger.error(contentSections);
+//            contentSections.stream().map(contentSection -> {
+//                logger.error("contentsection title" + contentSection.getTitle().toString());
+//                logger.error("contentsection sectiontype" + contentSection.getSectionType().toString());
+//                logger.error("contentsection uuid" + contentSection.getUuid());
+//                logger.debug("u seeing this");
+//
+//                contentSection.setContent_uuid(content);
+//                return contentSectionRepository.save(contentSection);
+//            });
+//        return ResponseEntity.ok(new MessageResponse("content saved successfully believe it"));
     }
 }

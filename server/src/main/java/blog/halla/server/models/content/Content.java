@@ -63,13 +63,15 @@ public class Content {
     private boolean published;
 
 
-
-    @Singular
-    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
-    @JoinTable(name = "c_section",
-            joinColumns = {@JoinColumn(name = "content_uuid", referencedColumnName = "uuid")},
-            inverseJoinColumns = {@JoinColumn(name = "content_section_uuid", referencedColumnName = "uuid")})
-    private Set<ContentSection> contentSections;
+//
+//    @Singular
+//    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+//    @JoinColumn(name = "content_section_uuid", referencedColumnName = "uuid")
+//    @NotAudited
+//    @JoinTable(name = "c_section",
+//            joinColumns = {@JoinColumn(name = "content_uuid", referencedColumnName = "uuid")},
+//            inverseJoinColumns = {@JoinColumn(name = "content_section_uuid", referencedColumnName = "uuid")})
+//    private Set<ContentSection> contentSections;
 
 
 
