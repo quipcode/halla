@@ -32,16 +32,8 @@ public class ContentService {
 
     public Map<String, Object> getContentById(String id){
         Optional<Content> targetContent = contentRepository.findById(id);
-//        Optional<ContentSection> associatedContentSections = contentSectionRepository.findByContentUuid(id);
-//        List<ContentSection> contentSections = contentSectionRepository.findByContentUuid(targetContent);
-        List<ContentSection> contentSections = contentSectionRepository.findByContentUuid(targetContent.get());
-//        if (contentSections == null || contentSections.isEmpty()) {
-
-//            return Collections.emptyMap();
-//        }
         Map<String, Object> answer = new HashMap<>();
         answer.put("content", targetContent);
-        answer.put("contentSections", contentSections);
         return answer;
     }
 

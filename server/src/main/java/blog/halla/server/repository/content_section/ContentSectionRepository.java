@@ -13,5 +13,5 @@ import java.util.Optional;
 
 @Repository
 public interface ContentSectionRepository extends JpaRepository<ContentSection, String> {
-    List<ContentSection> findByContentUuid(@Param("content_uuid") Content id);
+    List<ContentSection> findByContentUuid(@Param("content_uuid") String id);
 }

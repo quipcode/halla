@@ -97,7 +97,7 @@ public class ContentController {
             content.setParent(parent_content);
         }
 
-        content.setAuthorId(author);
+        content.setAuthor(author);
 
 //        content.setTitle(contentRequest.getTitle());
 //        content.setContent(contentRequest.getContent());
@@ -141,7 +141,7 @@ public class ContentController {
         }
 
         content.setPublished(false);
-        content.setAuthorId(author);
+        content.setAuthor(author);
         content.setParent(parent);
         Set< ContentSection > contentSections =  creationRequest.getContentSections();
 //        ContentSection newContentSection = ContentSection();
@@ -149,7 +149,7 @@ public class ContentController {
 
         Content content2 = contentRepository.save(content);
         contentSections.forEach(section -> {
-            section.setContentUuid(content2);
+//            section.setContentUuid(content2);
 
             contentSectionRepository.save(section);
         });

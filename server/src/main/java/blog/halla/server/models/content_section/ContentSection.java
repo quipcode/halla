@@ -39,9 +39,9 @@ public class ContentSection {
 //    @JoinTable(name = "c_section",
 //            joinColumns = {@JoinColumn(name = "content_section_uuid", referencedColumnName = "uuid")},
 //            inverseJoinColumns = {@JoinColumn(name = "content_uuid", referencedColumnName = "uuid")})
-    @JoinColumn(name="content_uuid", nullable = false, referencedColumnName = "uuid")
+//    @JoinColumn(name="content_uuid", nullable = false, referencedColumnName = "uuid")
     @ManyToOne
-    private Content contentUuid;
+    private Content content;
 
     private String title;
     private String summary;

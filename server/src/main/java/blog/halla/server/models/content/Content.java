@@ -11,6 +11,7 @@ import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -40,14 +41,16 @@ public class Content {
     @NotAudited
     @Singular
     @ManyToOne( fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id", nullable = false)
-    private User authorId;
+//    @JoinColumn(name = "author_id", nullable = false)
+    private User author;
 
     @OneToOne
     @JoinColumn(name = "parent_uuid")
     @JsonBackReference
     private Content parent;
 
+    @OneToMany(mappedBy = "content")
+    public List<ContentSection> contentSections;
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
     @JsonManagedReference
