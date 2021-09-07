@@ -105,9 +105,32 @@ public class ContentController {
         if (principal instanceof UserDetailsImpl) {
             author_id  = ((UserDetailsImpl) principal).getId();
         }
+        String parent_uuid = "";
+        parent_uuid = contentRequest.getParent().getUuid();
+        if(parent_uuid != null){
+            Content parent_content = contentRepository.getById(parent_uuid);
+            content.setParent(parent_content);
+        }
 
+        List<ContentSection> cSections = contentRequest.getContentSections();
+        if(cSections != null){
+            List<ContentSection> cSectionList = new ArrayList<ContentSection>();
+            for(ContentSection cSection : cSections){
+                ContentSection curCSection = contentSectionRepository.getById(cSection.getUuid());
+//                        contentSection.getOne(cSection.getId());
+                curCSection.setTitle(cSection.getTitle());
+                curCSection.setSummary(cSection.getSummary());
+                curCSection.setIsTitleSelected(cSection.getIsTitleSelected());
+                curCSection.setIsSummarySelected(cSection.getIsSummarySelected());
+                curCSection.setIsVisible(cSection.getIsVisible());
+            }
+            content.setContentSections(cSectionList);
+        }
+
+//        content.setContentSections(contentRequest.getContentSections());
+        contentService.updateContent(content.getUuid(), content);
 //        return ResponseEntity.ok(new MessageResponse("content has been updated"));
-        return ResponseEntity.status(200).body(contentRequest.getContentSections());
+        return ResponseEntity.status(200).body(content);
     }
 //    @GetMapping("/get")
 //    @ResponseBody

@@ -41,8 +41,11 @@ public class ContentService {
         this.contentRepository.save(Content);
     }
 
-    public void updateContent(String id, Content Content) {
-        this.contentRepository.save(Content);
+    public void updateContent(String id, Content content) {
+        List<ContentSection> contentSections = content.getContentSections();
+//        for()
+//        this.contentSectionRepository.save();
+        this.contentRepository.save(content);
     }
 
     public void deleteContent(String id) {

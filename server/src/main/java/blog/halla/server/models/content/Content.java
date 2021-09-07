@@ -64,6 +64,8 @@ public class Content {
     @OneToMany(mappedBy = "content")
     @JsonProperty("contentSections")
     @JsonIdentityReference
+    @ElementCollection(targetClass=ContentSection.class)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     public List<ContentSection> contentSections;
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
