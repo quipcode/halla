@@ -41,7 +41,7 @@ public class ContentSection {
 //            inverseJoinColumns = {@JoinColumn(name = "content_uuid", referencedColumnName = "uuid")})
     @JoinColumn(name="content_uuid", nullable = false, referencedColumnName = "uuid")
     @ManyToOne
-    private Content content_uuid;
+    private Content contentUuid;
 
     private String title;
     private String summary;

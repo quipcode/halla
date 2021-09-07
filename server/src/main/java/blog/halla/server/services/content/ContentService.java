@@ -1,12 +1,13 @@
 package blog.halla.server.services.content;
 
 import blog.halla.server.models.content.Content;
+import blog.halla.server.models.content_section.ContentSection;
 import blog.halla.server.repository.content.ContentRepository;
+import blog.halla.server.repository.content_section.ContentSectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ContentService {
@@ -14,13 +15,34 @@ public class ContentService {
     @Autowired
     private ContentRepository contentRepository;
 
+    @Autowired
+    private ContentSectionRepository contentSectionRepository;
+
     public List<Content> getAllContents() {
         return (List<Content>) this.contentRepository.findAll();
     }
 
     public Optional<Content> getContent(String id) {
         Optional<Content> targetContent = contentRepository.findById(id);
+//        Optional<ContentSection> associatedContentSections = contentSectionRepository.findByContentUuid(id);
+
         return targetContent;
+    }
+
+
+    public Map<String, Object> getContentById(String id){
+        Optional<Content> targetContent = contentRepository.findById(id);
+//        Optional<ContentSection> associatedContentSections = contentSectionRepository.findByContentUuid(id);
+//        List<ContentSection> contentSections = contentSectionRepository.findByContentUuid(targetContent);
+        List<ContentSection> contentSections = contentSectionRepository.findByContentUuid(targetContent.get());
+//        if (contentSections == null || contentSections.isEmpty()) {
+
+//            return Collections.emptyMap();
+//        }
+        Map<String, Object> answer = new HashMap<>();
+        answer.put("content", targetContent);
+        answer.put("contentSections", contentSections);
+        return answer;
     }
 
     public void createContent(Content Content) {

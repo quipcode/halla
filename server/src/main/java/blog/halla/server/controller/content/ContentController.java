@@ -22,10 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -72,8 +69,12 @@ public class ContentController {
     }
 
     @GetMapping("/{uuid}")
-    public Page<Content> getContentByUuid(@PathVariable("uuid") String uuid, Pageable pageable) {
-        return contentRepository.findByUuid( uuid ,pageable);
+
+//    public Page<Content>
+    public ResponseEntity<Map<String, Object>> getContentByUuid(@PathVariable("uuid") String uuid, Pageable pageable) {
+//        return contentRepository.findByUuid( uuid ,pageable);
+//        contentService.getContentById(uuid);
+        return ResponseEntity.ok().body(contentService.getContentById(uuid));
     }
 
     
@@ -148,7 +149,7 @@ public class ContentController {
 
         Content content2 = contentRepository.save(content);
         contentSections.forEach(section -> {
-            section.setContent_uuid(content2);
+            section.setContentUuid(content2);
 
             contentSectionRepository.save(section);
         });
