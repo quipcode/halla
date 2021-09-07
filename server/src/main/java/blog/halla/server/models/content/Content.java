@@ -29,7 +29,9 @@ import java.util.UUID;
 )
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "uuid")
+        property = "uuid",
+        scope = Content.class
+)
 public class Content {
 
 
@@ -60,6 +62,8 @@ public class Content {
     private Content parent;
 
     @OneToMany(mappedBy = "content")
+    @JsonProperty("contentSections")
+    @JsonIdentityReference
     public List<ContentSection> contentSections;
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)

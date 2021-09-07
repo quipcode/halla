@@ -11,6 +11,9 @@ import blog.halla.server.repository.content_section.ContentSectionRepository;
 import blog.halla.server.repository.security.UserRepository;
 import blog.halla.server.services.UserDetailsImpl;
 import blog.halla.server.services.content.ContentService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +25,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.DataInput;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -41,6 +46,9 @@ public class ContentController {
 
     @Autowired
     ContentSectionRepository contentSectionRepository;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     Logger logger = LoggerFactory.getLogger(ContentController.class);
 
@@ -71,10 +79,11 @@ public class ContentController {
     @GetMapping("/{uuid}")
 
 //    public Page<Content>
-    public ResponseEntity<Map<String, Object>> getContentByUuid(@PathVariable("uuid") String uuid, Pageable pageable) {
+    public ResponseEntity<?> getContentByUuid(@PathVariable("uuid") String uuid, Pageable pageable) {
 //        return contentRepository.findByUuid( uuid ,pageable);
 //        contentService.getContentById(uuid);
-        return ResponseEntity.ok().body(contentService.getContentById(uuid));
+//        return ResponseEntity.ok().body(contentService.getContentById(uuid));
+        return ResponseEntity.ok().body(contentService.getContent(uuid));
     }
 
     
@@ -84,27 +93,28 @@ public class ContentController {
         return ResponseEntity.ok(new MessageResponse("content has been deleted"));
     }
 
-    @PutMapping("/update/{uuid}")
-    public ResponseEntity<?> updateContent(@Valid @RequestBody ContentRequest contentRequest, @PathVariable("uuid") String uuid){
-        Optional<Content> contentServed = contentService.getContent(uuid);
-        String parent_uuid = contentRequest.getParent_uuid();
-        Content content = contentServed.get();
-        User author = userRepository.getById(contentRequest.getAuthor_id());
-        Long author_id = author.getId();
+    @PutMapping("/{uuid}")
+//    public ResponseEntity<?> updateContent(@Valid @RequestBody ContentRequest contentRequest, @PathVariable("uuid") String uuid) throws JsonMappingException, JsonProcessingException{
+        public ResponseEntity<?> updateContent(@Valid @RequestBody Content contentRequest, @PathVariable("uuid") String uuid) throws JsonMappingException, JsonProcessingException {
+//        Content content  = objectMapper.readValue(contentRequest, Content.class);
+        Optional<Content> contentStored = contentService.getContent(uuid);
+        Content content = contentStored.get();
 
-        if(parent_uuid != null){
-            Content parent_content = contentRepository.getById(parent_uuid);
-            content.setParent(parent_content);
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long author_id  = null;
+        if (principal instanceof UserDetailsImpl) {
+            author_id  = ((UserDetailsImpl) principal).getId();
         }
 
-        content.setAuthorId(author.getId());
-
-//        content.setTitle(contentRequest.getTitle());
-//        content.setContent(contentRequest.getContent());
-        contentService.updateContent(uuid, content);
-
-        return ResponseEntity.ok(new MessageResponse("content has been updated"));
+//        return ResponseEntity.ok(new MessageResponse("content has been updated"));
+        return ResponseEntity.status(200).body(contentRequest.getContentSections());
     }
+//    @GetMapping("/get")
+//    @ResponseBody
+//    public Product getProduct(@RequestParam String product) throws JsonMappingException, JsonProcessingException {
+//        Product prod = objectMapper.readValue(product, Product.class);
+//        return prod;
+//    }
 
 //    @PostMapping("/new")
 //    public ResponseEntity<?> createContent(@Valid @RequestBody Content content) {

@@ -2,10 +2,7 @@ package blog.halla.server.models.content_section;
 
 import blog.halla.server.models.content.Content;
 import blog.halla.server.models.section_types.SectionTypes;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import org.hibernate.envers.AuditTable;
 import org.hibernate.envers.Audited;
@@ -24,7 +21,10 @@ import javax.persistence.*;
 )
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "uuid")
+        property = "uuid",
+        scope = ContentSection.class
+)
+
 public class ContentSection {
     @Id
     private String uuid;
@@ -40,8 +40,18 @@ public class ContentSection {
 //            joinColumns = {@JoinColumn(name = "content_section_uuid", referencedColumnName = "uuid")},
 //            inverseJoinColumns = {@JoinColumn(name = "content_uuid", referencedColumnName = "uuid")})
 //    @JoinColumn(name="content_uuid", nullable = false, referencedColumnName = "uuid")
-    @ManyToOne
+//    @ManyToOne
+//    private Content content;
+
+
+    @JoinColumn(name = "content", insertable = false, updatable = false)
+//    @ManyToOne(targetEntity = Content.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Content.class, fetch = FetchType.LAZY)
+    @JsonIgnore
     private Content content;
+
+    @Column(name = "content")
+    private String contentUuid;
 
     private String title;
     private String summary;
