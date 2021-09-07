@@ -97,7 +97,7 @@ public class ContentController {
             content.setParent(parent_content);
         }
 
-        content.setAuthor(author);
+        content.setAuthorId(author.getId());
 
 //        content.setTitle(contentRequest.getTitle());
 //        content.setContent(contentRequest.getContent());
@@ -141,7 +141,7 @@ public class ContentController {
         }
 
         content.setPublished(false);
-        content.setAuthor(author);
+        content.setAuthorId(author.getId());
         content.setParent(parent);
         Set< ContentSection > contentSections =  creationRequest.getContentSections();
 //        ContentSection newContentSection = ContentSection();

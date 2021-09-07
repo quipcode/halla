@@ -38,11 +38,21 @@ public class Content {
     private String uuid;
 //    private String uuid = UUID.randomUUID().toString().replaceAll("-", "");
 
-    @NotAudited
-    @Singular
-    @ManyToOne( fetch = FetchType.LAZY)
+//    @NotAudited
+//    @Singular
+//    @ManyToOne( fetch = FetchType.LAZY)
+//    @ManyToOne
 //    @JoinColumn(name = "author_id", nullable = false)
-    private User author;
+//    private User author;
+//    @NotAudited
+//    @Singular
+//    @JoinColumn(name = "author", insertable = false, updatable = false)
+//    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+//    private User author;
+
+    @Column(name = "author")
+    private long authorId;
+
 
     @OneToOne
     @JoinColumn(name = "parent_uuid")
