@@ -24,6 +24,7 @@ public class ContentService {
 
     public Optional<Content> getContent(String id) {
         Optional<Content> targetContent = contentRepository.findById(id);
+//        Set<Content> children = targetContent.get().getChildren();
 //        Optional<ContentSection> associatedContentSections = contentSectionRepository.findByContentUuid(id);
 
         return targetContent;

@@ -11,6 +11,7 @@ import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -56,10 +57,34 @@ public class Content {
     private long authorId;
 
 
-    @OneToOne
+//    @OneToOne(mappedBy = "parent_uuid")
+////    @ManyToOne
+//    @JoinColumn(name = "parent_uuid")
+//    @JsonBackReference
+//    private Content parent;
+//
+//    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
+//    @JsonManagedReference
+//    @JsonProperty("children")
+//    @JsonIdentityReference
+//    @ElementCollection(targetClass=ContentSection.class)
+//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//    private Set<Content> children = new HashSet<>();
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_uuid")
     @JsonBackReference
     private Content parent;
+
+    @OneToMany(mappedBy = "parent")
+//    @JsonProperty("children")
+//    @OneToMany(mappedBy = "parent", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<Content> children = new HashSet<>();
+
+//    public Set<Content> getChildren(){
+//        return this.children;
+//    }
 
     @OneToMany(mappedBy = "content")
     @JsonProperty("contentSections")
@@ -68,9 +93,9 @@ public class Content {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     public List<ContentSection> contentSections;
 
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private Set<Content> children;
+
+
+
 
 
     private String metaTitle;

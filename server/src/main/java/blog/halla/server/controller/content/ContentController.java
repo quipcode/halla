@@ -61,7 +61,7 @@ public class ContentController {
 
     @GetMapping("/user/{authorId}")
     public Page<Content> getAllUserContent(@PathVariable("authorId") Long authorId, Pageable pageable){
-        User author = userRepository.getById(authorId);
+//        User author = userRepository.getById(authorId);
 
 //        final var contentOptional = contentRepository.findByTitle("some-title");
 //        contentOptional.ifPresent(content -> {
@@ -73,7 +73,7 @@ public class ContentController {
 
 
 
-        return contentRepository.findByAuthorId(author, pageable);
+        return contentRepository.findByAuthorId(authorId, pageable);
     }
 
     @GetMapping("/{uuid}")

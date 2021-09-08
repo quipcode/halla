@@ -10,5 +10,5 @@ import java.util.Optional;
 
 public interface ContentRepository extends JpaRepository<Content, String> {
     Page<Content> findByUuid(String uuid, Pageable pageable);
-    Page<Content> findByAuthorId(User authorId, Pageable pageable);
+    Page<Content> findByAuthorId(Long authorId, Pageable pageable);
 }
