@@ -53,8 +53,15 @@ public class ContentController {
     Logger logger = LoggerFactory.getLogger(ContentController.class);
 
     @GetMapping("/")
-    public Page<Content> getAllContent(Pageable pageable) {
-        return contentRepository.findAll(pageable);
+    public List<Content> getAllContent(Pageable pageable) {
+        Page<Content> stuff = contentRepository.findAll(pageable);
+        List<Content> stuffing = contentRepository.findAll();
+//        logger.error(stuff.toString());
+//        logger.error(stuffing.toString());
+        for(Content s : stuffing){
+            logger.error(s.toString());
+        }
+        return stuffing;
 //                .filter(content -> !content.isPublished());
 
     }

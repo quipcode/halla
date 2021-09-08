@@ -11,10 +11,7 @@ import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @Setter
@@ -77,10 +74,16 @@ public class Content {
     @JsonBackReference
     private Content parent;
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent",  cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+//    @JsonManagedReference(value = "")
 //    @JsonProperty("children")
 //    @OneToMany(mappedBy = "parent", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Set<Content> children = new HashSet<>();
+    private List<Content> children = new ArrayList<>();
+
+//    @JsonView( value = {DTOViews, DTOViews.Owner.class} )
+//    @JsonManagedReference( value = "User-ProfessionalExperience" )
+//    @OneToMany( mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+//    private Set<ProfessionalExperience> professionalExperiences;
 
 //    public Set<Content> getChildren(){
 //        return this.children;
@@ -106,8 +109,6 @@ public class Content {
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean published;
 
-
-//
 //    @Singular
 //    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
 //    @JoinColumn(name = "content_section_uuid", referencedColumnName = "uuid")
@@ -117,7 +118,13 @@ public class Content {
 //            inverseJoinColumns = {@JoinColumn(name = "content_section_uuid", referencedColumnName = "uuid")})
 //    private Set<ContentSection> contentSections;
 
+    @Override
+    public String toString(){
+        return String.format("metatitle: %s, author: %s, uuid:%s, children: %s", metaTitle, authorId, uuid, children);
+//        return String.format(" uuid:%s", uuid);
+//        return String.format("parent: %s", parent);
 
+    }
 
     public Content(String uuid, Content parent, boolean published){
         this.uuid = uuid;
