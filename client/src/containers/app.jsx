@@ -13,7 +13,7 @@ import NavBar  from '../components/navbar';
 // import {constants} from './utils/constants';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "bootstrap/dist/css/bootstrap.css";
-
+import Footer from '../components/footer'
 import logo from '../assets/logo.svg';
 
 
@@ -84,7 +84,7 @@ const App = (props) => {
                 </Switch>
             </div>
 
-            {/* <Footer /> */}
+            <Footer />
         </div>
     );
 }
