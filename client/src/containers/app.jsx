@@ -8,8 +8,11 @@ import alertActions from '../store/redux/alert/actions'
 import {withRouter} from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
 import history from '../utils/history';
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom';
+import NavBar  from '../components/navbar';
 // import {constants} from './utils/constants';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.css";
 
 import logo from '../assets/logo.svg';
 
@@ -32,10 +35,12 @@ const mapStateToProps = state => {
 
 const App = (props) => {
     const alerts = useSelector(state => state.alerts);
-    const routeComponents = routes.map(
+    const routeComponents = Object.values(routes).map(
         ({ path, component, privateRoute }, key) =>
-            privateRoute ? <PrivateRoute exact path={path} component={component} key={key} /> :
-                <Route exact path={path} component={component} key={key} />);
+            privateRoute ? 
+            <PrivateRoute exact path={path} component={component} key={key} /> :
+            <Route exact path={path} component={component} key={key} />
+    );
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -60,7 +65,7 @@ const App = (props) => {
 
             {/* <Navbar auth={isAuthenticated} /> */}
 
-
+            <NavBar auth={props.auth} />
 
             <div className="body-content">
                 {

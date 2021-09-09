@@ -5,38 +5,42 @@ import Tadabor from '../containers/tadabor'
 import MyContentTable from '../containers/myContentTable'
 import MyContentEdit from '../containers/myContentEdit'
 
-const routes = [
-    {
-        path: '/',
-        component: Home,
-        privateRoute: false
-    },
-    {
-        path: '/login',
-        component: Login,
-        privateRoute: false
-    },
-    {
-        path: '/register',
-        component: Register,
-        privateRoute: false
-    },
-    {
-        path: '/tadabor',
-        component: Tadabor,
-        privateRoute: false
-    },
-    {
-        path: '/mycontenttable',
-        component: MyContentTable,
-        privateRoute: false
-    },
-    {
-        path: '/mycontentedit',
-        component: MyContentEdit,
-        privateRoute: false
-    }
-
-]
+const routes = {
+    home:   {
+                path: '/',
+                    component: Home,
+                        privateRoute: false
+            },
+    login:
+            {
+                path: '/login',
+                component: Login,
+                privateRoute: false
+            },
+    register:
+            {
+                path: '/register',
+                component: Register,
+                privateRoute: false
+            },
+    tadabor:
+            {
+                path: '/tadabor',
+                component: Tadabor,
+                privateRoute: false
+            },
+    mycontenttable:
+            {
+                path: '/mycontenttable',
+                component: MyContentTable,
+                privateRoute: false
+            },
+    mycontentedit:
+            {
+                path: '/mycontentedit',
+                component: MyContentEdit,
+                privateRoute: false
+            }
+}
 
 export default routes;
