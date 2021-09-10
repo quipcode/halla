@@ -4,6 +4,7 @@ import Register from '../containers/register'
 import Tadabor from '../containers/tadabor'
 import MyContentTable from '../containers/myContentTable'
 import MyContentEdit from '../containers/myContentEdit'
+import FeedBack from '../components/feedback'
 
 const routes = {
     home:   {
@@ -40,6 +41,12 @@ const routes = {
                 path: '/mycontentedit',
                 component: MyContentEdit,
                 privateRoute: false
+            },
+    feedback: 
+            {
+                path: '/feedback',
+                component: FeedBack,
+                privateRoute: false,
             }
 }
 
