@@ -39,7 +39,7 @@ const App = (props) => {
         ({ path, component, privateRoute }, key) =>
             privateRoute ? 
             <PrivateRoute exact path={path} component={component} key={key} /> :
-            <Route exact path={path} component={component} key={key} />
+            <Route exact path={path} component={component} key={key} props={props} />
     );
     const dispatch = useDispatch();
 

@@ -45,8 +45,7 @@ public class ContentSection {
 
 
     @JoinColumn(name = "content", insertable = false, updatable = false)
-//    @ManyToOne(targetEntity = Content.class, fetch = FetchType.LAZY)
-    @ManyToOne(targetEntity = Content.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Content.class, fetch = FetchType.EAGER)
     @JsonIgnore
     private Content content;
 

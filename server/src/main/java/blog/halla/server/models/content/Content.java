@@ -13,9 +13,7 @@ import org.hibernate.envers.NotAudited;
 import javax.persistence.*;
 import java.util.*;
 
-@Getter
-@Setter
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
 @Entity
 @Audited(withModifiedFlag = true)
@@ -25,11 +23,6 @@ import java.util.*;
             @UniqueConstraint(columnNames = "uuid")
         }
 )
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "uuid",
-        scope = Content.class
-)
 public class Content {
 
 
@@ -38,43 +31,16 @@ public class Content {
     private String uuid;
 //    private String uuid = UUID.randomUUID().toString().replaceAll("-", "");
 
-//    @NotAudited
-//    @Singular
-//    @ManyToOne( fetch = FetchType.LAZY)
-//    @ManyToOne
-//    @JoinColumn(name = "author_id", nullable = false)
-//    private User author;
-//    @NotAudited
-//    @Singular
-//    @JoinColumn(name = "author", insertable = false, updatable = false)
-//    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
-//    private User author;
-
     @Column(name = "author")
     private long authorId;
 
 
-//    @OneToOne(mappedBy = "parent_uuid")
-////    @ManyToOne
-//    @JoinColumn(name = "parent_uuid")
-//    @JsonBackReference
-//    private Content parent;
-//
-//    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
-//    @JsonManagedReference
-//    @JsonProperty("children")
-//    @JsonIdentityReference
-//    @ElementCollection(targetClass=ContentSection.class)
-//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-//    private Set<Content> children = new HashSet<>();
-
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_uuid")
     @JsonBackReference
     private Content parent;
 
-    @OneToMany(mappedBy = "parent",  cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+    @OneToMany(mappedBy = "parent",  cascade = CascadeType.ALL, fetch = FetchType.EAGER )
 //    @JsonManagedReference(value = "")
 //    @JsonProperty("children")
 //    @OneToMany(mappedBy = "parent", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -89,11 +55,12 @@ public class Content {
 //        return this.children;
 //    }
 
-    @OneToMany(mappedBy = "content")
+    @OneToMany(mappedBy = "content", fetch = FetchType.EAGER)
     @JsonProperty("contentSections")
     @JsonIdentityReference
     @ElementCollection(targetClass=ContentSection.class)
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//    @JsonIgnoreProperties({"hibernateEagerInitializer", "handler"})
     public List<ContentSection> contentSections;
 
 
