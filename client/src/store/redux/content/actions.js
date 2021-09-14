@@ -4,7 +4,7 @@ import constants from "../../../utils/constants";
 import * as ActionTypes from './actionTypes';
 
 export const saveContentToServerLoading = () => ({
-    type: ActionTypes.SAVE_TO_SERVER_LOADING
+    type: ActionTypes.SAVE_CONTENT_TO_SERVER_LOADING
 })
 
 export const saveContentToServerFailed = (error) => ({
