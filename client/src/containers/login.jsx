@@ -77,8 +77,7 @@ class Login extends Component {
 
         return (
             <div className="container" >
-                <div className="row login_form">
-                    <aside className="col-lg-7">
+                <div className="col-lg-12 text-center login_form">
                         <div className="card">
                             <article className="card-body">
                                 {this.state.invalidCredential && this.state.failedLogin &&
@@ -134,7 +133,6 @@ class Login extends Component {
                                 <p>Don't have an account? Register <a className="underlineHover" href="/register">here</a> </p>
                             </article>
                         </div>
-                    </aside>
                 </div>
             </div>
         );
