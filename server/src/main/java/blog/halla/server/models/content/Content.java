@@ -56,7 +56,6 @@ public class Content {
 //    }
 
     @OneToMany(mappedBy = "content", fetch = FetchType.EAGER)
-    @JsonProperty("contentSections")
     @JsonIdentityReference
     @ElementCollection(targetClass=ContentSection.class)
 //    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
