@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import routes from '../routes/routes'
 import { connect } from 'react-redux';
-import { loginUser, logoutUser, registerUser, currentUsername } from '../store/redux/auth/actions';
+import { loginUser, logoutUser, registerUser, getSelf } from '../store/redux/auth/actions';
 import { saveContentToServer} from '../store/redux/content/actions'
 import { getVerse } from '../store/redux/tadabor/actions';
 import alertActions from '../store/redux/alert/actions'
@@ -23,7 +23,8 @@ const mapDispatchToProps = {
     registerUser: () => (registerUser()),
     getVerse: () => (getVerse()),
     saveContentToServer: () => (saveContentToServer()),
-    currentUsername: () => (currentUsername())
+    getSelf: () => (getSelf())
+    // currentUsername: () => (currentUsername())
 }
 
 const mapStateToProps = state => {
@@ -66,10 +67,10 @@ const App = (props) => {
     return (
 
         <div className="app">
-            {console.log("in main app")}
+            {/* {console.log("in main app")}
             {console.log(localStorage.getItem("hallaAuthUser"))}
-            {console.log(localStorage.getItem("hallaAuthToken"))}
-            {console.log(props.currentUsername())}
+            {console.log(localStorage.getItem("hallaAuthToken"))} */}
+            {/* {console.log(props.currentUsername())} */}
             
             {/* <Navbar auth={isAuthenticated} /> */}
 

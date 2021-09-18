@@ -5,6 +5,7 @@ import Tadabor from '../containers/tadabor'
 import MyContentTable from '../containers/myContentTable'
 import MyContentEdit from '../containers/myContentEdit'
 import FeedBack from '../components/feedback'
+import Profile from '../components/profile';
 
 const routes = {
     home:   {
@@ -47,6 +48,12 @@ const routes = {
                 path: '/feedback',
                 component: FeedBack,
                 privateRoute: false,
+            },
+    profile:
+            {
+                path: '/profile',
+                component: Profile,
+                privateRoute: false
             }
 }
 

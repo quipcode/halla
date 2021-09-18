@@ -96,20 +96,21 @@ export const createJwtToken = (token) => dispatch => {
     return 'Bearer ' + token
 }
 
-export const isUserLoggedIn = () => dispatch => {
-    let user = localStorage.getItem(constants.HALLA_AUTH_USER)
-    let token = localStorage.getItem(constants.HALLA_AUTH_TOKEN)
-    return user !== null && token !== null
-}
+// export const isUserLoggedIn = () => dispatch => {
+//     let user = localStorage.getItem(constants.HALLA_AUTH_USER)
+//     let token = localStorage.getItem(constants.HALLA_AUTH_TOKEN)
+//     return user !== null && token !== null
+// }
 
 export const getSelf = (requestBody) => dispatch => {
-    let { username } = requestBody
+    console.log("reqbody is ", requestBody)
     let authToken = localStorage.getItem("hallaAuthToken")
     const config = {
         headers: { Authorization: `Bearer ${authToken}` }
     }
 
     dispatch(getSelfLoading())
+    console.log("reqbody is ", requestBody)
     return axios
             .get(
                 `${constants.API_BASE_URL}/auth/self`, 
@@ -138,14 +139,14 @@ export const getSelfSuccess = (res) => ({
 })
 
 //not sure if this should be in actions...simply parsing auth token and comparing it w/ associated username from local storage...purely clientside...never hitting server 
-export const currentUsername = () => dispatch => {
-    let currUsername = localStorage.getItem(constants.HALLA_AUTH_USER)
-    let token = localStorage.getItem(constants.HALLA_AUTH_TOKEN)
-    let currUserTokenObj = parseJwt(token)
-    // if(!user) return Promise.reject("No user set");
-    if (currUsername != currUserTokenObj.sub) return Promise.reject("No user set");
-    return currUsername;
-}
+// export const currentUsername = () => dispatch => {
+//     let currUsername = localStorage.getItem(constants.HALLA_AUTH_USER)
+//     let token = localStorage.getItem(constants.HALLA_AUTH_TOKEN)
+//     let currUserTokenObj = parseJwt(token)
+//     // if(!user) return Promise.reject("No user set");
+//     if (currUsername != currUserTokenObj.sub) return Promise.reject("No user set");
+//     return currUsername;
+// }
 
 function parseJwt(token) {
     var base64Url = token.split('.')[1];

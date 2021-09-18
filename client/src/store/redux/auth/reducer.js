@@ -3,6 +3,23 @@ import initialState from './initial-state'
 
 export default function(state = initialState.auth, action){
     switch (action.type) {
+        case ActionTypes.GET_SELF_LOADING:
+            return { ...state, isLoading: true, errMess: null, sessionToken: null }
+        case ActionTypes.GET_SELF_FAILED:
+            return {
+                ...state,
+                isLoading: false,
+                errMess: action.payload.message,
+            }
+        case ActionTypes.GET_SELF_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                errMess: null,
+                sessionToken: action.payload.data.accessToken,
+                username: action.payload.data.username,
+                isAuthenticated: true,
+            }
         case ActionTypes.LOGIN_LOADING:
             return { ...state, isLoading: true, errMess: null, sessionToken: null }
         case ActionTypes.LOGIN_SUCCESS:
