@@ -102,6 +102,41 @@ export const isUserLoggedIn = () => dispatch => {
     return user !== null && token !== null
 }
 
+export const getSelf = (requestBody) => dispatch => {
+    let { username } = requestBody
+    let authToken = localStorage.getItem("hallaAuthToken")
+    const config = {
+        headers: { Authorization: `Bearer ${authToken}` }
+    }
+
+    dispatch(getSelfLoading())
+    return axios
+            .get(
+                `${constants.API_BASE_URL}/auth/self`, 
+                requestBody,
+                config)
+            .then(res => {
+                console.log("getself response is", res)
+                dispatch(getSelfSuccess(res))
+            })
+            .catch(error => {
+                dispatch(alertActions.error(error.response.data.message))
+            })
+
+}
+
+export const getSelfLoading = () => ({
+    type: ActionTypes.GET_SELF_LOADING
+})
+export const getSelfFailed = (err) => ({
+    type: ActionTypes.GET_SELF_FAILED,
+    payload: err
+})
+export const getSelfSuccess = (res) => ({
+    type: ActionTypes.GET_SELF_SUCCESS,
+    payload: res
+})
+
 //not sure if this should be in actions...simply parsing auth token and comparing it w/ associated username from local storage...purely clientside...never hitting server 
 export const currentUsername = () => dispatch => {
     let currUsername = localStorage.getItem(constants.HALLA_AUTH_USER)
