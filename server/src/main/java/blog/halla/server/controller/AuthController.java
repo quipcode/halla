@@ -7,18 +7,20 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import blog.halla.server.controller.content.ContentController;
+import blog.halla.server.payload.request.auth.SelfRequest;
+import blog.halla.server.payload.response.auth.SelfResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import blog.halla.server.models.ERole;
 import blog.halla.server.models.Role;
@@ -56,6 +58,41 @@ public class AuthController {
 
     @Autowired
     JwtUtils jwtUtils;
+
+    Logger logger = LoggerFactory.getLogger(ContentController.class);
+
+    @GetMapping("/self")
+    public ResponseEntity<?> getSelfUser(@Valid @RequestBody SelfRequest selfRequest){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Object authContext = SecurityContextHolder.getContext().getAuthentication();
+         if(authContext instanceof AnonymousAuthenticationToken){
+             return ResponseEntity.status(401).body(new MessageResponse("Please login"));
+         }
+        String authenticatedUsername = null;
+
+        if (principal instanceof UserDetailsImpl) {
+            authenticatedUsername  = ((UserDetailsImpl) principal).getUsername();
+        }
+        String providedUsername = selfRequest.getUsername();
+        if(authenticatedUsername.equals(providedUsername)){
+            UserDetailsImpl userDetails = (UserDetailsImpl) principal;
+            List<String> permissions = userDetails.getAuthorities().stream()
+                    .map(item -> item.getAuthority())
+                    .collect(Collectors.toList());
+
+            List<String> roles = userDetails.getRoles().stream()
+                    .map(role -> role.toString())
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok( new SelfResponse(
+                    userDetails.getId(),
+                    userDetails.getUsername(),
+                    userDetails.getEmail(),
+                    roles,
+                    permissions));
+        }else{
+            return ResponseEntity.status(404).body(new MessageResponse("User not found"));
+        }
+    }
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest){
