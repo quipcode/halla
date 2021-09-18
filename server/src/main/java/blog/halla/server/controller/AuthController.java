@@ -1,15 +1,17 @@
 package blog.halla.server.controller;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import blog.halla.server.controller.content.ContentController;
 import blog.halla.server.payload.request.auth.SelfRequest;
-import blog.halla.server.payload.response.auth.SelfResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,14 +64,24 @@ public class AuthController {
     Logger logger = LoggerFactory.getLogger(ContentController.class);
 
     @GetMapping("/self")
-    public ResponseEntity<?> getSelfUser(@Valid @RequestBody SelfRequest selfRequest){
+    public ResponseEntity<?> getSelfUser(HttpServletRequest request) throws IOException {
+//        SelfRequest selfRequest
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Object authContext = SecurityContextHolder.getContext().getAuthentication();
+
+//        ObjectMapper mapper = new ObjectMapper();
+//        SelfRequest selfRequest = mapper.readValue(request.getInputStream(), SelfRequest.class);
+//        Book book = mapper.readValue(request.getInputStream(),Book.class);
+        final String authorizationHeader = request.getHeader("Authorization");
+        String token = authorizationHeader.replace("Bearer ","");
+        String body = request.getReader().lines()
+                .reduce("", (accumulator, actual) -> accumulator + actual);
+        ObjectMapper mapper = new ObjectMapper();
+        SelfRequest selfRequest = mapper.readValue(body, SelfRequest.class);
          if(authContext instanceof AnonymousAuthenticationToken){
              return ResponseEntity.status(401).body(new MessageResponse("Please login"));
          }
         String authenticatedUsername = null;
-
         if (principal instanceof UserDetailsImpl) {
             authenticatedUsername  = ((UserDetailsImpl) principal).getUsername();
         }
@@ -83,7 +95,9 @@ public class AuthController {
             List<String> roles = userDetails.getRoles().stream()
                     .map(role -> role.toString())
                     .collect(Collectors.toList());
-            return ResponseEntity.ok( new SelfResponse(
+
+            return ResponseEntity.ok(new JwtResponse(
+                    token,
                     userDetails.getId(),
                     userDetails.getUsername(),
                     userDetails.getEmail(),
