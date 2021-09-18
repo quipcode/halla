@@ -102,6 +102,7 @@ export const isUserLoggedIn = () => dispatch => {
     return user !== null && token !== null
 }
 
+//not sure if this should be in actions...simply parsing auth token and comparing it w/ associated username from local storage...purely clientside...never hitting server 
 export const currentUsername = () => dispatch => {
     let currUsername = localStorage.getItem(constants.HALLA_AUTH_USER)
     let token = localStorage.getItem(constants.HALLA_AUTH_TOKEN)
