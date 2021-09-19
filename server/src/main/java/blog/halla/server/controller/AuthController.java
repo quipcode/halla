@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -65,17 +66,14 @@ public class AuthController {
 
     @GetMapping("/self")
     public ResponseEntity<?> getSelfUser(HttpServletRequest request) throws IOException {
-//        SelfRequest selfRequest
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Object authContext = SecurityContextHolder.getContext().getAuthentication();
-
-//        ObjectMapper mapper = new ObjectMapper();
-//        SelfRequest selfRequest = mapper.readValue(request.getInputStream(), SelfRequest.class);
-//        Book book = mapper.readValue(request.getInputStream(),Book.class);
         final String authorizationHeader = request.getHeader("Authorization");
         String token = authorizationHeader.replace("Bearer ","");
-        String body = request.getReader().lines()
-                .reduce("", (accumulator, actual) -> accumulator + actual);
+        String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+        if(!body.startsWith("{\"username\": ")){
+            return ResponseEntity.status(400).body(new MessageResponse("Please provide request body as directed"));
+        }
         ObjectMapper mapper = new ObjectMapper();
         SelfRequest selfRequest = mapper.readValue(body, SelfRequest.class);
          if(authContext instanceof AnonymousAuthenticationToken){
