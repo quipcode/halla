@@ -105,17 +105,15 @@ export const createJwtToken = (token) => dispatch => {
 export const getSelf = (requestBody) => dispatch => {
     console.log("reqbody is ", requestBody)
     let authToken = localStorage.getItem("hallaAuthToken")
-    const config = {
+    let config = {
+        method: 'get',
+        url: `${constants.API_BASE_URL}/auth/self`,
         headers: { Authorization: `Bearer ${authToken}` }
-    }
-
+      }
     dispatch(getSelfLoading())
     console.log("reqbody is ", requestBody)
-    return axios
-            .get(
-                `${constants.API_BASE_URL}/auth/self`, 
-                requestBody,
-                config)
+    // axios.get(`${constants.API_BASE_URL}/auth/self`, config)
+    return axios(config)           
             .then(res => {
                 console.log("getself response is", res)
                 dispatch(getSelfSuccess(res))

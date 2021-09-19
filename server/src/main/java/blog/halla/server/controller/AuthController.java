@@ -1,6 +1,7 @@
 package blog.halla.server.controller;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -12,6 +13,11 @@ import javax.validation.Valid;
 import blog.halla.server.controller.content.ContentController;
 import blog.halla.server.payload.request.auth.SelfRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,17 +71,23 @@ public class AuthController {
     Logger logger = LoggerFactory.getLogger(ContentController.class);
 
     @GetMapping("/self")
-    public ResponseEntity<?> getSelfUser(HttpServletRequest request) throws IOException {
+    public ResponseEntity<?> getSelfUser(HttpServletRequest request) throws IOException, ParseException {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Object authContext = SecurityContextHolder.getContext().getAuthentication();
         final String authorizationHeader = request.getHeader("Authorization");
         String token = authorizationHeader.replace("Bearer ","");
-        String body = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-        if(!body.startsWith("{\"username\": ")){
-            return ResponseEntity.status(400).body(new MessageResponse("Please provide request body as directed"));
-        }
-        ObjectMapper mapper = new ObjectMapper();
-        SelfRequest selfRequest = mapper.readValue(body, SelfRequest.class);
+        String[] chunks = token.split("\\.");
+        Base64.Decoder decoder = Base64.getDecoder();
+        String header = new String(decoder.decode(chunks[0]));
+        String payload = new String(decoder.decode(chunks[1]));
+        JSONParser parser = new JSONParser();
+        JSONObject json = (JSONObject) parser.parse(payload);
+        logger.error("what are we doin");
+        logger.error((String) json.get("sub"));
+        logger.error(token);
+        logger.error(header);
+        logger.error(payload);
+        logger.error(String.valueOf(payload instanceof String));
          if(authContext instanceof AnonymousAuthenticationToken){
              return ResponseEntity.status(401).body(new MessageResponse("Please login"));
          }
@@ -83,7 +95,7 @@ public class AuthController {
         if (principal instanceof UserDetailsImpl) {
             authenticatedUsername  = ((UserDetailsImpl) principal).getUsername();
         }
-        String providedUsername = selfRequest.getUsername();
+        String providedUsername = (String) json.get("sub");
         if(authenticatedUsername.equals(providedUsername)){
             UserDetailsImpl userDetails = (UserDetailsImpl) principal;
             List<String> permissions = userDetails.getAuthorities().stream()
