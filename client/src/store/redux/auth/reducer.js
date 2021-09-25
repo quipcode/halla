@@ -23,12 +23,11 @@ export default function(state = initialState.auth, action){
         case ActionTypes.LOGIN_LOADING:
             return { ...state, isLoading: true, errMess: null, sessionToken: null }
         case ActionTypes.LOGIN_SUCCESS:
-
             return {
                 ...state,
                 isLoading: false,
                 errMess: null,
-                sessionToken: action.payload.data.accessToken,
+                sessionToken: action.payload.data.token,
                 username: action.payload.data.username,
                 isAuthenticated: true,
             }
