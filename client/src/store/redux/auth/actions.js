@@ -173,10 +173,10 @@ export const logoutSuccess = () => ({
 
 export const logoutUser = () => dispatch => {
 
-
+    localStorage.removeItem(constants.AUTHSTATE)
     localStorage.removeItem(constants.HALLA_AUTH_USER)
     localStorage.removeItem(constants.HALLA_AUTH_TOKEN)
-    dispatch(logoutLoading())
+    // dispatch(logoutLoading())
     dispatch(logoutSuccess())
     history.push('/')
 }

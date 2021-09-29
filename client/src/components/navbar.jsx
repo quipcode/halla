@@ -6,6 +6,7 @@ import  Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
 import  NavDropdown from 'react-bootstrap/NavDropdown';
 import NavbarBrand from 'react-bootstrap/NavbarBrand'
+import { logoutUser } from '../store/redux/auth/actions';
 
 import logo from '../assets/logo.svg'
 
@@ -22,6 +23,16 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
     },
 }));
+
+const logout = (e, props) => {
+    console.log(" clicked on logout")
+    console.log(e)
+    console.log(props)
+    // logoutUser()
+    props.props.logoutUser()
+
+    
+}
 
 let NavBar = (props) => {
     // const classes = useStyles();
@@ -59,7 +70,7 @@ let NavBar = (props) => {
                         <span> Profile</span>
                     
                     </Nav.Link> 
-                    <Nav.Link eventKey={2} href="#memes">
+                        <Nav.Link eventKey={2} onClick={ e => logout(e, props)} href="/">
                         <i className="fas fa-sign-out-alt"/>
                         <span> Logout</span>
                 </Nav.Link>

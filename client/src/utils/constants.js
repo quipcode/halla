@@ -15,5 +15,6 @@ module.exports = {
     U: "u",
     EDIT: "edit",
     INCLUDE_SUMMARY:    "Include Summary",
-    INCLUDE_TITLE: "Include Title"
+    INCLUDE_TITLE: "Include Title",
+    AUTHSTATE: "auth"
 }

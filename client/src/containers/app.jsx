@@ -74,7 +74,7 @@ const App = (props) => {
             
             {/* <Navbar auth={isAuthenticated} /> */}
 
-            <NavBar auth={isAuthenticated} />
+            <NavBar props={props} />
 
             <div className="body-content">
                 {
