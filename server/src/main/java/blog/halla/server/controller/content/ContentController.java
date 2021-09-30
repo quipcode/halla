@@ -158,6 +158,8 @@ public class ContentController {
 //    }
     @PostMapping("")
     public ResponseEntity<?> createNewContent(@Valid @RequestBody CreationRequest creationRequest){
+        logger.error("creationrequest: {}", creationRequest);
+
         Content content = new Content();
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long author_id  = null;

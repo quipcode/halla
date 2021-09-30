@@ -74,8 +74,8 @@ const ContentEdit = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    console.log("content", content);
-    console.log("contentSections", contentSections);
+    // console.log("content", content);
+    // console.log("contentSections", contentSections);
     props.saveContentToServer(content)
     setDisplayIsSaving(true)
     // console.log("save was pressed: ", contentEditor, contentTitle, localStorage.getItem("hallaAuthUser"), localStorage.getItem("hallaAuthToken"))
@@ -149,7 +149,7 @@ const ContentEdit = (props) => {
   }, [contentSections])
 
   const handleAddFields = () => {
-    console.log(props)
+    // console.log(props)
     setcontentSections([...contentSections, { idx: contentSections.length, isSummarySelected: false, summary: null, title: "", isTitleSelected: false, content: null, content: null, sectionType: '', sectionTypes: [{ id: 1, name: "hidden" }, { id: 2, name: "visible" }] }]  )
   }
   const handleRemoveFields = idx => {
