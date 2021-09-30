@@ -19,6 +19,8 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import { saveContentToServer } from '../store/redux/content/actions'
+import { connect } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -106,25 +108,22 @@ const ContentEdit = (props) => {
       }
       return i;
     })
-    console.log(newcontentSections)
     setcontentSections(newcontentSections);
   }
 
-  const handleSectionChangeInput = (id, event) => {
+  const handleSectionChangeInput = (idx, event) => {
     const newcontentSections = contentSections.map(i => {
-      console.log(id, event, i)
-      if (id === i.id) {
+      if (idx === i.idx) {
         i[event.target.name] = event.target.value
       }
       return i;
     })
-    console.log(newcontentSections)
     setcontentSections(newcontentSections);
   }
 
-    const handleContentInput = (id, event) => {
+    const handleContentInput = (idx, event) => {
     const newcontentSections = contentSections.map(i => {
-      if (id === i.id) {
+      if (idx === i.idx) {
         i['content'] = event
       }
       return i;
@@ -133,9 +132,9 @@ const ContentEdit = (props) => {
     setcontent(newcontentSections);
   }
 
-  const handleSummaryInput = (id, event) => {
+  const handleSummaryInput = (idx, event) => {
     const newcontentSections = contentSections.map(i => {
-      if (id === i.id) {
+      if (idx === i.idx) {
         i['summary'] = event
       }
       return i;
@@ -149,8 +148,7 @@ const ContentEdit = (props) => {
   }, [contentSections])
 
   const handleAddFields = () => {
-    console.log(contentSections)
-    console.log(contentSections.length)
+    console.log(props)
     setcontentSections([...contentSections, { idx: contentSections.length, isSummarySelected: false, summary: null, title: "", isTitleSelected: false, content: null, content: null, sectionType: '', sectionTypes: [{ id: 1, name: "hidden" }, { id: 2, name: "visible" }] }]  )
   }
   const handleRemoveFields = idx => {
@@ -257,14 +255,14 @@ const ContentEdit = (props) => {
           </div>
         ))}
        
-        <Button
+        {/* <Button
           className={classes.button}
           variant="contained"
           color="primary"
           type="submit"
           endIcon={<Icon>send</Icon>}
           onClick={handleSubmit}
-        >Send</Button>
+        >Send</Button> */}
         <Button color="secondary" variant="contained" type="submit"  onClick={(e) => { handlePublish(e) }}>
           Publish
         </Button>
@@ -280,4 +278,8 @@ const ContentEdit = (props) => {
   );
 }
 
-export default ContentEdit;
+const mapStateToProps = state => ({
+  content: state.content,
+  auth: state.auth
+});
+export default connect(mapStateToProps, { saveContentToServer })(ContentEdit);
