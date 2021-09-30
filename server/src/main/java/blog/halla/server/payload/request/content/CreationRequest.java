@@ -9,11 +9,11 @@ import java.util.Set;
 @Getter
 @Setter
 public class CreationRequest {
-    private String uuid;
+//    private String uuid;
 
     private Set<ContentSection> contentSections;
 
-    private Long author_id;
+//    private Long author_id;
 
-    private String parent_uuid;
+//    private String parent_uuid;
 }

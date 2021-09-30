@@ -17,9 +17,13 @@ export const saveContentToServerSuccess = (content) => ({
     payload: content
 })
 
-export const saveContentToServer = (contentTitle, contentEditor) => dispatch => {
+export const saveContentToServer = (content) => dispatch => {
     // dispatch(saveContentToServerLoading())
     let authToken = localStorage.getItem("hallaAuthToken")
+    let author = localStorage.getItem("hallaAuthUser")
+    
+    console.log("content is ")
+    console.log(content)
     
     // console.log("content title is " + contentTitle, "contentEditor is " + contentEditor )
     // console.log(localStorage.getItem("hallaAuthUser"), localStorage.getItem("hallaAuthToken"))
@@ -28,16 +32,16 @@ export const saveContentToServer = (contentTitle, contentEditor) => dispatch => 
     const config = {
         headers: { Authorization: `Bearer ${authToken}`}
     }
-    const bodyParameters = {
-        title : contentTitle,
-        content: contentEditor
-    }
+    // const bodyParameters = {
+    //     title : contentTitle,
+    //     content: contentEditor
+    // }
     
-    axios.post(
-        `${constants.API_BASE_URL}/content/new`,
-        bodyParameters,
-        config
-    ).then(console.log).catch(console.log);
+    // axios.post(
+    //     `${constants.API_BASE_URL}/content/new`,
+    //     bodyParameters,
+    //     config
+    // ).then(console.log).catch(console.log);
     // console.log(reqbody)
     // return axios
     //     .post(`${constants.API_BASE_URL/content}`, reqbody)

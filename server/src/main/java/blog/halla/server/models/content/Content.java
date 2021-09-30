@@ -5,6 +5,8 @@ import blog.halla.server.models.User;
 import blog.halla.server.models.content_section.ContentSection;
 import com.fasterxml.jackson.annotation.*;
 import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.AuditTable;
 import org.hibernate.envers.Audited;
@@ -28,8 +30,8 @@ public class Content {
 
 
     @Id
-    private String uuid;
-//    private String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+//    private String uuid;
+    private String uuid = UUID.randomUUID().toString().replaceAll("-", "");
 
     @Column(name = "author")
     private long authorId;
@@ -44,7 +46,7 @@ public class Content {
 //    @JsonManagedReference(value = "")
 //    @JsonProperty("children")
 //    @OneToMany(mappedBy = "parent", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<Content> children = new ArrayList<>();
+    private Set<Content> children;
 
 //    @JsonView( value = {DTOViews, DTOViews.Owner.class} )
 //    @JsonManagedReference( value = "User-ProfessionalExperience" )

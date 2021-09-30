@@ -8,6 +8,7 @@ import org.hibernate.envers.AuditTable;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -27,7 +28,8 @@ import javax.persistence.*;
 
 public class ContentSection {
     @Id
-    private String uuid;
+//    private String uuid;
+    private String uuid = UUID.randomUUID().toString().replaceAll("-", "");
 
 
 //    @ManyToOne( fetch = FetchType.LAZY)
@@ -44,22 +46,25 @@ public class ContentSection {
 //    private Content content;
 
 
-    @JoinColumn(name = "content", insertable = false, updatable = false)
+    @JoinColumn(name = "associatedContent", insertable = false, updatable = false)
     @ManyToOne(targetEntity = Content.class, fetch = FetchType.EAGER)
     @JsonIgnore
-    private Content content;
+    private Content associatedContent;
 
-    @Column(name = "content")
+    @Column(name = "contentUuid")
     private String contentUuid;
+
+//    @Column(name = "content")
+    private String content;
 
     private String title;
     private String summary;
     private Integer isTitleSelected;
     private Integer isSummarySelected;
-    private Integer isVisible;
+//    private Integer isVisible;
     @Override
     public String toString(){
-        return String.format("title: %s, summary: %s, uuid:%s", title, summary, uuid);
+        return String.format("title: %s, summary: %s, uuid:%s, content:%s, contentUuid:%s", title, summary, uuid, content, contentUuid);
 
     }
 

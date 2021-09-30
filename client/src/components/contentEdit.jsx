@@ -76,6 +76,7 @@ const ContentEdit = (props) => {
     event.preventDefault()
     console.log("content", content);
     console.log("contentSections", contentSections);
+    props.saveContentToServer(content)
     setDisplayIsSaving(true)
     // console.log("save was pressed: ", contentEditor, contentTitle, localStorage.getItem("hallaAuthUser"), localStorage.getItem("hallaAuthToken"))
     // props.saveContentToServer(contentTitle, contentEditor)

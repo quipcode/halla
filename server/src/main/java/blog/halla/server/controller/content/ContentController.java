@@ -129,7 +129,7 @@ public class ContentController {
                 curCSection.setSummary(cSection.getSummary());
                 curCSection.setIsTitleSelected(cSection.getIsTitleSelected());
                 curCSection.setIsSummarySelected(cSection.getIsSummarySelected());
-                curCSection.setIsVisible(cSection.getIsVisible());
+//                curCSection.setIsVisible(cSection.getIsVisible());
             }
             content.setContentSections(cSectionList);
         }
@@ -166,23 +166,23 @@ public class ContentController {
         }
         User author = null;
         Content parent = null;
-        String parent_uuid = creationRequest.getParent_uuid();
-        String uuid = creationRequest.getUuid();
+//        String parent_uuid = creationRequest.getParent_uuid();
+//        String uuid = creationRequest.getUuid();
         if(author_id == null){
             throw new RuntimeException("Error: Author_id required");
         }else{
             author = userRepository.getById(author_id);
         }
-        if(parent_uuid != null){
-            parent = contentRepository.getById(parent_uuid);
-        }
-        if(uuid != null){
-           content.setUuid(uuid);
-        }
+//        if(parent_uuid != null){
+//            parent = contentRepository.getById(parent_uuid);
+//        }
+//        if(uuid != null){
+//           content.setUuid(uuid);
+//        }
 
         content.setPublished(false);
         content.setAuthorId(author.getId());
-        content.setParent(parent);
+//        content.setParent(parent);
         Set< ContentSection > contentSections =  creationRequest.getContentSections();
 //        ContentSection newContentSection = ContentSection();
         logger.error("content Sections: {}", contentSections);
@@ -190,7 +190,10 @@ public class ContentController {
         Content content2 = contentRepository.save(content);
         contentSections.forEach(section -> {
 //            section.setContentUuid(content2);
-
+            section.setContentUuid(content2.getUuid());
+            section.setAssociatedContent(content2);
+            logger.error("content Sections: {}", section);
+            logger.error("content: {}", content2);
             contentSectionRepository.save(section);
         });
         return ResponseEntity.ok("Content saved");
