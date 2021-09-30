@@ -10,94 +10,80 @@ import { saveContentToServer} from '../store/redux/content/actions'
 import {connect} from  "react-redux"
 
 function TinyEditor(props){
-
-
-    const [contentEditor, setContentEditor] = useState("");
-    const [contentTitle, setContentTitle] = useState("");
-    const [displayIsSaving, setDisplayIsSaving] = useState(false);
-    const [initContentEditor, setInitContentEditor] = useState("");
-    const [initContentTitle, setInitContentTitle] = useState("");
-
+    const [contentEditor, setContentEditor] = useState(props.value);
     const editor = useRef(null);
     const editorRef = useRef(null);
 
     const handleEditorChange = (content, editor) => {
         // console.log('Content was updated:', content, editor);
-        setContentEditor(content);
+        // console.log(content)
+        props.onChange(content);
+        // setContentEditor(content);
     }
 
-    const handleTitleChange = (event) => {
-        console.log(event)
-        setContentTitle(event.target.value)
-    }
+    // const handleTitleChange = (event) => {
+    //     console.log(event)
+    //     setContentTitle(event.target.value)
+    // }
 
     const handleEditorSave = () => {
         setContentEditor(editor.current.props.value)
     };
 
 
-    const handlePublish = (event) => {
-        setDisplayIsSaving(true)
-        throttledSaveToServer();
-        console.log("publish was pressed: ", contentEditor, contentTitle)
-        event.preventDefault();
-    }
+    // const handlePublish = (event) => {
+    //     setDisplayIsSaving(true)
+    //     throttledSaveToServer();
+    //     console.log("publish was pressed: ", contentEditor, contentTitle)
+    //     event.preventDefault();
+    // }
     
-    const handleSubmit = (event) => {
-        event.preventDefault()
-        setDisplayIsSaving(true)
-        // console.log("save was pressed: ", contentEditor, contentTitle, localStorage.getItem("hallaAuthUser"), localStorage.getItem("hallaAuthToken"))
-        props.saveContentToServer(contentTitle, contentEditor)
-        throttledSaveToServer();
-    }
+    // const handleSubmit = (event) => {
+    //     event.preventDefault()
+    //     setDisplayIsSaving(true)
+    //     // console.log("save was pressed: ", contentEditor, contentTitle, localStorage.getItem("hallaAuthUser"), localStorage.getItem("hallaAuthToken"))
+    //     props.saveContentToServer(contentTitle, contentEditor)
+    //     throttledSaveToServer();
+    // }
 
-    const handleCancel = (event) => {
-        event.preventDefault();
-    }
+    // const handleCancel = (event) => {
+    //     event.preventDefault();
+    // }
     
     // const saveToServer = this.props.saveContentToServer;
 
-    const throttledSaveToServer = _.throttle(() => {
-        setTimeout(() => {
-            console.log("Saved to server", contentTitle, contentEditor);
-            debouncedEndSaving();
-        }, 500);
-    }, 500);
+    // const throttledSaveToServer = _.throttle(() => {
+    //     setTimeout(() => {
+    //         console.log("Saved to server", contentTitle, contentEditor);
+    //         debouncedEndSaving();
+    //     }, 500);
+    // }, 500);
 
-    const debouncedEndSaving = _.debounce(() => {
-        setDisplayIsSaving(false)
-    }, 1000);
+    // const debouncedEndSaving = _.debounce(() => {
+    //     setDisplayIsSaving(false)
+    // }, 1000);
 
 
-    const componentWillUnmount = () => {
-        debouncedEndSaving.cancel();
-        throttledSaveToServer.cancel();
-    }
+    // const componentWillUnmount = () => {
+    //     debouncedEndSaving.cancel();
+    //     throttledSaveToServer.cancel();
+    // }
 
     return (
-        <div className="document-editor">
-            <form>
 
-              
-                
-                <StatusBar
-                    displayIsSaving={displayIsSaving}
-                />
-                
-                <TextField
-                    fullWidth
-                    id="contentTitle"
-                    name="contentTitle"
-                    label="Content Title"
-                    value={contentTitle}
-                    onChange={handleTitleChange}
-                />
                 <Editor
                     apiKey={constants.TINYMCE_API_KEY}
+                    // ref={props.referral}
+                    // onInit={props.onInit}
+                    // value={props.value}
+                    // onEditorChange={props.onEditorChange}
+                    
                     ref={editor}
                     onInit={(evt, editor) => editorRef.current = editor}
                     value={contentEditor}
                     onEditorChange={handleEditorChange}
+                    // onEditorChange={handleEditorChange}
+                    
                     init={{
                         selector: 'textarea#full-featured-non-premium',
                         plugins: 'save print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
@@ -156,22 +142,11 @@ function TinyEditor(props){
                         // skin: useDarkMode ? 'oxide-dark' : 'oxide',
                         // content_css: useDarkMode ? 'dark' : 'default',
                         content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+                        // save_onsavecallback: props.save_onsavecallback
                         save_onsavecallback: handleEditorSave
                     }}
                 />
-                <Button color="secondary" variant="contained" type="submit" disabled={!contentTitle} onClick={(e) => { handlePublish(e) }}>
-                    Publish
-                </Button>
-                <Button color="primary" variant="contained" type="submit" onClick={(e) => { handleSubmit(e) }} >
-                    Save
-                </Button>
-                <Button color="default" variant="contained" type="reset" onClick={(e) => { handleCancel(e) }}>
-                    Cancel
-                </Button>
-                    
-            
-            </form>
-        </div>
+
     );
     
 

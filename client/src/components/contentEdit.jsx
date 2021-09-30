@@ -8,7 +8,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Icon from '@material-ui/core/Icon';
 import { v4 as uuidv4 } from 'uuid';
 import StatusBar from './statusbar';
-import TinyEditor from './tinyEditorCopy';
+import TinyEditor from './tinyEditor';
 import SummaryEditor from './summaryEditor';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
