@@ -98,10 +98,10 @@ const ContentEdit = (props) => {
     setcontent(newcontent);
   }
 
-  const handleCheckboxSelection = (id, event) => {
+  const handleCheckboxSelection = (idx, event) => {
     const newcontentSections = contentSections.map(i => {
 
-      if (id === i.id) {
+      if (idx === i.idx) {
         i[event.target.name] = event.target.checked
       }
       return i;
