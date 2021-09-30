@@ -6,7 +6,6 @@ import IconButton from '@material-ui/core/IconButton';
 import RemoveIcon from '@material-ui/icons/Remove';
 import AddIcon from '@material-ui/icons/Add';
 import Icon from '@material-ui/core/Icon';
-import { v4 as uuidv4 } from 'uuid';
 import StatusBar from './statusbar';
 import TinyEditor from './tinyEditor';
 import SummaryEditor from './summaryEditor';
@@ -32,9 +31,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const ContentEdit = () => {
+const ContentEdit = (props) => {
   const classes = useStyles()
-  const sampleContentSections = { id: uuidv4(), isSummarySelected: false, summary: null, title: "", isTitleSelected: true, content: null, sectionType: '', sectionTypes: [ {id: 1, name: "Hidden"}, {id: 2, name: "Visible"}] }
+  const sampleContentSections = { idx: 0, isSummarySelected: false, summary: null, title: "", isTitleSelected: true, content: null, sectionType: '', sectionTypes: [ {id: 1, name: "Hidden"}, {id: 2, name: "Visible"}] }
   const options = sampleContentSections.sectionTypes.map((d, i) => 
     <MenuItem value={d.id} key={i}>{d.name}</MenuItem>
   );
@@ -43,7 +42,7 @@ const ContentEdit = () => {
     sampleContentSections
   ])
   const [content, setcontent] = useState(
-    { uuid: uuidv4(), contentSections },
+    { contentSections },
   );
 
   const [displayIsSaving, setDisplayIsSaving] = useState(false);
@@ -58,11 +57,32 @@ const ContentEdit = () => {
   //   label="Check me"
   // />
   
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   console.log("content", content);
+  //   console.log("contentSections", contentSections);
+  // };
+
+  const handlePublish = (event) => {
+    setDisplayIsSaving(true)
+    // throttledSaveToServer();
+    console.log("publish was pressed: ", content, contentSections)
+    event.preventDefault();
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
     console.log("content", content);
     console.log("contentSections", contentSections);
-  };
+    setDisplayIsSaving(true)
+    // console.log("save was pressed: ", contentEditor, contentTitle, localStorage.getItem("hallaAuthUser"), localStorage.getItem("hallaAuthToken"))
+    // props.saveContentToServer(contentTitle, contentEditor)
+    // throttledSaveToServer();
+  }
+
+  const handleCancel = (event) => {
+    event.preventDefault();
+  }
 
 
 
@@ -129,12 +149,14 @@ const ContentEdit = () => {
   }, [contentSections])
 
   const handleAddFields = () => {
-    setcontentSections([...contentSections, { id: uuidv4(), isSummarySelected: false, summary: null, title: "", isTitleSelected: false, content: null, content: null, sectionType: '', sectionTypes: [{ id: 1, name: "hidden" }, { id: 2, name: "visible" }] }]  )
+    console.log(contentSections)
+    console.log(contentSections.length)
+    setcontentSections([...contentSections, { idx: contentSections.length, isSummarySelected: false, summary: null, title: "", isTitleSelected: false, content: null, content: null, sectionType: '', sectionTypes: [{ id: 1, name: "hidden" }, { id: 2, name: "visible" }] }]  )
   }
-  const handleRemoveFields = id => {
+  const handleRemoveFields = idx => {
     const values = [...contentSections];
     values.splice(values.findIndex(value => 
-      value.id === id
+      value.idx === idx
       )
       , 1);
     setcontentSections(values);
@@ -151,14 +173,14 @@ const ContentEdit = () => {
 
      
         {contentSections.map(sectionField => (
-          <div key={sectionField.id}>
+          <div key={sectionField.idx}>
             <FormGroup row>
               <FormControlLabel
                 control={
                   <Checkbox
                     value={sectionField.isSummarySelected}
                     onChange={event => 
-                      handleCheckboxSelection(sectionField.id, event)
+                      handleCheckboxSelection(sectionField.idx, event)
                     }
                     name="isSummarySelected"
                     color="primary"
@@ -171,7 +193,7 @@ const ContentEdit = () => {
                   <Checkbox                    
                     checked={sectionField.isTitleSelected}
                     onChange={event =>
-                      handleCheckboxSelection(sectionField.id, event)
+                      handleCheckboxSelection(sectionField.idx, event)
                     }
                     name="isTitleSelected"
                     color="primary"
@@ -183,7 +205,7 @@ const ContentEdit = () => {
                 <Select
                   value={sectionField.sectionType}
                   onChange={(e) =>
-                    handleSectionChangeInput(sectionField.id, e)
+                    handleSectionChangeInput(sectionField.idx, e)
                   }
                   name="sectionType"
                 >
@@ -200,7 +222,7 @@ const ContentEdit = () => {
               label="Title"
               value={sectionField.title}
               onChange={event => {
-                handleSectionChangeInput(sectionField.id, event)
+                handleSectionChangeInput(sectionField.idx, event)
               }}
             /> : null }
 
@@ -210,7 +232,7 @@ const ContentEdit = () => {
               label="Summary"
               value={sectionField.summary}
               onChange={e =>
-                handleSummaryInput(sectionField.id, e)
+                handleSummaryInput(sectionField.idx, e)
               }
             /> : null }
 
@@ -220,11 +242,11 @@ const ContentEdit = () => {
               label="Content"
               value={sectionField.content}
               onChange={e =>
-                handleContentInput(sectionField.id, e)
+                handleContentInput(sectionField.idx, e)
               }
             />
             
-            <IconButton disabled={contentSections.length === 1} onClick={() => handleRemoveFields(sectionField.id)}>
+            <IconButton disabled={contentSections.length === 1} onClick={() => handleRemoveFields(sectionField.idx)}>
               <RemoveIcon />
             </IconButton>
             <IconButton
@@ -243,6 +265,15 @@ const ContentEdit = () => {
           endIcon={<Icon>send</Icon>}
           onClick={handleSubmit}
         >Send</Button>
+        <Button color="secondary" variant="contained" type="submit"  onClick={(e) => { handlePublish(e) }}>
+          Publish
+        </Button>
+        <Button color="primary" variant="contained" type="submit" onClick={(e) => { handleSubmit(e) }} >
+          Save
+        </Button>
+        <Button color="default" variant="contained" type="reset" onClick={(e) => { handleCancel(e) }}>
+          Cancel
+        </Button>
       </form>
     </Container>
 
