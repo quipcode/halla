@@ -35,16 +35,16 @@ const useStyles = makeStyles((theme) => ({
 
 const ContentEdit = (props) => {
   const classes = useStyles()
-  const sampleContentSections = { idx: 0, isSummarySelected: false, summary: null, title: "", isTitleSelected: true, content: null, sectionType: '', sectionTypes: [ {id: 1, name: "Hidden"}, {id: 2, name: "Visible"}] }
-  const options = sampleContentSections.sectionTypes.map((d, i) => 
+  const sampleSections = { idx: 0, isSummarySelected: false, summary: null, title: "", isTitleSelected: true, content: null, sectionTypeId: 1, sectionTypes: [ {id: 1, name: "Visible"}, {id: 2, name: "Hidden"}] }
+  const options = sampleSections.sectionTypes.map((d, i) => 
     <MenuItem value={d.id} key={i}>{d.name}</MenuItem>
   );
 
-  const [contentSections, setcontentSections] = useState([
-    sampleContentSections
+  const [sections, setSections] = useState([
+    sampleSections
   ])
   const [content, setcontent] = useState(
-    { contentSections },
+    { sections },
   );
 
   const [displayIsSaving, setDisplayIsSaving] = useState(false);
@@ -62,20 +62,20 @@ const ContentEdit = (props) => {
   // const handleSubmit = (e) => {
   //   e.preventDefault();
   //   console.log("content", content);
-  //   console.log("contentSections", contentSections);
+  //   console.log("sections", sections);
   // };
 
   const handlePublish = (event) => {
     setDisplayIsSaving(true)
     // throttledSaveToServer();
-    console.log("publish was pressed: ", content, contentSections)
+    console.log("publish was pressed: ", content, sections)
     event.preventDefault();
   }
 
   const handleSubmit = (event) => {
     event.preventDefault()
     // console.log("content", content);
-    // console.log("contentSections", contentSections);
+    // console.log("sections", sections);
     props.saveContentToServer(content)
     setDisplayIsSaving(true)
     // console.log("save was pressed: ", contentEditor, contentTitle, localStorage.getItem("hallaAuthUser"), localStorage.getItem("hallaAuthToken"))
@@ -102,76 +102,76 @@ const ContentEdit = (props) => {
   }
 
   const handleCheckboxSelection = (idx, event) => {
-    const newcontentSections = contentSections.map(i => {
+    const newsections = sections.map(i => {
 
       if (idx === i.idx) {
         i[event.target.name] = event.target.checked
       }
       return i;
     })
-    setcontentSections(newcontentSections);
+    setSections(newsections);
   }
 
   const handleSectionChangeInput = (idx, event) => {
-    const newcontentSections = contentSections.map(i => {
+    const newsections = sections.map(i => {
       if (idx === i.idx) {
         i[event.target.name] = event.target.value
       }
       return i;
     })
-    setcontentSections(newcontentSections);
+    setSections(newsections);
   }
 
     const handleContentInput = (idx, event) => {
-    const newcontentSections = contentSections.map(i => {
+    const newsections = sections.map(i => {
       if (idx === i.idx) {
         i['content'] = event
       }
       return i;
     })
 
-    setcontent(newcontentSections);
+    setcontent(newsections);
   }
 
   const handleSummaryInput = (idx, event) => {
-    const newcontentSections = contentSections.map(i => {
+    const newsections = sections.map(i => {
       if (idx === i.idx) {
         i['summary'] = event
       }
       return i;
     })
 
-    setcontent(newcontentSections);
+    setcontent(newsections);
   }
   
   useEffect(() => {
-    setcontent({ ...content, contentSections })
-  }, [contentSections])
+    setcontent({ ...content, sections })
+  }, [sections])
 
   const handleAddFields = () => {
     // console.log(props)
-    setcontentSections([...contentSections, { idx: contentSections.length, isSummarySelected: false, summary: null, title: "", isTitleSelected: false, content: null, content: null, sectionType: '', sectionTypes: [{ id: 1, name: "hidden" }, { id: 2, name: "visible" }] }]  )
+    setSections([...sections, { idx: sections.length, isSummarySelected: false, summary: null, title: "", isTitleSelected: false, content: null, content: null, sectionTypeId: 1, sectionTypes: [{ id: 1, name: "visible" }, { id: 2, name: "hidden" }] }]  )
   }
   const handleRemoveFields = idx => {
-    const values = [...contentSections];
+    const values = [...sections];
     values.splice(values.findIndex(value => 
       value.idx === idx
       )
       , 1);
-    setcontentSections(values);
+    setSections(values);
   }
 
   return (
-
+    
     <Container>
-      <h1>Add New Member</h1>
+      
       <form className={classes.root} onSubmit={handleSubmit}>
         <StatusBar
           displayIsSaving={displayIsSaving}
         />
 
      
-        {contentSections.map(sectionField => (
+        {sections.map(sectionField => (
           <div key={sectionField.idx}>
             <FormGroup row>
               <FormControlLabel
@@ -202,11 +202,11 @@ const ContentEdit = (props) => {
               />        
               <FormControl className={classes.formControl}>
                 <Select
-                  value={sectionField.sectionType}
+                  value={sectionField.sectionTypeId}
                   onChange={(e) =>
                     handleSectionChangeInput(sectionField.idx, e)
                   }
-                  name="sectionType"
+                  name="sectionTypeId"
                 >
                   {options}
                 </Select>
@@ -245,7 +245,7 @@ const ContentEdit = (props) => {
               }
             />
             
-            <IconButton disabled={contentSections.length === 1} onClick={() => handleRemoveFields(sectionField.idx)}>
+            <IconButton disabled={sections.length === 1} onClick={() => handleRemoveFields(sectionField.idx)}>
               <RemoveIcon />
             </IconButton>
             <IconButton

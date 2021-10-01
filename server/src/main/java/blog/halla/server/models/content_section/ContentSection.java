@@ -36,7 +36,13 @@ public class ContentSection {
 //    @JoinColumn(name = "section_type", nullable = false)
 //    @JsonProperty("sectionType")
 //    private SectionTypes sectionType;
+    @JoinColumn(name = "sectionType", insertable = false, updatable = false)
+    @ManyToOne(targetEntity = SectionTypes.class, fetch = FetchType.EAGER)
+    @JsonIgnore
+    private Content sectionType;
 
+    @Column(name = "sectionTypeId")
+    private Integer sectionTypeId;
 
 //    @JoinTable(name = "c_section",
 //            joinColumns = {@JoinColumn(name = "content_section_uuid", referencedColumnName = "uuid")},
@@ -61,6 +67,7 @@ public class ContentSection {
     private String summary;
     private Integer isTitleSelected;
     private Integer isSummarySelected;
+    private Integer idx;
 //    private Integer isVisible;
     @Override
     public String toString(){

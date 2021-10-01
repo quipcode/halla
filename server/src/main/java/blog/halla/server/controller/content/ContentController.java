@@ -199,8 +199,8 @@ public class ContentController {
             contentSectionRepository.save(section);
         });
         Map<String,Object> map=new HashMap<>();
-        map.put("content", content2);
-        map.put("contentSections", contentSections);
+        map.put("main", content2);
+        map.put("sections", contentSections);
 
 
         return ResponseEntity.status(200).body(map);
