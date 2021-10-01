@@ -43,9 +43,12 @@ const ContentEdit = (props) => {
   const [sections, setSections] = useState([
     sampleSections
   ])
-  const [content, setcontent] = useState(
-    { sections },
-  );
+  const [content, setContent] = useState(
+    {
+      main: props.content.main,
+      sections: props.content.sections ? props.content.sections : sampleSections
+    }
+  )
 
   const [displayIsSaving, setDisplayIsSaving] = useState(false);
 
@@ -74,8 +77,6 @@ const ContentEdit = (props) => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    // console.log("content", content);
-    // console.log("sections", sections);
     props.saveContentToServer(content)
     setDisplayIsSaving(true)
     // console.log("save was pressed: ", contentEditor, contentTitle, localStorage.getItem("hallaAuthUser"), localStorage.getItem("hallaAuthToken"))
@@ -90,7 +91,7 @@ const ContentEdit = (props) => {
 
 
   const handleChangeInput = (id, event) => {
-    const newcontent = content.map(i => {
+    const newSections = sections.map(i => {
       // console.log(id, event, i)
       if (id === i.id) {
         i[event.target.name] = event.target.value
@@ -98,55 +99,63 @@ const ContentEdit = (props) => {
       return i;
     })
 
-    setcontent(newcontent);
+    setSections(newSections);
+    
   }
 
   const handleCheckboxSelection = (idx, event) => {
-    const newsections = sections.map(i => {
+    const newSectionsArray = sections.map(i => {
 
       if (idx === i.idx) {
         i[event.target.name] = event.target.checked
       }
       return i;
     })
-    setSections(newsections);
+    setSections(newSectionsArray);
+    content.sections = newSectionsArray
+    
   }
 
   const handleSectionChangeInput = (idx, event) => {
-    const newsections = sections.map(i => {
+    const newSectionsArray = sections.map(i => {
       if (idx === i.idx) {
         i[event.target.name] = event.target.value
       }
       return i;
     })
-    setSections(newsections);
+    setSections(newSectionsArray);
+    content.sections = newSectionsArray
   }
 
     const handleContentInput = (idx, event) => {
-    const newsections = sections.map(i => {
+    const newSectionsArray = sections.map(i => {
       if (idx === i.idx) {
         i['content'] = event
       }
       return i;
     })
-
-    setcontent(newsections);
+      setSections(newSectionsArray);
+      content.sections = newSectionsArray
   }
 
   const handleSummaryInput = (idx, event) => {
-    const newsections = sections.map(i => {
+    const newSectionsArray = sections.map(i => {
       if (idx === i.idx) {
         i['summary'] = event
       }
       return i;
     })
-
-    setcontent(newsections);
+    setSections(newSectionsArray);
+    content.sections = newSectionsArray
+    // setContent(...content, newsections)
   }
   
-  useEffect(() => {
-    setcontent({ ...content, sections })
-  }, [sections])
+  // useEffect(() => {
+  //   setSections({ ...sections, sections })
+  // }, [sections])
+
+  //   setContent({ ...content, sections })
+  // }, [sections])
 
   const handleAddFields = () => {
     // console.log(props)
@@ -164,7 +173,6 @@ const ContentEdit = (props) => {
   return (
     
     <Container>
-      
       <form className={classes.root} onSubmit={handleSubmit}>
         <StatusBar
           displayIsSaving={displayIsSaving}

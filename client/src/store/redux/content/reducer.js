@@ -1,12 +1,13 @@
 import * as ActionTypes from './actionTypes'
+import initialState from './initial-state'
 
-export default function(state = {}, action){
+export default function(state = initialState, action){
     switch(action.type){
-        case ActionTypes.SAVE_TO_SERVER_LOADING:
+        case ActionTypes.SAVE_CONTENT_TO_SERVER_LOADING:
             return { ...state, isLoading: true, errMess: null }
-        case ActionTypes.SAVE_TO_SERVER_FAILED:
+        case ActionTypes.SAVE_CONTENT_TO_SERVER_FAILED:
             return {...state, isLoading: false, errMess: action.payload.message }
-        case ActionTypes.SAVE_TO_SERVER_SUCCESS:
+        case ActionTypes.SAVE_CONTENT_TO_SERVER_SUCCESS:
             return {...state, isLoading: false, errMess: null, contentSaved: true}
         
         default:

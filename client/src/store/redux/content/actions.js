@@ -36,7 +36,7 @@ export const saveContentToServer = (content) => dispatch => {
 
     // var keys_to_keep = ['name', 'city']
     let keys_to_keep = ['content', 'isSummarySelected', 'isTitleSelected', 'title', 'summary', 'idx', 'sectionTypeId']
-    let refinedContent = content.map(
+    let refinedSections = content.sections.map(
         element => Object.assign({}, ...keys_to_keep.map(
                 key => (typeof element[key] === "boolean" ? element[key] ? { [key]: 1} : { [key]: 0 } : {[key]: element[key]})
             ))
@@ -45,8 +45,8 @@ export const saveContentToServer = (content) => dispatch => {
     console.log(content)
 
     // data = data.map(element => Object.assign({}, ...keys_to_keep.map(key => ({ [key]: element[key] }))))
-    console.log("refined content is.. ")
-    console.log(refinedContent)
+    console.log("refined sections is.. ")
+    console.log(refinedSections)
     
     // console.log("content title is " + contentTitle, "contentEditor is " + contentEditor )
     // console.log(localStorage.getItem("hallaAuthUser"), localStorage.getItem("hallaAuthToken"))
@@ -60,11 +60,11 @@ export const saveContentToServer = (content) => dispatch => {
             'Access-Control-Allow-Origin': '*',
         },
         // data: {
-        //     contentSections: refinedContent,
+        //     contentSections: refinedSections,
         // }
     }
     const bodyParameters = {
-        contentSections : refinedContent,
+        contentSections : refinedSections,
     }
 
 
