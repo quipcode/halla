@@ -198,7 +198,13 @@ public class ContentController {
             logger.error("content: {}", content2);
             contentSectionRepository.save(section);
         });
-        return ResponseEntity.ok("Content saved");
+        Map<String,Object> map=new HashMap<>();
+        map.put("content", content2);
+        map.put("contentSections", contentSections);
+
+
+        return ResponseEntity.status(200).body(map);
+//        return (ResponseEntity<?>) ResponseEntity.status(500).body("this failed");
 
 //                map(content - > {
 //                contentSections.stream().map(contentSection -> {

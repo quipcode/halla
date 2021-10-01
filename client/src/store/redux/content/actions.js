@@ -54,7 +54,10 @@ export const saveContentToServer = (content) => dispatch => {
     const config = {
         method: 'post',
         url: `${constants.API_BASE_URL}/content`,
-        headers: { Authorization: `Bearer ${authToken}`},
+        headers: { 
+            Authorization: `Bearer ${authToken}`,
+            'Access-Control-Allow-Origin': '*',
+        },
         // data: {
         //     contentSections: refinedContent,
         // }
@@ -74,9 +77,7 @@ export const saveContentToServer = (content) => dispatch => {
             // })
         })
         .catch((error) => {
-            console.log("error is ")
-            console.log(error)
-            // dispatch(alertActions.error(error.response.data.message))
+            dispatch(alertActions.error(error.response.data.message))
             // dispatch({
             //     type: ERROR_FINDING_USER
             // })
