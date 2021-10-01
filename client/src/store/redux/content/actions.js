@@ -52,65 +52,31 @@ export const saveContentToServer = (content) => dispatch => {
     // console.log(localStorage.getItem("hallaAuthUser"), localStorage.getItem("hallaAuthToken"))
     // let auth = "Bearer " + authToken
     // console.log("beare token" , auth)
-    const config = {
-        method: 'post',
-        url: `${constants.API_BASE_URL}/content`,
-        headers: { 
-            Authorization: `Bearer ${authToken}`,
-            'Access-Control-Allow-Origin': '*',
-        },
-        // data: {
-        //     contentSections: refinedSections,
-        // }
-    }
+    // const config = {
+    //     method: 'post',
+    //     url: `${constants.API_BASE_URL}/content`,
+    //     headers: { 
+    //         Authorization: `Bearer ${authToken}`,
+    //         'Access-Control-Allow-Origin': '*',
+    //     },
+    //     data: {
+    //         contentSections: refinedSections,
+    //     }
+    // }
     const bodyParameters = {
         contentSections : refinedSections,
     }
 
 
-    // return axios.post(`${constants.API_BASE_URL}/content`, bodyParameters, {
-    //     headers: { Authorization: `Bearer ${authToken}` }
-    // })
-    //     .then((response) => {
-    //         console.log("savetoContentServer response is", response)
-    //         // dispatch({
-    //         //     type: FOUND_USER,
-    //         //     data: response.data[0]
-    //         // })
-    //     })
-    //     .catch((error) => {
-    //         dispatch(alertActions.error(error.response.data.message))
-    //         // dispatch({
-    //         //     type: ERROR_FINDING_USER
-    //         // })
-    //     })
-
-
-    // return axios(config)
-    //     .then(res => {
-    //         console.log("savetoContentServer response is", res)
-    //         dispatch(saveContentToServerSuccess(res))
-    //         // dispatch(getSelfSuccess(res))
-    //     })
-    //     .catch(error => {
-    //         dispatch(alertActions.error(error.response.data.message))
-    //     })
-    // axios.post(
-    //     `${constants.API_BASE_URL}/content/new`,
-    //     bodyParameters,
-    //     config
-    // ).then(console.log).catch(console.log);
-    // console.log(reqbody)
-    // return axios
-    //     .post(`${constants.API_BASE_URL/content}`, reqbody)
-    //     .then(res => { dispatch(saveContentToServerSuccess(res))
-    //     })
-    //     .catch(error => {
-    //         if (error.message == 'Network Error') {
-    //             dispatch(saveContentToServerFailed(error))
-    //         }else{
-    //             dispatch(saveContentToServerFailed(error))
-    //         }
-    //     })
+    return axios.post(`${constants.API_BASE_URL}/content`, bodyParameters, {
+        headers: { Authorization: `Bearer ${authToken}` }
+    })
+        .then((response) => {
+            console.log("savetoContentServer response is", response)
+            dispatch(saveContentToServerSuccess(response))
+        })
+        .catch((error) => {
+            dispatch(saveContentToServerFailed(error))
+        })
 
 }
