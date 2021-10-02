@@ -161,21 +161,23 @@ public class ContentController {
         logger.error("creationrequest: {}", creationRequest);
         logger.error("content from creationrequest: {}", creationRequest.getArticle());
         logger.error("sections from creationrequest: {}", creationRequest.getSections());
+        Content inComingArticle = creationRequest.getArticle();
+        Set< ContentSection > inComingSections =  creationRequest.getSections();
+
+        Content content = new Content();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long author_id  = null;
+        if (principal instanceof UserDetailsImpl) {
+            author_id  = ((UserDetailsImpl) principal).getId();
+        }
+        User author = null;
+        Content parent = null;
 //
-//        Content content = new Content();
-//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        Long author_id  = null;
-//        if (principal instanceof UserDetailsImpl) {
-//            author_id  = ((UserDetailsImpl) principal).getId();
-//        }
-//        User author = null;
-//        Content parent = null;
-//
-//        if(author_id == null){
-//            throw new RuntimeException("Error: Author_id required");
-//        }else{
-//            author = userRepository.getById(author_id);
-//        }
+        if(author_id == null){
+            throw new RuntimeException("Error: Author_id required");
+        }else{
+            author = userRepository.getById(author_id);
+        }
 ////        String parent_uuid = creationRequest.getParent_uuid();
 ////        String uuid = creationRequest.getUuid();
 ////        if(parent_uuid != null){
@@ -186,8 +188,22 @@ public class ContentController {
 ////        }
 ////        content.setParent(parent);
 //
-//        content.setPublished(false);
-//        content.setAuthorId(author.getId());
+        content.setPublished(false);
+        content.setAuthorId(author.getId());
+        content.setSlug(inComingArticle.getSlug());
+        content.setMetaTitle(inComingArticle.getMetaTitle());
+        Content savedArticle = contentRepository.save(content);
+        inComingSections.forEach(section -> {
+                    section.setContentUuid(savedArticle.getUuid());
+                    section.setAssociatedContent(savedArticle);
+                    logger.error("content Sections: {}", section);
+                    logger.error("content: {}", savedArticle);
+                    contentSectionRepository.save(section);
+        });
+        Map<String,Object> returningContent =new HashMap<>();
+        returningContent.put("article", savedArticle);
+        returningContent.put("sections", inComingSections);
+        return ResponseEntity.status(200).body(returningContent);
 //
 //        Set< ContentSection > contentSections =  creationRequest.getContentSections();
 //        logger.error("content Sections: {}", contentSections);
@@ -206,7 +222,7 @@ public class ContentController {
 //
 //
 //        return ResponseEntity.status(200).body(map);
-        return ResponseEntity.ok("Hello there");
+//        return ResponseEntity.ok("Hello there");
 //        return (ResponseEntity<?>) ResponseEntity.status(500).body("this failed");
 
 //                map(content - > {
