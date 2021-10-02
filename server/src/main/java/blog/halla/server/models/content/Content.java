@@ -88,7 +88,7 @@ public class Content {
 
     @Override
     public String toString(){
-        return String.format("metatitle: %s, author: %s, uuid:%s, children: %s", metaTitle, authorId, uuid, children);
+        return String.format("metatitle: %s, author: %s, uuid:%s, children: %s, slug:%s, published:%s", metaTitle, authorId, uuid, children, slug, published);
 //        return String.format(" uuid:%s", uuid);
 //        return String.format("parent: %s", parent);
 
@@ -97,6 +97,12 @@ public class Content {
     public Content(String uuid, Content parent, boolean published){
         this.uuid = uuid;
         this.parent = parent;
+        this.published = published;
+    }
+
+    public Content(String metaTitle, String slug, boolean published){
+        this.metaTitle = metaTitle;
+        this.slug = slug;
         this.published = published;
     }
 }

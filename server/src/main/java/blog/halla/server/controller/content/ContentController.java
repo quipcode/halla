@@ -159,51 +159,54 @@ public class ContentController {
     @PostMapping("")
     public ResponseEntity<?> createNewContent(@Valid @RequestBody CreationRequest creationRequest){
         logger.error("creationrequest: {}", creationRequest);
-
-        Content content = new Content();
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long author_id  = null;
-        if (principal instanceof UserDetailsImpl) {
-            author_id  = ((UserDetailsImpl) principal).getId();
-        }
-        User author = null;
-        Content parent = null;
-//        String parent_uuid = creationRequest.getParent_uuid();
-//        String uuid = creationRequest.getUuid();
-        if(author_id == null){
-            throw new RuntimeException("Error: Author_id required");
-        }else{
-            author = userRepository.getById(author_id);
-        }
-//        if(parent_uuid != null){
-//            parent = contentRepository.getById(parent_uuid);
+        logger.error("content from creationrequest: {}", creationRequest.getArticle());
+        logger.error("sections from creationrequest: {}", creationRequest.getSections());
+//
+//        Content content = new Content();
+//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        Long author_id  = null;
+//        if (principal instanceof UserDetailsImpl) {
+//            author_id  = ((UserDetailsImpl) principal).getId();
 //        }
-//        if(uuid != null){
-//           content.setUuid(uuid);
+//        User author = null;
+//        Content parent = null;
+//
+//        if(author_id == null){
+//            throw new RuntimeException("Error: Author_id required");
+//        }else{
+//            author = userRepository.getById(author_id);
 //        }
-
-        content.setPublished(false);
-        content.setAuthorId(author.getId());
-//        content.setParent(parent);
-        Set< ContentSection > contentSections =  creationRequest.getContentSections();
-//        ContentSection newContentSection = ContentSection();
-        logger.error("content Sections: {}", contentSections);
-
-        Content content2 = contentRepository.save(content);
-        contentSections.forEach(section -> {
-//            section.setContentUuid(content2);
-            section.setContentUuid(content2.getUuid());
-            section.setAssociatedContent(content2);
-            logger.error("content Sections: {}", section);
-            logger.error("content: {}", content2);
-            contentSectionRepository.save(section);
-        });
-        Map<String,Object> map=new HashMap<>();
-        map.put("article", content2);
-        map.put("sections", contentSections);
-
-
-        return ResponseEntity.status(200).body(map);
+////        String parent_uuid = creationRequest.getParent_uuid();
+////        String uuid = creationRequest.getUuid();
+////        if(parent_uuid != null){
+////            parent = contentRepository.getById(parent_uuid);
+////        }
+////        if(uuid != null){
+////           content.setUuid(uuid);
+////        }
+////        content.setParent(parent);
+//
+//        content.setPublished(false);
+//        content.setAuthorId(author.getId());
+//
+//        Set< ContentSection > contentSections =  creationRequest.getContentSections();
+//        logger.error("content Sections: {}", contentSections);
+//
+//        Content content2 = contentRepository.save(content);
+//        contentSections.forEach(section -> {
+//            section.setContentUuid(content2.getUuid());
+//            section.setAssociatedContent(content2);
+//            logger.error("content Sections: {}", section);
+//            logger.error("content: {}", content2);
+//            contentSectionRepository.save(section);
+//        });
+//        Map<String,Object> map=new HashMap<>();
+//        map.put("article", content2);
+//        map.put("sections", contentSections);
+//
+//
+//        return ResponseEntity.status(200).body(map);
+        return ResponseEntity.ok("Hello there");
 //        return (ResponseEntity<?>) ResponseEntity.status(500).body("this failed");
 
 //                map(content - > {

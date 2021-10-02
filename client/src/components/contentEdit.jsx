@@ -56,9 +56,6 @@ const ContentEdit = (props) => {
     } 
   )
 
-  const [metaTitle, setMetaTitle] = useState(props.content.main ? props.content.main.metaTitle : "" );
-  const [slug, setSlug] = useState(props.content.main ? props.content.main.slug : "");
-  const [published, setPublished] = useState(props.content.main ? props.content.main.published : false);
   const [displayIsSaving, setDisplayIsSaving] = useState(false);
 
   const handlePublish = (event) => {
@@ -131,6 +128,7 @@ const ContentEdit = (props) => {
     let newArticle = { ...article}
     newArticle[name] = value;
     setArticle(newArticle)
+    content.article = newArticle
   }
   return (
     

@@ -64,7 +64,8 @@ export const saveContentToServer = (content) => dispatch => {
     //     }
     // }
     const bodyParameters = {
-        contentSections : refinedSections,
+        sections : refinedSections,
+        article: content.article
     }
 
 
