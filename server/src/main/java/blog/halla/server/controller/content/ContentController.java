@@ -199,7 +199,7 @@ public class ContentController {
             contentSectionRepository.save(section);
         });
         Map<String,Object> map=new HashMap<>();
-        map.put("main", content2);
+        map.put("article", content2);
         map.put("sections", contentSections);
 
 

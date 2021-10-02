@@ -8,7 +8,7 @@ export default function(state = initialState, action){
         case ActionTypes.SAVE_CONTENT_TO_SERVER_FAILED:
             return {...state, isLoading: false, errMess: action.payload.message }
         case ActionTypes.SAVE_CONTENT_TO_SERVER_SUCCESS:
-            return {...state, isLoading: false, errMess: null, contentSaved: true, main: action.payload.data.main, sections: action.payload.data.sections}
+            return {...state, isLoading: false, errMess: null, contentSaved: true, article: action.payload.data.article, sections: action.payload.data.sections}
         
         default:
             return state

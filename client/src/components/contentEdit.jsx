@@ -10,6 +10,10 @@ import TinyEditor from './tinyEditor';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
+import Chip from '@material-ui/core/Chip';
+import Done from '@material-ui/icons/Done';
+import Close from '@material-ui/icons/Close';
+
 
 import { makeStyles } from '@material-ui/core/styles';
 import constants from '../utils/constants';
@@ -34,6 +38,8 @@ const useStyles = makeStyles((theme) => ({
 
 const ContentEdit = (props) => {
   const classes = useStyles()
+  // const sampleArticle = { uuid, authorId, metaTitle, slug, published}
+  const sampleArticle = { metaTitle : "", slug : "", published : false }
   const sampleSections = { idx: 0, isSummarySelected: false, summary: null, title: "", isTitleSelected: true, content: null, sectionTypeId: 1, sectionTypes: [ {id: 1, name: "Visible"}, {id: 2, name: "Hidden"}] }
   const options = sampleSections.sectionTypes.map((d, i) => 
     <MenuItem value={d.id} key={i}>{d.name}</MenuItem>
@@ -42,21 +48,18 @@ const ContentEdit = (props) => {
   const [sections, setSections] = useState([
     sampleSections
   ])
+  const [article, setArticle] = useState(props.content.article ? props.content.article : sampleArticle)
   const [content, setContent] = useState(
     {
-      main: props.content.main,
+      article: props.content.article ? props.content.article : sampleArticle,
       sections: props.content.sections ? props.content.sections : sampleSections
-    }
+    } 
   )
 
+  const [metaTitle, setMetaTitle] = useState(props.content.main ? props.content.main.metaTitle : "" );
+  const [slug, setSlug] = useState(props.content.main ? props.content.main.slug : "");
+  const [published, setPublished] = useState(props.content.main ? props.content.main.published : false);
   const [displayIsSaving, setDisplayIsSaving] = useState(false);
-
-  const [checkedState, setChecked] = useState(true);
-  const handleCheckChange = (event) => {
-    setChecked(event.target.checked);
-  };
-
-
 
   const handlePublish = (event) => {
     setDisplayIsSaving(true)
@@ -66,12 +69,10 @@ const ContentEdit = (props) => {
   }
 
   const handleSubmit = (event) => {
-    event.preventDefault()
-    props.saveContentToServer(content)
     setDisplayIsSaving(true)
-    // console.log("save was pressed: ", contentEditor, contentTitle, localStorage.getItem("hallaAuthUser"), localStorage.getItem("hallaAuthToken"))
-    // props.saveContentToServer(contentTitle, contentEditor)
-    // throttledSaveToServer();
+    event.preventDefault()
+    props.saveContentToServer(content)    
+    setDisplayIsSaving(false)
   }
 
   const handleCancel = (event) => {
@@ -91,7 +92,7 @@ const ContentEdit = (props) => {
     
   }
 
-  const handleSectionChangeInput = (idx, event) => {
+  const handleSectionInput = (idx, event) => {
     const newSectionsArray = sections.map(i => {
       if (idx === i.idx) {
         i[event.target.name] = event.target.value
@@ -113,7 +114,6 @@ const ContentEdit = (props) => {
   }
 
   const handleAddFields = () => {
-    // console.log(props)
     setSections([...sections, { idx: sections.length, isSummarySelected: false, summary: null, title: "", isTitleSelected: false, content: null, content: null, sectionTypeId: 1, sectionTypes: [{ id: 1, name: "visible" }, { id: 2, name: "hidden" }] }]  )
   }
   const handleRemoveFields = idx => {
@@ -125,6 +125,13 @@ const ContentEdit = (props) => {
     setSections(values);
   }
 
+  const handleArticleInput = (event) => {
+    let name = event.target.name;
+    let value = event.target.value
+    let newArticle = { ...article}
+    newArticle[name] = value;
+    setArticle(newArticle)
+  }
   return (
     
     <Container>
@@ -132,7 +139,40 @@ const ContentEdit = (props) => {
         <StatusBar
           displayIsSaving={displayIsSaving}
         />
+        {article.published ?          
+        <Chip
+          label="Published"
+          color="primary"
+          icon={<Done/>}
+        />
+          : <Chip
+            label="UnPublished"
+            color="secondary"
+            icon={<Close />}
+          /> }
 
+        
+        <TextField
+          fullWidth
+          fullWidth
+          name="metaTitle"
+          label="Meta-Title"
+          value={article.metaTitle}
+          onChange={event => {
+            handleArticleInput(event)
+          }}
+        />
+
+        <TextField
+          fullWidth
+          fullWidth
+          name="slug"
+          label="Slug"
+          value={article.slug}
+          onChange={event => {
+            handleArticleInput(event)
+          }}
+        />
      
         {sections.map(sectionField => (
           <div key={sectionField.idx}>
@@ -168,7 +208,7 @@ const ContentEdit = (props) => {
                 <Select
                   value={sectionField.sectionTypeId}
                   onChange={(e) =>
-                    handleSectionChangeInput(sectionField.idx, e)
+                    handleSectionInput(sectionField.idx, e)
                   }
                   name="sectionTypeId"
                 >
@@ -185,7 +225,7 @@ const ContentEdit = (props) => {
               label="Title"
               value={sectionField.title}
               onChange={event => {
-                handleSectionChangeInput(sectionField.idx, event)
+                handleSectionInput(sectionField.idx, event)
               }}
             /> : null }
 
@@ -229,9 +269,11 @@ const ContentEdit = (props) => {
           endIcon={<Icon>send</Icon>}
           onClick={handleSubmit}
         >Send</Button> */}
-        <Button color="secondary" variant="contained" type="submit"  onClick={(e) => { handlePublish(e) }}>
-          Publish
-        </Button>
+        {content.article.uuid ? 
+        <Button color="secondary" variant="contained" type="submit" onClick={(e) => { handlePublish(e) }} > Publish </Button > 
+        : <Button color="secondary" variant="contained" type="submit" disabled onClick={(e) => { handlePublish(e) }} >  Publish </Button >}
+        
+        
         <Button color="primary" variant="contained" type="submit" onClick={(e) => { handleSubmit(e) }} >
           Save
         </Button>
