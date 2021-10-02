@@ -3,7 +3,7 @@ import Login from '../containers/login'
 import Register from '../containers/register'
 import Tadabor from '../containers/tadabor'
 import MyContentTable from '../containers/myContentTable'
-import MyContentEdit from '../containers/myContentEdit'
+import ArticleNew from '../containers/articleNew'
 import FeedBack from '../components/feedback'
 import Profile from '../components/profile';
 
@@ -37,10 +37,10 @@ const routes = {
                 component: MyContentTable,
                 privateRoute: false
             },
-    mycontentedit:
+    articleNew:
             {
-                path: '/mycontentedit',
-                component: MyContentEdit,
+                path: '/article/new',
+                component: ArticleNew,
                 privateRoute: false
             },
     feedback: 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ContentEdit from '../components/contentEdit';
+import Article from '../components/article';
 import VerseKey from '../components/verseKey';
 
 
@@ -26,7 +26,7 @@ class Tadabor extends Component {
 
                 <VerseKey/>
                 </div>
-                <ContentEdit />
+                <Article />
                 {/* <form>
                     
                     <button name="submitbtn"></button>

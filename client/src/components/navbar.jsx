@@ -59,7 +59,7 @@ let NavBar = (props) => {
                         <i className="fas fa-star-and-crescent"/>
                         <span> Tadabor</span>
                     </Nav.Link>
-                    <Nav.Link href={routes.mycontentedit.path}>
+                    <Nav.Link href={routes.articleNew.path}>
                         <i className="fas fa-pen" />
                         <span> Content</span>
                     </Nav.Link>
@@ -98,7 +98,7 @@ let NavBar = (props) => {
                         <i className="fas fa-star-and-crescent"/>
                         <span> Tadabor</span>
                     </Nav.Link>
-                    <Nav.Link href={routes.mycontentedit.path}> 
+                    <Nav.Link href={routes.articleNew.path}> 
                         <i className="fas fa-pen" />
                         <span> Content</span>
                     </Nav.Link>

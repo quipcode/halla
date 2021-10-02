@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const ContentEdit = (props) => {
+const Article = (props) => {
   const classes = useStyles()
   // const sampleArticle = { uuid, authorId, metaTitle, slug, published}
   const sampleArticle = { metaTitle : "", slug : "", published : false }
@@ -288,4 +288,4 @@ const mapStateToProps = state => ({
   content: state.content,
   auth: state.auth
 });
-export default connect(mapStateToProps, { saveContentToServer })(ContentEdit);
+export default connect(mapStateToProps, { saveContentToServer })(Article);

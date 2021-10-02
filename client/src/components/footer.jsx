@@ -19,7 +19,7 @@ const Footer = (props) => {
                         </Nav.Link>
                     </Nav>
                     <Nav>
-                        <Nav.Link href={routes.mycontentedit.path}>
+                        <Nav.Link href={routes.articleNew.path}>
                             <i className="fas fa-question-circle"></i>
                         </Nav.Link>
                     </Nav>
@@ -34,7 +34,7 @@ const Footer = (props) => {
                     </Nav.Link>
                 </Nav>
                 <Nav>
-                    <Nav.Link href={routes.mycontentedit.path}>
+                    <Nav.Link href={routes.articleNew.path}>
                         <i className="fas fa-question-circle"></i>
                     </Nav.Link>
                 </Nav>
