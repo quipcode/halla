@@ -37,16 +37,16 @@ public class Content {
     private long authorId;
 
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "parent_uuid")
-    @JsonBackReference
-    private Content parent;
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "parent_uuid")
+//    @JsonBackReference
+//    private Content parent;
 
-    @OneToMany(mappedBy = "parent",  cascade = CascadeType.ALL, fetch = FetchType.EAGER )
-//    @JsonManagedReference(value = "")
-//    @JsonProperty("children")
-//    @OneToMany(mappedBy = "parent", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Set<Content> children;
+//    @OneToMany(mappedBy = "parent",  cascade = CascadeType.ALL, fetch = FetchType.EAGER )
+////    @JsonManagedReference(value = "")
+////    @JsonProperty("children")
+////    @OneToMany(mappedBy = "parent", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+//    private Set<Content> children;
 
 //    @JsonView( value = {DTOViews, DTOViews.Owner.class} )
 //    @JsonManagedReference( value = "User-ProfessionalExperience" )
@@ -57,14 +57,17 @@ public class Content {
 //        return this.children;
 //    }
 
+//    @OneToMany(mappedBy = "content", fetch = FetchType.EAGER)
+//    @JsonIdentityReference
+//    @ElementCollection(targetClass=ContentSection.class)
+////    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+////    @JsonIgnoreProperties({"hibernateEagerInitializer", "handler"})
+//    public List<ContentSection> contentSections;
+
     @OneToMany(mappedBy = "content", fetch = FetchType.EAGER)
     @JsonIdentityReference
-    @ElementCollection(targetClass=ContentSection.class)
-//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-//    @JsonIgnoreProperties({"hibernateEagerInitializer", "handler"})
-    public List<ContentSection> contentSections;
-
-
+    @ElementCollection(targetClass = ContentSection.class)
+    public Set<ContentSection> contentSections;
 
 
 
@@ -88,15 +91,14 @@ public class Content {
 
     @Override
     public String toString(){
-        return String.format("metatitle: %s, author: %s, uuid:%s, children: %s, slug:%s, published:%s", metaTitle, authorId, uuid, children, slug, published);
+        return String.format("metatitle: %s, author: %s, uuid:%s, slug:%s, published:%s", metaTitle, authorId, uuid, slug, published);
 //        return String.format(" uuid:%s", uuid);
 //        return String.format("parent: %s", parent);
 
     }
 
-    public Content(String uuid, Content parent, boolean published){
+    public Content(String uuid, boolean published){
         this.uuid = uuid;
-        this.parent = parent;
         this.published = published;
     }
 

@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 public interface ContentRepository extends JpaRepository<Content, String> {
     Page<Content> findByUuid(String uuid, Pageable pageable);
     Page<Content> findByAuthorId(Long authorId, Pageable pageable);
+    List<Content> findByAuthorId(Long authorId);
     List<Content> findAll();
 //    Stream<Content> findAll();
 //    Page<Content> findAll(Pageable pageable);

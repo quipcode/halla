@@ -5,6 +5,8 @@ import blog.halla.server.models.content_section.ContentSection;
 import blog.halla.server.repository.content.ContentRepository;
 import blog.halla.server.repository.content_section.ContentSectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -30,7 +32,14 @@ public class ContentService {
         return targetContent;
     }
 
-
+    public Page<Content> getContentByUser(Long authorId, Pageable pageable){
+        Page<Content> contents = contentRepository.findByAuthorId(authorId, pageable);
+        for(Content content : contents){
+            Set<ContentSection> associatedSection = contentSectionRepository.findByContentUuid(content.getUuid());
+            content.setContentSections(associatedSection);
+        }
+        return  contents;
+    }
     public Map<String, Object> getContentById(String id){
         Optional<Content> targetContent = contentRepository.findById(id);
         Map<String, Object> answer = new HashMap<>();
@@ -42,12 +51,12 @@ public class ContentService {
         this.contentRepository.save(Content);
     }
 
-    public void updateContent(String id, Content content) {
-        List<ContentSection> contentSections = content.getContentSections();
-//        for()
-//        this.contentSectionRepository.save();
-        this.contentRepository.save(content);
-    }
+//    public void updateContent(String id, Content content) {
+//        List<ContentSection> contentSections = content.getContentSections();
+////        for()
+////        this.contentSectionRepository.save();
+//        this.contentRepository.save(content);
+//    }
 
     public void deleteContent(String id) {
         this.contentRepository.deleteById(id);

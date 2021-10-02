@@ -70,19 +70,7 @@ public class ContentController {
 
     @GetMapping("/user/{authorId}")
     public Page<Content> getAllUserContent(@PathVariable("authorId") Long authorId, Pageable pageable){
-//        User author = userRepository.getById(authorId);
-
-//        final var contentOptional = contentRepository.findByTitle("some-title");
-//        contentOptional.ifPresent(content -> {
-//            content.getParent()
-//        });
-//        var summary = contentRepository.findByTitle("some-title")
-//                .
-//                .map(Content::getSummary);
-
-
-
-        return contentRepository.findByAuthorId(authorId, pageable);
+        return contentService.getContentByUser(authorId, pageable);
     }
 
     @GetMapping("/{uuid}")
