@@ -25,32 +25,17 @@ import java.util.UUID;
         property = "uuid",
         scope = ContentSection.class
 )
-
 public class ContentSection {
     @Id
-//    private String uuid;
     private String uuid = UUID.randomUUID().toString().replaceAll("-", "");
 
-
-//    @ManyToOne( fetch = FetchType.LAZY)
-//    @JoinColumn(name = "section_type", nullable = false)
-//    @JsonProperty("sectionType")
-//    private SectionTypes sectionType;
     @JoinColumn(name = "sectionType", insertable = false, updatable = false)
     @ManyToOne(targetEntity = SectionTypes.class, fetch = FetchType.EAGER)
     @JsonIgnore
-    private Content sectionType;
+    private SectionTypes sectionType;
 
     @Column(name = "sectionTypeId")
     private Integer sectionTypeId;
-
-//    @JoinTable(name = "c_section",
-//            joinColumns = {@JoinColumn(name = "content_section_uuid", referencedColumnName = "uuid")},
-//            inverseJoinColumns = {@JoinColumn(name = "content_uuid", referencedColumnName = "uuid")})
-//    @JoinColumn(name="content_uuid", nullable = false, referencedColumnName = "uuid")
-//    @ManyToOne
-//    private Content content;
-
 
     @JoinColumn(name = "associatedContent", insertable = false, updatable = false)
     @ManyToOne(targetEntity = Content.class, fetch = FetchType.EAGER)
@@ -60,7 +45,7 @@ public class ContentSection {
     @Column(name = "contentUuid")
     private String contentUuid;
 
-//    @Column(name = "content")
+    @Column(name = "content")
     private String content;
 
     private String title;
@@ -68,10 +53,9 @@ public class ContentSection {
     private Integer isTitleSelected;
     private Integer isSummarySelected;
     private Integer idx;
-//    private Integer isVisible;
     @Override
     public String toString(){
-        return String.format("title: %s, summary: %s, uuid:%s, content:%s, contentUuid:%s", title, summary, uuid, content, contentUuid);
+        return String.format("title: %s, summary: %s, uuid:%s, content:%s, sectionTypes: %s, idx: %s, contentUuid:%s", title, summary, uuid, content, sectionType, idx, contentUuid);
 
     }
 
