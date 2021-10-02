@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import routes from '../routes/routes'
 import { connect } from 'react-redux';
 import { loginUser, logoutUser, registerUser, getSelf } from '../store/redux/auth/actions';
-import { saveContentToServer} from '../store/redux/content/actions'
+import { createArticle} from '../store/redux/content/actions'
 import { getVerse } from '../store/redux/tadabor/actions';
 import alertActions from '../store/redux/alert/actions'
 import {withRouter} from 'react-router-dom'
@@ -22,7 +22,7 @@ const mapDispatchToProps = {
     logoutUser: () => (logoutUser()),
     registerUser: () => (registerUser()),
     getVerse: () => (getVerse()),
-    saveContentToServer: () => (saveContentToServer()),
+    createArticle: () => (createArticle()),
     getSelf: () => (getSelf())
     // currentUsername: () => (currentUsername())
 }

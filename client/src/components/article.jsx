@@ -21,7 +21,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import { saveContentToServer } from '../store/redux/content/actions'
+import { createArticle } from '../store/redux/content/actions'
 import { connect } from 'react-redux'
 
 
@@ -68,7 +68,7 @@ const Article = (props) => {
   const handleSubmit = (event) => {
     setDisplayIsSaving(true)
     event.preventDefault()
-    props.saveContentToServer(content)    
+    props.createArticle(content)    
     setDisplayIsSaving(false)
   }
 
@@ -288,4 +288,4 @@ const mapStateToProps = state => ({
   content: state.content,
   auth: state.auth
 });
-export default connect(mapStateToProps, { saveContentToServer })(Article);
+export default connect(mapStateToProps, { createArticle })(Article);

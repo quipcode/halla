@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import Article from '../components/article';
-import { saveContentToServer } from '../store/redux/content/actions'
+import { createArticle } from '../store/redux/content/actions'
 
 class ArticleEdit extends Component {
     constructor(props) {
@@ -24,5 +24,5 @@ const mapStateToProps = state => ({
     auth: state.auth,
     content: state.content
 });
-export default connect(mapStateToProps, { saveContentToServer })(ArticleEdit);
+export default connect(mapStateToProps, { createArticle })(ArticleEdit);
 // export default ArticleEdit;

@@ -5,36 +5,27 @@ import * as ActionTypes from './actionTypes';
 
 import alertActions from '../alert/actions'
 
-export const saveContentToServerLoading = () => ({
+export const createArticleLoading = () => ({
     type: ActionTypes.SAVE_CONTENT_TO_SERVER_LOADING
 })
 
-export const saveContentToServerFailed = (error) => ({
+export const createArticleFailed = (error) => ({
     type: ActionTypes.SAVE_CONTENT_TO_SERVER_FAILED,
     payload: error
 })
 
-export const saveContentToServerSuccess = (content) => ({
+export const createArticleSuccess = (content) => ({
     type: ActionTypes.SAVE_CONTENT_TO_SERVER_SUCCESS,
     payload: content
 })
 
-export const saveContentToServer = (content) => dispatch => {
-    // dispatch(saveContentToServerLoading())
+export const createArticle = (content) => dispatch => {
+    dispatch(createArticleLoading())
     let authToken = localStorage.getItem("hallaAuthToken")
     let author = localStorage.getItem("hallaAuthUser")
     
-    console.log("in saveContentToServer content is ")
+    console.log("in createArticle content is ")
     console.log(content)
-    // let mapppedContent = content.map(i => {})
-    // var data = [
-    //     { name: 'John', city: 'London', age: 42 },
-    //     { name: 'Mike', city: 'Warsaw', age: 18 },
-    //     { name: 'Jim', city: 'New York', age: 22 },
-    //     { name: 'Celine', city: 'Tokyo', age: 54 },
-    // ]
-
-    // var keys_to_keep = ['name', 'city']
     let keys_to_keep = ['content', 'isSummarySelected', 'isTitleSelected', 'title', 'summary', 'idx', 'sectionTypeId']
     let refinedSections = content.sections.map(
         element => Object.assign({}, ...keys_to_keep.map(
@@ -48,36 +39,20 @@ export const saveContentToServer = (content) => dispatch => {
     console.log("refined sections is.. ")
     console.log(refinedSections)
     
-    // console.log("content title is " + contentTitle, "contentEditor is " + contentEditor )
-    // console.log(localStorage.getItem("hallaAuthUser"), localStorage.getItem("hallaAuthToken"))
-    // let auth = "Bearer " + authToken
-    // console.log("beare token" , auth)
-    // const config = {
-    //     method: 'post',
-    //     url: `${constants.API_BASE_URL}/content`,
-    //     headers: { 
-    //         Authorization: `Bearer ${authToken}`,
-    //         'Access-Control-Allow-Origin': '*',
-    //     },
-    //     data: {
-    //         contentSections: refinedSections,
-    //     }
-    // }
     const bodyParameters = {
         sections : refinedSections,
         article: content.article
     }
-
 
     return axios.post(`${constants.API_BASE_URL}/content`, bodyParameters, {
         headers: { Authorization: `Bearer ${authToken}` }
     })
         .then((response) => {
             console.log("savetoContentServer response is", response)
-            dispatch(saveContentToServerSuccess(response))
+            dispatch(createArticleSuccess(response))
         })
         .catch((error) => {
-            dispatch(saveContentToServerFailed(error))
+            dispatch(createArticleFailed(error))
         })
 
 }
