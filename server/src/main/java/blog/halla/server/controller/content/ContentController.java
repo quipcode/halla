@@ -86,13 +86,14 @@ public class ContentController {
     }
 
     @GetMapping("/{uuid}")
-
-//    public Page<Content>
     public ResponseEntity<?> getContentByUuid(@PathVariable("uuid") String uuid, Pageable pageable) {
-//        return contentRepository.findByUuid( uuid ,pageable);
-//        contentService.getContentById(uuid);
-//        return ResponseEntity.ok().body(contentService.getContentById(uuid));
-        return ResponseEntity.ok().body(contentService.getContent(uuid));
+        Map<String, Object> content = contentService.getContentById(uuid);
+        Set<ContentSection> contentSections = contentSectionRepository.findByContentUuid(uuid);
+
+        Map<String,Object> returningContent =new HashMap<>();
+        returningContent.put("article", content);
+        returningContent.put("sections", contentSections);
+        return ResponseEntity.status(200).body(returningContent);
     }
 
     
@@ -101,7 +102,7 @@ public class ContentController {
         contentRepository.deleteById(uuid);
         return ResponseEntity.ok(new MessageResponse("content has been deleted"));
     }
-    
+
 //    @GetMapping("/get")
 //    @ResponseBody
 //    public Product getProduct(@RequestParam String product) throws JsonMappingException, JsonProcessingException {

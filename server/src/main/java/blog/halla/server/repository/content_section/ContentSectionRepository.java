@@ -10,8 +10,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface ContentSectionRepository extends JpaRepository<ContentSection, String> {
-//    List<ContentSection> findByContentUuid(@Param("content_uuid") String id);
+    Set<ContentSection> findByContentUuid(@Param("content_uuid") String id);
 }
