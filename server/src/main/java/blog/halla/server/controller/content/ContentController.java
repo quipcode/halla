@@ -5,6 +5,7 @@ import blog.halla.server.models.content.Content;
 import blog.halla.server.models.content_section.ContentSection;
 import blog.halla.server.payload.request.content.ContentRequest;
 import blog.halla.server.payload.request.content.CreationRequest;
+import blog.halla.server.payload.request.content.EditRequest;
 import blog.halla.server.payload.response.MessageResponse;
 import blog.halla.server.repository.content.ContentRepository;
 import blog.halla.server.repository.content_section.ContentSectionRepository;
@@ -24,6 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import javax.validation.Valid;
 import java.io.DataInput;
 import java.io.IOException;
@@ -99,46 +101,7 @@ public class ContentController {
         contentRepository.deleteById(uuid);
         return ResponseEntity.ok(new MessageResponse("content has been deleted"));
     }
-
-    @PutMapping("/{uuid}")
-//    public ResponseEntity<?> updateContent(@Valid @RequestBody ContentRequest contentRequest, @PathVariable("uuid") String uuid) throws JsonMappingException, JsonProcessingException{
-        public ResponseEntity<?> updateContent(@Valid @RequestBody Content contentRequest, @PathVariable("uuid") String uuid) throws JsonMappingException, JsonProcessingException {
-//        Content content  = objectMapper.readValue(contentRequest, Content.class);
-        Optional<Content> contentStored = contentService.getContent(uuid);
-        Content content = contentStored.get();
-
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long author_id  = null;
-        if (principal instanceof UserDetailsImpl) {
-            author_id  = ((UserDetailsImpl) principal).getId();
-        }
-        String parent_uuid = "";
-        parent_uuid = contentRequest.getParent().getUuid();
-        if(parent_uuid != null){
-            Content parent_content = contentRepository.getById(parent_uuid);
-            content.setParent(parent_content);
-        }
-
-        List<ContentSection> cSections = contentRequest.getContentSections();
-        if(cSections != null){
-            List<ContentSection> cSectionList = new ArrayList<ContentSection>();
-            for(ContentSection cSection : cSections){
-                ContentSection curCSection = contentSectionRepository.getById(cSection.getUuid());
-//                        contentSection.getOne(cSection.getId());
-                curCSection.setTitle(cSection.getTitle());
-                curCSection.setSummary(cSection.getSummary());
-                curCSection.setIsTitleSelected(cSection.getIsTitleSelected());
-                curCSection.setIsSummarySelected(cSection.getIsSummarySelected());
-//                curCSection.setIsVisible(cSection.getIsVisible());
-            }
-            content.setContentSections(cSectionList);
-        }
-
-//        content.setContentSections(contentRequest.getContentSections());
-        contentService.updateContent(content.getUuid(), content);
-//        return ResponseEntity.ok(new MessageResponse("content has been updated"));
-        return ResponseEntity.status(200).body(content);
-    }
+    
 //    @GetMapping("/get")
 //    @ResponseBody
 //    public Product getProduct(@RequestParam String product) throws JsonMappingException, JsonProcessingException {
@@ -156,6 +119,47 @@ public class ContentController {
 //            })
 //        });
 //    }
+@PutMapping("/{uuid}")
+public ResponseEntity<?> updateContent(@Valid @RequestBody EditRequest editRequest, @PathVariable("uuid") String uuid) throws JsonMappingException, JsonProcessingException {
+    Content inComingArticle = editRequest.getArticle();
+    Set< ContentSection > inComingSections =  editRequest.getSections();
+
+    Optional<Content> contentStored = contentService.getContent(uuid);
+    Content content = contentStored.get();
+    content.setMetaTitle(inComingArticle.getMetaTitle());
+    content.setSlug(inComingArticle.getSlug());
+    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    Long author_id  = null;
+    if (principal instanceof UserDetailsImpl) {
+        author_id  = ((UserDetailsImpl) principal).getId();
+    }
+//    String parent_uuid = "";
+//    parent_uuid = editRequest.getArticle().getParent().getUuid();
+//    if(parent_uuid != null){
+//        Content parent_content = contentRepository.getById(parent_uuid);
+//        content.setParent(parent_content);
+//    }
+    Set<ContentSection> sentSections = editRequest.getSections();
+    List<ContentSection> sectionList = new ArrayList<ContentSection>();
+    if(sentSections != null){
+        for(ContentSection section : sentSections){
+            ContentSection storedSection = contentSectionRepository.getById(section.getUuid());
+            storedSection.setContentUuid(content.getUuid());
+            storedSection.setContent(section.getContent());
+            storedSection.setTitle(section.getTitle());
+            storedSection.setSummary(section.getSummary());
+            storedSection.setIdx(section.getIdx());
+            storedSection.setIsTitleSelected(section.getIsTitleSelected());
+            storedSection.setIsSummarySelected(section.getIsSummarySelected());
+            storedSection.setSectionTypeId(section.getSectionTypeId());
+        }
+    }
+    Map<String,Object> returningContent =new HashMap<>();
+    returningContent.put("article", content);
+    returningContent.put("sections", sentSections);
+    return ResponseEntity.status(200).body(returningContent);
+}
+
     @PostMapping("")
     public ResponseEntity<?> createNewContent(@Valid @RequestBody CreationRequest creationRequest){
         logger.error("creationrequest: {}", creationRequest);

@@ -43,7 +43,6 @@ export const createArticle = (content) => dispatch => {
         sections : refinedSections,
         article: content.article
     }
-
     return axios.post(`${constants.API_BASE_URL}/content`, bodyParameters, {
         headers: { Authorization: `Bearer ${authToken}` }
     })
