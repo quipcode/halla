@@ -5,10 +5,8 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import RemoveIcon from '@material-ui/icons/Remove';
 import AddIcon from '@material-ui/icons/Add';
-import Icon from '@material-ui/core/Icon';
 import StatusBar from './statusbar';
 import TinyEditor from './tinyEditor';
-import SummaryEditor from './summaryEditor';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -21,6 +19,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { saveContentToServer } from '../store/redux/content/actions'
 import { connect } from 'react-redux'
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,16 +56,7 @@ const ContentEdit = (props) => {
     setChecked(event.target.checked);
   };
 
-  // <FormControlLabel
-  //   control={<Checkbox checked={checkedState} onChange={handleCheckChange} />}
-  //   label="Check me"
-  // />
-  
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   console.log("content", content);
-  //   console.log("sections", sections);
-  // };
+
 
   const handlePublish = (event) => {
     setDisplayIsSaving(true)
@@ -89,23 +79,8 @@ const ContentEdit = (props) => {
   }
 
 
-
-  const handleChangeInput = (id, event) => {
-    const newSections = sections.map(i => {
-      // console.log(id, event, i)
-      if (id === i.id) {
-        i[event.target.name] = event.target.value
-      }
-      return i;
-    })
-
-    setSections(newSections);
-    
-  }
-
   const handleCheckboxSelection = (idx, event) => {
     const newSectionsArray = sections.map(i => {
-
       if (idx === i.idx) {
         i[event.target.name] = event.target.checked
       }
@@ -126,36 +101,16 @@ const ContentEdit = (props) => {
     setSections(newSectionsArray);
     content.sections = newSectionsArray
   }
-
-    const handleContentInput = (idx, event) => {
+  const handleEditorInput = (idx, event, name) => {
     const newSectionsArray = sections.map(i => {
       if (idx === i.idx) {
-        i['content'] = event
-      }
-      return i;
-    })
-      setSections(newSectionsArray);
-      content.sections = newSectionsArray
-  }
-
-  const handleSummaryInput = (idx, event) => {
-    const newSectionsArray = sections.map(i => {
-      if (idx === i.idx) {
-        i['summary'] = event
+        i[name] = event
       }
       return i;
     })
     setSections(newSectionsArray);
     content.sections = newSectionsArray
-    // setContent(...content, newsections)
   }
-  
-  // useEffect(() => {
-  //   setSections({ ...sections, sections })
-  // }, [sections])
-
-  //   setContent({ ...content, sections })
-  // }, [sections])
 
   const handleAddFields = () => {
     // console.log(props)
@@ -199,6 +154,7 @@ const ContentEdit = (props) => {
                 control={
                   <Checkbox                    
                     checked={sectionField.isTitleSelected}
+                    value={sectionField.isTitleSelected}
                     onChange={event =>
                       handleCheckboxSelection(sectionField.idx, event)
                     }
@@ -233,13 +189,13 @@ const ContentEdit = (props) => {
               }}
             /> : null }
 
-            {/* {console.log(sectionField )} */}
-            {sectionField.isSummarySelected ? <SummaryEditor
+            {sectionField.isSummarySelected ? <TinyEditor
               name="summary"
               label="Summary"
+              height={300}
               value={sectionField.summary}
               onChange={e =>
-                handleSummaryInput(sectionField.idx, e)
+                handleEditorInput(sectionField.idx, e, "summary")
               }
             /> : null }
 
@@ -248,8 +204,9 @@ const ContentEdit = (props) => {
               name="content"
               label="Content"
               value={sectionField.content}
+              height={600}
               onChange={e =>
-                handleContentInput(sectionField.idx, e)
+                handleEditorInput(sectionField.idx, e, "content")
               }
             />
             
