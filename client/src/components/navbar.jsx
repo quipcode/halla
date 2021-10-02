@@ -102,10 +102,6 @@ let NavBar = (props) => {
                         <i className="fas fa-pen" />
                         <span> Content</span>
                     </Nav.Link>
-                    <Nav.Link href={routes.articleEdit.path}>
-                            <i className="fas fa-pen" />
-                            <span> Content Edit</span>
-                    </Nav.Link>
                 </Nav>
                 <Nav className="ml-auto" navbar>
                     <Nav.Link eventKey={2} href={routes.login.path}>

@@ -14,7 +14,7 @@ class ArticleNew extends Component {
         console.log(this.props)
         return (
             <div className="container">
-                <div><h3>New Article Page</h3></div>
+                <div><h3>{this.props.title}</h3></div>
                 
                 <Article/>
                 {/* <div><h3>Bottom of page</h3></div> */}

@@ -10,11 +10,11 @@ class ArticleEdit extends Component {
         this.state = {}
     }
     render() {
-        console.log("props of articleedit")
-        console.log(this.props)
+        console.log("uuid is ")
+        console.log(this.props.match.params.uuid)
         return (
             <div className="container">
-                <div><h3>Edit Article Page</h3></div>
+                <div><h3>{this.props.title}</h3></div>
                 <Article />
             </div>
         );

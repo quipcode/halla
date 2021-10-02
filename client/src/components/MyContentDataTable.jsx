@@ -62,7 +62,10 @@ const MyContentDataTable = () => {
             headerName: "Title",
             width: 150,
             renderCell: (cellValues) => {                
-                return <Link href={`/${constants.U}/${localStorage.getItem(constants.HALLA_AUTH_USER)}/${constants.CONTENT}/${cellValues.row.uuid}`}> {cellValues.row.title}  </Link>;
+                return <Link 
+                // href={`/${constants.U}/${localStorage.getItem(constants.HALLA_AUTH_USER)}/${constants.CONTENT}/${cellValues.row.uuid}`}
+                    href={`/article/edit/${cellValues.row.uuid}`}
+                > {cellValues.row.title}  </Link>;
             }
         },
         {
@@ -89,7 +92,8 @@ const MyContentDataTable = () => {
                         color="primary"
                         type="submit"
                         
-                        href={`/${constants.U}/${localStorage.getItem(constants.HALLA_AUTH_USER)}/${constants.MYCONTENT}/${customers.row.uuid}/${constants.EDIT}`}
+                        // href={`/${constants.U}/${localStorage.getItem(constants.HALLA_AUTH_USER)}/${constants.MYCONTENT}/${customers.row.uuid}/${constants.EDIT}`}
+                        href={`/article/edit/${customers.row.uuid}`}
                     >
                         Edit
                     </Button>
