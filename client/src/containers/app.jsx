@@ -38,12 +38,23 @@ const mapStateToProps = state => {
 const App = (props) => {
     const alerts = useSelector(state => state.alerts);
     const [currentUser, setCurrentUser] = useState(props.auth.username);
-    const routeComponents = Object.values(routes).map(
-        ({ path, component, privateRoute }, key) =>
-            privateRoute ? 
-            <PrivateRoute exact path={path} component={component} key={key} /> :
-            <Route exact path={path} component={component} key={key} props={props} />
-    );
+    let routeComponents = 
+        Object.values(routes).map(({
+            title,
+            component: Component,
+            path,
+            exact,
+        }, idx) => {
+            return (
+                <Route
+                    key={idx}
+                    path={path}
+                    exact={exact}
+                    render={(props) => <Component {...props} title={title} />}
+                />
+            )
+        })
+
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -52,27 +63,14 @@ const App = (props) => {
             dispatch(alertActions.clear());
         });
     }, []);
-    
-    // const isAuthenticated = localStorage.getItem(constants.HALLA_AUTH_USER) || props.auth.isAuthenticated
-    const isAuthenticated = localStorage.getItem("hallaAuthUser") || props.auth.isAuthenticated
 
     function dismiss() {
         dispatch(alertActions.clear());
     }
-
-
-
-    
+  
 
     return (
-
         <div className="app">
-            {/* {console.log("in main app")}
-            {console.log(localStorage.getItem("hallaAuthUser"))}
-            {console.log(localStorage.getItem("hallaAuthToken"))} */}
-            {/* {console.log(props.currentUsername())} */}
-            
-            {/* <Navbar auth={isAuthenticated} /> */}
 
             <NavBar props={props} />
 
