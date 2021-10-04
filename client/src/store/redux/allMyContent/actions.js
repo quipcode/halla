@@ -18,7 +18,21 @@ export const getAllMyContentSuccess = (data) => ({
 })
 
 export const getAllMyContent = () => dispatch => {
-    dispatch(getAllMyContentLoading())
+    // dispatch(getAllMyContentLoading())
+    getAllMyContent
     let authToken = localStorage.getItem("hallaAuthToken")
-    
+    console.log("in getallmycontent actions")
+    console.log("url is a s follows " + `${ constants.API_BASE_URL }/content/allmycontent`)
+
+    return axios.get(`${constants.API_BASE_URL}/content/allmycontent`, { headers : { Authorization: `Bearer ${authToken}` }})
+    .then((response) => {
+        console.log("got success full get allmycontent  see below")
+        console.log(response)
+    })
+    .catch((error) => {
+        console.log("Errorred out ")
+        console.log(error)
+    })
+
+
 }

@@ -6,6 +6,7 @@ import auth from './redux/auth/reducer'
 import alerts from './redux/alert/reducer'
 import tadabor from './redux/tadabor/reducer'
 import content from './redux/content/reducer'
+import allMyContent from './redux/allMyContent/reducer'
 
 export default function createReducer(asyncReducers) {
     const rootReducer = combineReducers({
@@ -13,6 +14,7 @@ export default function createReducer(asyncReducers) {
         alerts,
         tadabor,
         content,
+        allMyContent,
         router: connectRouter(history),
         ...asyncReducers,
     });

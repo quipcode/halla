@@ -3,6 +3,7 @@ import routes from '../routes/routes'
 import { connect } from 'react-redux';
 import { loginUser, logoutUser, registerUser, getSelf } from '../store/redux/auth/actions';
 import { createArticle} from '../store/redux/content/actions'
+import { getAllMyContent} from '../store/redux/allMyContent/actions'
 import { getVerse } from '../store/redux/tadabor/actions';
 import alertActions from '../store/redux/alert/actions'
 import {withRouter} from 'react-router-dom'
@@ -23,7 +24,8 @@ const mapDispatchToProps = {
     registerUser: () => (registerUser()),
     getVerse: () => (getVerse()),
     createArticle: () => (createArticle()),
-    getSelf: () => (getSelf())
+    getSelf: () => (getSelf()),
+    getAllMyContent: () => (getAllMyContent())
     // currentUsername: () => (currentUsername())
 }
 
@@ -31,7 +33,8 @@ const mapStateToProps = state => {
     return {
         auth: state.auth,
         errors: state.errors,
-        content: state.content
+        content: state.content,
+        allMyContent: state.allMyContent
     }
 }
 
