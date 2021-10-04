@@ -12,7 +12,6 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import constants from "../utils/constants";
 
-
 const customerData = [
     { uuid: 1,  title: null,   content: null,      email: "user@gmail.com" },
     { uuid: 2,  title: "Male 2",   content: "Customer 2",      email: "user@gmail.com" },
@@ -272,6 +271,7 @@ const MyContentDataTable = (props) => {
 
     return (
         <div style={{ height: 400, width: '100%' }}>
+            {console.log("in the contentdatatable child comp")}
             {console.log(props)}
         <div style={{ display: 'flex', height: '100%' }}>
          <div style={{ flexGrow: 1 }}>
@@ -319,5 +319,4 @@ const MyContentDataTable = (props) => {
     // </div>
     );
 };
-
 export default MyContentDataTable;

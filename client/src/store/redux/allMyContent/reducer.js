@@ -8,7 +8,7 @@ export default function(state = initialState, action){
         case ActionTypes.GET_MY_CONTENT_FROM_SERVER_FAILED: 
             return{...state, isLoading: false, errMess: action.payload.message}
         case ActionTypes.GET_MY_CONTENT_FROM_SERVER_SUCCESS:
-            return{...state, isLoading: false, errMess: null, contentObtained: true, allMyContent: action.payload.data.content}
+            return{...state, isLoading: false, errMess: null, contentObtained: true, articles: action.payload.data.content}
         default:
             return state;
     }

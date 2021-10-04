@@ -11,16 +11,15 @@ class MyContentTable extends Component {
         this.getMyArticles = this.getMyArticles.bind(this)
     }
     getMyArticles(event) {
-        console.log(event)
         event.preventDefault()
-        // console.log(this.props)
+        console.log(this.props)
         this.props.getAllMyContent();
     }
     render() {
         return (
             <div className="container">
                 <div><h3>{this.props.title}</h3></div>
-                <MyContentDataTable />
+                <MyContentDataTable {...this.props}/>
                 <button onClick={this.getMyArticles}> get content </button>
             </div>
         );
