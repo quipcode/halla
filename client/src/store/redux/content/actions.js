@@ -55,3 +55,34 @@ export const createArticle = (content) => dispatch => {
         })
 
 }
+
+export const getArticleLoading = () => ({
+    type: ActionTypes.GET_CONTENT_FROM_SERVER_LOADING
+})
+
+export const getArticleFailed = (error) => ({
+    type: ActionTypes.GET_CONTENT_FROM_SERVER_FAILED,
+    payload: error
+})
+
+export const getArticleSuccess = (response) => ({
+    type: ActionTypes.GET_CONTENT_FROM_SERVER_SUCCESS,
+    payload: response
+})
+
+export const getArticle = (uuid) => dispatch => {
+    dispatch(getArticleLoading())
+    console.log("the uuid provided for the getarticle is " + uuid)
+    let authToken = localStorage.getItem("hallaAuthToken")
+    // return axios.get(`${constants.API_BASE_URL}/content/allmycontent`, {
+    //     headers: { Authorization: `Bearer ${authToken}` }
+    // })
+    return axios.get(`${constants.API_BASE_URL}/content/${uuid}`,   { headers: { Authorization: `Bearer ${authToken}`} })
+    .then((response) => {
+        dispatch(getArticleSuccess(response))
+    })
+    .catch((error) => {
+        console.log("error is ")
+        console.log(error)
+    })
+}

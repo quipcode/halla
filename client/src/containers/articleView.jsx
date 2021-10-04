@@ -1,13 +1,15 @@
 // import React from   'react'
 import { connect } from "react-redux";
 import React, { useState, useRef, useEffect } from 'react';
-
+import { getArticle} from '../store/redux/content/actions';
 
 const ArticleView = (props) => {
     const [count, setCount] = useState(0);
+    const [content, setContent] = useState(props.content);
     useEffect(() => {
-        console.log("hello reloading again", props.match.params.uuid)
-    }, [count]);
+        props.getArticle(props.match.params.uuid)
+        console.log(props)
+    }, [content]);
     const submit = (e) =>{
         console.log(e)
         e.preventDefault()
@@ -25,5 +27,5 @@ const ArticleView = (props) => {
 const mapStateToProps = state => ({
     content: state.content,
 });
-export default connect(mapStateToProps)(ArticleView);
+export default connect(mapStateToProps, {getArticle})(ArticleView);
 // export default ArticleView;

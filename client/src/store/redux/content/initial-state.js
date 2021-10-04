@@ -1,8 +1,8 @@
 export default{
-        main: null,
+        article: null,
         sections: null,
         errMess: null,
         isLoading: true,
-        contentSaved: false
-    
+        contentSaved: false,
+        contentObtained: false    
 }

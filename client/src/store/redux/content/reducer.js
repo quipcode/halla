@@ -10,6 +10,12 @@ export default function(state = initialState, action){
         case ActionTypes.SAVE_CONTENT_TO_SERVER_SUCCESS:
             return {...state, isLoading: false, errMess: null, contentSaved: true, article: action.payload.data.article, sections: action.payload.data.sections}
         
+        case ActionTypes.GET_CONTENT_FROM_SERVER_LOADING:
+            return { ...state, isLoading: true, errMess: null }
+        case ActionTypes.GET_CONTENT_FROM_SERVER_FAILED:
+            return { ...state, isLoading: false, errMess: action.payload.message }
+        case ActionTypes.GET_CONTENT_FROM_SERVER_SUCCESS:
+            return { ...state, isLoading: false, errMess: null, contentObtained: true, article: action.payload.data.article.content, sections: action.payload.data.sections }
         default:
             return state
     }
