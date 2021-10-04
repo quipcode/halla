@@ -7,7 +7,7 @@ import ArticleNew from '../containers/articleNew'
 import ArticleEdit from '../containers/articleEdit'
 import FeedBack from '../components/feedback'
 import Profile from '../components/profile';
-
+import ArticleView  from '../containers/articleView'
 const routes = {
     home:   {
                 path: '/',
@@ -63,6 +63,14 @@ const routes = {
         privateRoute: false,
         title: "Edit Article",
         exact:false,
+    },
+    articleView:
+    {
+        path: '/article/:uuid',
+        component: ArticleView,
+        privateRoute: false,
+        title: "Read Article",
+        exact: false
     },
     feedback: 
             {
