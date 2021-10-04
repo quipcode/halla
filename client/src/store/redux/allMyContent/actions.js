@@ -13,26 +13,22 @@ export const getAllMyContentFailed = (error) => ({
 })
 
 export const getAllMyContentSuccess = (data) => ({
-    type:ActionTypes.GET_MY_CONTENT_FROM_SERVER_SUCCESS,
-    payload: data    
+    type: ActionTypes.GET_MY_CONTENT_FROM_SERVER_SUCCESS,
+    payload: data
 })
 
-export const getAllMyContent = () => dispatch => {
-    // dispatch(getAllMyContentLoading())
-    getAllMyContent
+export const getAllMyContent = (s) => dispatch => {
+    dispatch(getAllMyContentLoading())
     let authToken = localStorage.getItem("hallaAuthToken")
-    console.log("in getallmycontent actions")
-    console.log("url is a s follows " + `${ constants.API_BASE_URL }/content/allmycontent`)
-
-    return axios.get(`${constants.API_BASE_URL}/content/allmycontent`, { headers : { Authorization: `Bearer ${authToken}` }})
-    .then((response) => {
-        console.log("got success full get allmycontent  see below")
-        console.log(response)
+    
+    return axios.get(`${constants.API_BASE_URL}/content/allmycontent`, {
+        headers: { Authorization: `Bearer ${authToken}` }
     })
-    .catch((error) => {
-        console.log("Errorred out ")
-        console.log(error)
-    })
-
+        .then((response) => {
+            dispatch(getAllMyContentSuccess(response))
+        })
+        .catch((error) => {
+            dispatch(getAllMyContentFailed(error))
+        })
 
 }
