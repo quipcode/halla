@@ -10,9 +10,9 @@ class MyContentTable extends Component {
     render() {
         return (
             <div className="container">
-                <div><h3>CustomTables Page</h3></div>
+                <div><h3>{this.props.title}</h3></div>
                 <MyContentDataTable />
-                <div><h3>Bottom of page</h3></div>
+                
             </div>
         );
     }

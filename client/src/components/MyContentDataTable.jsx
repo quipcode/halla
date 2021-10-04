@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const MyContentDataTable = () => {
+const MyContentDataTable = (props) => {
     const classes = useStyles();
     const [customers, setCustomers] = React.useState(customerData);
     const [pageSize, setPageSize] = React.useState(5);
@@ -272,7 +272,7 @@ const MyContentDataTable = () => {
 
     return (
         <div style={{ height: 400, width: '100%' }}>
-
+            {console.log(props)}
         <div style={{ display: 'flex', height: '100%' }}>
          <div style={{ flexGrow: 1 }}>
             <div className={classes.customerList}>
