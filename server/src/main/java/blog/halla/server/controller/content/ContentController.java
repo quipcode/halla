@@ -68,6 +68,17 @@ public class ContentController {
 
     }
 
+    @GetMapping("/allmycontent")
+    public Page<Content> getAllContentForCurrentUser(Pageable pageable){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long authorId  = null;
+        if (principal instanceof UserDetailsImpl) {
+            authorId  = ((UserDetailsImpl) principal).getId();
+        }
+        return contentService.getContentByUser(authorId, pageable);
+    }
+
+
     @GetMapping("/user/{authorId}")
     public Page<Content> getAllUserContent(@PathVariable("authorId") Long authorId, Pageable pageable){
         return contentService.getContentByUser(authorId, pageable);
