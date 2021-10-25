@@ -107,10 +107,11 @@ class ArticleView extends Component{
                 {console.log(this.state.json)} */}
                 <h1>{this.props.title}</h1>
                 <p>Hello there </p>
-                {this.props.content?.isLoading ?  <p>is Loading</p> : <div>
+                {this.props.content?.isLoading ?  <p>is Loading</p> : 
+                <div className="container">
                     {this.props.content?.article?.uuid}
                     {this.props.content?.sections ? <div><ArticleSection sections={this.props.content.sections}/> </div> : <p>There are no sections</p>}   
-                    </div>
+                </div>
                 }
             </div>
         )

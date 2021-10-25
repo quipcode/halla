@@ -6,11 +6,12 @@ const ArticleSection = ({ sections }) => (
     <div>
         {sections.map(section => (
         <div className="section" key={section.uuid}>
+                <hr />
                 <div> <p> {section.title} </p></div>
                 <div dangerouslySetInnerHTML={{ __html: section.summary }}></div>
                 <div dangerouslySetInnerHTML={{ __html: section.content }} ></div>
                 {/* <br/> */}
-                <hr/>
+                
         </div>))}
     </div>
 );

@@ -10,6 +10,9 @@ import App from './containers/app';
 import main from './styles/main.scss'
 
 import history from './utils/history'
+import createAdminStore from './store/createAdminStore';
+import dataProvider from './store/provider/dataProvider';
+import authProvider from './store/provider/authProvider';
 
 const initialState = {};
 const store = configureStore(initialState, history);
@@ -21,10 +24,18 @@ if (module.hot) {
 render((
 
     <AppContainer>
-        <Provider store={store} >
-            <ConnectedRouter history={history}>
+        <Provider 
+            store={createAdminStore({
+                authProvider,
+                dataProvider,
+                history,
+            })}
+        
+        // store={store}
+         >
+            {/* <ConnectedRouter history={history}> */}
                 <App />
-            </ConnectedRouter>
+            {/* </ConnectedRouter> */}
         </Provider>
     </AppContainer>
     
