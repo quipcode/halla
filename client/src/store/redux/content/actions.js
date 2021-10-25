@@ -62,7 +62,8 @@ export const getArticleLoading = () => ({
 
 export const getArticleFailed = (error) => ({
     type: ActionTypes.GET_CONTENT_FROM_SERVER_FAILED,
-    payload: error
+    payload: error,
+    
 })
 
 export const getArticleSuccess = (response) => ({

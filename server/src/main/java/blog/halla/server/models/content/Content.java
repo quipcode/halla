@@ -64,13 +64,6 @@ public class Content {
 ////    @JsonIgnoreProperties({"hibernateEagerInitializer", "handler"})
 //    public List<ContentSection> contentSections;
 
-    @OneToMany(mappedBy = "content", fetch = FetchType.EAGER)
-    @JsonIdentityReference
-    @ElementCollection(targetClass = ContentSection.class)
-    public Set<ContentSection> contentSections;
-
-
-
 
     private String metaTitle;
     private String slug;
@@ -96,6 +89,11 @@ public class Content {
 //        return String.format("parent: %s", parent);
 
     }
+
+    @OneToMany(mappedBy = "content", fetch = FetchType.EAGER)
+    @JsonIdentityReference
+    @ElementCollection(targetClass = ContentSection.class)
+    public Set<ContentSection> contentSections;
 
     public Content(String uuid, boolean published){
         this.uuid = uuid;

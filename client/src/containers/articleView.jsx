@@ -10,6 +10,8 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Box from '@mui/material/Box';
 
+import ArticleSection from './articleSection'
+
 const useStyles = makeStyles({
     root: {
         display: "block",
@@ -98,13 +100,18 @@ class ArticleView extends Component{
     render(){
         return(
             <div>
-                {console.log(this.state)}
+                {/* {console.log(this.state)}
+                {console.log(this.props)} */}
                 {/* {console.log(this.props)}
                 {console.log(this.state)}
                 {console.log(this.state.json)} */}
                 <h1>{this.props.title}</h1>
                 <p>Hello there </p>
-
+                {this.props.content?.isLoading ?  <p>is Loading</p> : <div>
+                    {this.props.content?.article?.uuid}
+                    {this.props.content?.sections ? <div><ArticleSection sections={this.props.content.sections}/> </div> : <p>There are no sections</p>}   
+                    </div>
+                }
             </div>
         )
     }
