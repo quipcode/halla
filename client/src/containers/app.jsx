@@ -33,6 +33,7 @@ import withContext from 'recompose/withContext';
 import PropTypes from "prop-types";
 import MyLayout from '../components/MyLayout';
 import CustomLayout from '../components/CustomLayout'
+import { PostList, PostEdit, PostCreate } from '../components/posts';
 
 
 const mapDispatchToProps = {
@@ -102,8 +103,19 @@ const App = (props) => {
     return (
         <div className="app">
 
-
-            <AuthContext.Provider value={authProvider}>
+            <Admin
+                authProvider={authProvider}
+                dataProvider={dataProvider}
+                history={history}
+                title="My Admin"
+                layout={CustomLayout}
+            >
+                <Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit}  />
+                {/* <Resource name="comments" list={CommentList} edit={CommentEdit} create={CommentCreate} />
+                <Resource name="users" list={UserList} edit={UserEdit} create={UserCreate} /> */}
+            </Admin>
+            
+            {/* <AuthContext.Provider value={authProvider}>
                 
                 <DataProviderContext.Provider value={dataProvider}>
                     
@@ -111,33 +123,30 @@ const App = (props) => {
                         locale="en"
                         i18nProvider={i18nProvider}
                     >
-                        {/* {console.log("title in app scope")}
-                        {console.log(props)} */}
-                        <CustomLayout title="15"  />
-                        {/* <ThemeProvider theme={theme}>
+                        <ThemeProvider theme={theme}>
                             <Resource name="posts" intent="registration" />
                             <Resource name="comments" intent="registration" />
-                            <Resource name="users" intent="registration" /> */}
-                            {/* <MyLayout title="Example Admin" logout={}/> */}
+                            <Resource name="users" intent="registration" />
                             
-                            {/* <AppBar position="static" color="default">
+                            
+                            <AppBar position="static" color="default">
                                 <Toolbar>
                                     <Typography variant="h6" color="inherit">
                                         My admin
                                     </Typography>
                                 </Toolbar>
                             </AppBar>
-                            <Notification /> */}
-                            {/* <ConnectedRouter history={history}>
+                            <Notification />
+                             <ConnectedRouter history={history}>
                                 <Switch>
                                     {routeComponents}
                                 </Switch>
                             </ConnectedRouter>
-                        </ThemeProvider>*/}
+                        </ThemeProvider>
                         
                     </TranslationProvider>
                 </DataProviderContext.Provider>
-            </AuthContext.Provider>
+            </AuthContext.Provider> */}
 
 
 

@@ -13,6 +13,7 @@ import {
     Resource
 } from 'react-admin';
 import { createTheme } from '@material-ui/core/styles';
+import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from '@material-ui/styles';
 import routes from '../routes/routes'
 import { ConnectedRouter } from 'connected-react-router';
@@ -20,37 +21,39 @@ import { Switch, Route } from 'react-router-dom';
 import history from '../utils/history'
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import PostIcon from '@material-ui/icons/Book';
+import { PostList, PostEdit, PostCreate } from './posts';
 
-
-const styles = (theme) => createStyles({
-    appFrame: {
-        display: 'flex',
-        flexDirection: 'column',
-        overflowX: 'auto',
-    },
-    content: {
-        display: 'flex',
-        flexDirection: 'column',
-        flexGrow: 2,
-        marginTop: '4em',
-        padding: theme.spacing * 3,
-        paddingLeft: 5,
-    },
-    contentNoSidebar: {
-        display: 'flex',
-        flexGrow: 1,
-    },
-    root: {
-        // backgroundColor: theme.palette.background.default,
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '10vh',
-        position: 'relative',
-        zIndex: 1,
-    },
-})
+// const styles = (theme) => createStyles({
+//     appFrame: {
+//         display: 'flex',
+//         flexDirection: 'column',
+//         overflowX: 'auto',
+//     },
+//     content: {
+//         display: 'flex',
+//         flexDirection: 'column',
+//         flexGrow: 2,
+//         marginTop: '4em',
+//         padding: theme.spacing * 3,
+//         paddingLeft: 5,
+//     },
+//     contentNoSidebar: {
+//         display: 'flex',
+//         flexGrow: 1,
+//     },
+//     root: {
+//         // backgroundColor: theme.palette.background.default,
+//         display: 'flex',
+//         flexDirection: 'column',
+//         minHeight: '10vh',
+//         position: 'relative',
+//         zIndex: 1,
+//     },
+// })
 
 const theme = createTheme();
+// const theme = createMuiTheme();
 let routeComponents =
     Object.values(routes).map(({
         title,
@@ -96,9 +99,9 @@ class CustomLayout extends React.Component{
         return (
             
             <ThemeProvider theme={theme}>
-                {console.log("in the bi")}
-                {console.log(children, classes, logout, open, title, this)}
-                <Resource name="posts" intent="registration" />
+                {/* {console.log("in the bi")}
+                {console.log(children, classes, logout, open, title, this)} */}
+                
                 {/* <div className={classes.root}>
                     <div className={classes.appFrame}> */}
                 <AppBar title={title} open={open} logout={logout}>
@@ -107,10 +110,12 @@ class CustomLayout extends React.Component{
                                         My admin
                                     </Typography>
                                 </Toolbar>
+                    
                         </AppBar>
-                        <Sidebar>
-                            <Menu logout={logout} hasDashboard={!!dashboard} />
-                        </Sidebar>
+                        {/* <Sidebar> */}
+                            {/* <Menu logout={logout} hasDashboard={!!dashboard} /> */}
+                            {/* <p>what up</p> */}
+                        {/* </Sidebar> */}
                         {/* <main className={classes.contentNoSidebar}>
                             <div className={classes.content}>
                                 {children}
@@ -118,6 +123,9 @@ class CustomLayout extends React.Component{
                         </main> */}
                     {/* </div>
                 </div> */}
+                <Sidebar > 
+                    <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate} icon={PostIcon} />
+                </Sidebar>
                 <Notification />
                 <ConnectedRouter history={history}>
                     <Switch>
@@ -131,4 +139,5 @@ class CustomLayout extends React.Component{
         )
     }
 }
-export default withStyles(styles)(CustomLayout)
+// export default withStyles(styles)(CustomLayout)
+export default CustomLayout
