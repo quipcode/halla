@@ -7,17 +7,20 @@ import {
     adminSaga,
     USER_LOGOUT,
 } from 'react-admin';
+import rootReducer from './root-reducer'
+import thunk from 'redux-thunk'
 
 export default ({
     authProvider,
     dataProvider,
     history,
 }) => {
-    const reducer = combineReducers({
-        admin: adminReducer,
-        router: connectRouter(history),
-        // add your own reducers here
-    });
+    const reducer = rootReducer()
+    // const reducer = combineReducers({
+    //     admin: adminReducer,
+    //     router: connectRouter(history),
+    //     // add your own reducers here
+    // });
     const resettableAppReducer = (state, action) =>
         reducer(action.type !== USER_LOGOUT ? state : undefined, action);
 
@@ -40,18 +43,21 @@ export default ({
                 traceLimit: 25,
             })) ||
         compose;
-
+    
+    const middlewares = [routerMiddleware(history), thunk, sagaMiddleware];
+    const enhancers = [applyMiddleware(...middlewares)];
     const store = createStore(
         resettableAppReducer,
         { /* set your initial state here */ },
-        composeEnhancers(
-            applyMiddleware(
-                sagaMiddleware,
-                routerMiddleware(history),
-                // add your own middlewares here
-            ),
-            // add your own enhancers here
-        ),
+        composeEnhancers(...enhancers),
+        // composeEnhancers(
+        //     applyMiddleware(
+        //         sagaMiddleware,
+        //         routerMiddleware(history),
+        //         // add your own middlewares here
+        //     ),
+        //     // add your own enhancers here
+        // ),
     );
     sagaMiddleware.run(saga);
     return store;

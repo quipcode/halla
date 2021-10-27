@@ -24,7 +24,8 @@ import Footer from '../components/footer'
 import logo from '../assets/logo.svg';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import defaultMessages from 'ra-language-english';
-import { AuthContext, DataProviderContext, TranslationProvider, Resource, Notification } from 'react-admin';
+import { AuthContext, DataProviderContext, TranslationProvider, Notification } from 'react-admin';
+import { Admin, Resource } from 'react-admin';
 import authProvider from '../store/provider/authProvider'
 import dataProvider from '../store/provider/dataProvider'
 // import restProvider from 'ra-data-simple-rest';
@@ -99,6 +100,7 @@ const App = (props) => {
     return (
         <div className="app">
 
+
             <AuthContext.Provider value={authProvider}>
                 
                 <DataProviderContext.Provider value={dataProvider}>
@@ -130,6 +132,11 @@ const App = (props) => {
                     </TranslationProvider>
                 </DataProviderContext.Provider>
             </AuthContext.Provider>
+
+
+
+
+
             {/* <NavBar props={props} />
 
             <div className="body-content">
@@ -156,10 +163,7 @@ const App = (props) => {
 
 
 // export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App))
+export default 
+    connect(mapStateToProps, mapDispatchToProps)(App);
 
-export default withContext(
-        {
-authProvider: PropTypes.object,
-        },
-        () =>({ authProvider })
-)(App);
+// export default withContext({authProvider: PropTypes.object,}, () =>({ authProvider }))(App);

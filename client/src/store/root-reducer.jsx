@@ -7,6 +7,11 @@ import alerts from './redux/alert/reducer'
 import tadabor from './redux/tadabor/reducer'
 import content from './redux/content/reducer'
 import allMyContent from './redux/allMyContent/reducer'
+import {
+    adminReducer,
+    // adminSaga,
+    // USER_LOGOUT,
+} from 'react-admin';
 
 export default function createReducer(asyncReducers) {
     const rootReducer = combineReducers({
@@ -16,6 +21,7 @@ export default function createReducer(asyncReducers) {
         content,
         allMyContent,
         router: connectRouter(history),
+        admin: adminReducer,
         ...asyncReducers,
     });
 
