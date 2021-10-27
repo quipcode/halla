@@ -31,6 +31,8 @@ import dataProvider from '../store/provider/dataProvider'
 // import restProvider from 'ra-data-simple-rest';
 import withContext from 'recompose/withContext';
 import PropTypes from "prop-types";
+import MyLayout from '../components/MyLayout';
+import CustomLayout from '../components/CustomLayout'
 
 
 const mapDispatchToProps = {
@@ -109,25 +111,29 @@ const App = (props) => {
                         locale="en"
                         i18nProvider={i18nProvider}
                     >
-                        
-                        <ThemeProvider theme={theme}>
+                        {/* {console.log("title in app scope")}
+                        {console.log(props)} */}
+                        <CustomLayout title="15"  />
+                        {/* <ThemeProvider theme={theme}>
                             <Resource name="posts" intent="registration" />
                             <Resource name="comments" intent="registration" />
-                            <Resource name="users" intent="registration" />
-                            <AppBar position="static" color="default">
+                            <Resource name="users" intent="registration" /> */}
+                            {/* <MyLayout title="Example Admin" logout={}/> */}
+                            
+                            {/* <AppBar position="static" color="default">
                                 <Toolbar>
                                     <Typography variant="h6" color="inherit">
                                         My admin
                                     </Typography>
                                 </Toolbar>
                             </AppBar>
-                            <ConnectedRouter history={history}>
+                            <Notification /> */}
+                            {/* <ConnectedRouter history={history}>
                                 <Switch>
                                     {routeComponents}
                                 </Switch>
                             </ConnectedRouter>
-                            <Notification />
-                        </ThemeProvider>
+                        </ThemeProvider>*/}
                         
                     </TranslationProvider>
                 </DataProviderContext.Provider>

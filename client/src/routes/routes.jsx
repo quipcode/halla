@@ -8,6 +8,7 @@ import ArticleEdit from '../containers/articleEdit'
 import FeedBack from '../components/feedback'
 import Profile from '../components/profile';
 import ArticleView  from '../containers/articleView'
+import { PostList, PostCreate, PostEdit, PostShow } from '../components/posts';
 const routes = {
     home:   {
                 path: '/',
@@ -87,7 +88,46 @@ const routes = {
                 privateRoute: false,
                 title: "Profile",
                 exact:true
-            }
+            },
+    posts: {
+        path: '/posts',
+        component: PostList,
+        privateRoute: false,
+        title: "Posts",
+        exact: true,
+        hasCreate: true,
+        resource: 'posts'
+    },
+    createPosts: {
+        path: '/posts/create',
+        component: PostCreate,
+        privateRoute: false,
+        title: "Post Create",
+        exact: true,
+        resource: 'posts'
+    },
+    editPost: {
+        path: '/posts/:id',
+        component: PostEdit,
+        privateRoute: false,
+        title: "Post Edit",
+        exact: true,
+        hasShow: true,
+        resource: 'posts'
+    },
+    showPost: {
+        path: '/posts/create',
+        component: PostCreate,
+        privateRoute: false,
+        title: "Post Create",
+        exact: true,
+        hasEdit: true,
+        resource: 'posts'
+    }
+        // < Route exact path="/posts" render={(routeProps) => <PostList hasCreate resource="posts" {...routeProps} />} />
+        // <Route exact path="/posts/create" render={(routeProps) => <PostCreate resource="posts" basePath={routeProps.match.url} {...routeProps} />} />
+        // <Route exact path="/posts/:id" render={(routeProps) => <PostEdit hasShow resource="posts" basePath={routeProps.match.url} id={decodeURIComponent((routeProps.match).params.id)} {...routeProps} />} />
+        // <Route exact path="/posts/:id/show" render={(routeProps) => <PostShow hasEdit resource="posts" basePath={routeProps.match.url} id={decodeURIComponent((routeProps.match).params.id)} {...routeProps} />} />
 }
 
 export default routes;
