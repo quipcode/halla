@@ -32,7 +32,7 @@ export const loginUser = (credentials) => dispatch => {
             dispatch(loginSuccess(res))
             dispatch(successfulJwtLogin(res.data.username, res.data.token))
             document.title = "Halla-Blogs"
-            history.push('/')
+            // history.push('/')
         })
         .catch((error) => dispatch(loginFailed(error)))
 }
@@ -87,8 +87,8 @@ export const executeJwtAuthentication = (data) => dispatch => {
 }
 
 export const successfulJwtLogin = (username, token) => dispatch => {
-    localStorage.setItem(constants.HALLA_AUTH_USER, username)
-    localStorage.setItem(constants.HALLA_AUTH_TOKEN, token)
+    localStorage.setItem(constants.USERNAME, username)
+    localStorage.setItem(constants.TOKEN, token)
     dispatch(setupAxiosInterceptors(dispatch(createJwtToken(token))))
 }
 
@@ -97,8 +97,8 @@ export const createJwtToken = (token) => dispatch => {
 }
 
 // export const isUserLoggedIn = () => dispatch => {
-//     let user = localStorage.getItem(constants.HALLA_AUTH_USER)
-//     let token = localStorage.getItem(constants.HALLA_AUTH_TOKEN)
+//     let user = localStorage.getItem(constants.USERNAME)
+//     let token = localStorage.getItem(constants.TOKEN)
 //     return user !== null && token !== null
 // }
 
@@ -138,8 +138,8 @@ export const getSelfSuccess = (res) => ({
 
 //not sure if this should be in actions...simply parsing auth token and comparing it w/ associated username from local storage...purely clientside...never hitting server 
 // export const currentUsername = () => dispatch => {
-//     let currUsername = localStorage.getItem(constants.HALLA_AUTH_USER)
-//     let token = localStorage.getItem(constants.HALLA_AUTH_TOKEN)
+//     let currUsername = localStorage.getItem(constants.USERNAME)
+//     let token = localStorage.getItem(constants.TOKEN)
 //     let currUserTokenObj = parseJwt(token)
 //     // if(!user) return Promise.reject("No user set");
 //     if (currUsername != currUserTokenObj.sub) return Promise.reject("No user set");
@@ -174,8 +174,8 @@ export const logoutSuccess = () => ({
 export const logoutUser = () => dispatch => {
 
     localStorage.removeItem(constants.AUTHSTATE)
-    localStorage.removeItem(constants.HALLA_AUTH_USER)
-    localStorage.removeItem(constants.HALLA_AUTH_TOKEN)
+    localStorage.removeItem(constants.USERNAME)
+    localStorage.removeItem(constants.TOKEN)
     // dispatch(logoutLoading())
     dispatch(logoutSuccess())
     history.push('/')

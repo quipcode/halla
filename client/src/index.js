@@ -10,13 +10,15 @@ import App from './containers/app';
 import main from './styles/main.scss'
 import createAdminStore from './store/createAdminStore';
 import history from './utils/history'
-import authProvider from './store/provider/authProvider';
-import dataProvider from './store//provider/dataProvider';
+import authProvider from './store/provider/authProvider.js';
+import dataProvider from './store/provider/dataProvider';
 import { PostList, PostCreate, PostEdit } from './components/ra/posts';
 import { UserList } from './components/ra/users';
 // import { AuthContext, DataProviderContext, TranslationProvider, Notification, Sidebar, Menu } from 'react-admin';
 import UserIcon from '@material-ui/icons/Group';
 import { Admin, Resource } from 'react-admin';
+import { Switch, Route } from 'react-router-dom';
+import AdminApp from './containers/adminApp';
 
 const initialState = {};
 const store = configureStore(initialState, history);
@@ -35,7 +37,7 @@ render((
                 history,
             })}>
 
-            <Admin
+            {/* <Admin
                 authProvider={authProvider}
                 dataProvider={dataProvider}
                 history={history}
@@ -44,11 +46,16 @@ render((
             >
                 <Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} />
                 <Resource name="users" list={UserList} icon={UserIcon} />
-                {/* <Resource name="articles" list={ArticleList} /> */}
-            </Admin>
+            </Admin> */}
             {/* <ConnectedRouter history={history}>
                 <App />
             </ConnectedRouter> */}
+            <ConnectedRouter history={history}>
+                <Switch>
+                    <Route path="/admin" component = {AdminApp}/>
+                    <Route path="/" component={App}/>
+                </Switch>
+            </ConnectedRouter>
         </Provider>
     </AppContainer>
     

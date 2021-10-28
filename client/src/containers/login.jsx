@@ -49,7 +49,6 @@ class Login extends Component {
         return null
     }
     onSubmit(values) {
-        let { username } = values
 
 
         this.props.loginUser(values)
