@@ -99,6 +99,7 @@ class CustomLayout extends React.Component{
         return (
             
             <ThemeProvider theme={theme}>
+                {console.log(this, title, logout)}
                 {/* {console.log("in the bi")}
                 {console.log(children, classes, logout, open, title, this)} */}
                 
