@@ -31,7 +31,7 @@ const PostTitle = ({ record }) => {
 export const PostList = (props) => {
     const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
     return (
-        <List {...props}>
+        <List {...props} >
             {isSmall ? (
                 <SimpleList
                     primaryText={record => record.title}

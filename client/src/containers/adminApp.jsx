@@ -6,8 +6,18 @@ import { PostList, PostCreate, PostEdit } from '../components/ra/posts'
 import { UserList } from '../components/ra/users';
 import authProvider from '../store/provider/authProvider.js';
 import dataProvider from '../store/provider/dataProvider';
-import history from '../utils/history'
+// import history from '../utils/history'
+import { createBrowserHistory } from 'history';
 import customRoutes from '../routes/customRoutes'
+
+
+
+const history = createBrowserHistory(
+    {
+        basename: '/admin'
+    }
+)
+// export default history
 
 const AdminApp = (props) => {
     return (

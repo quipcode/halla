@@ -6,7 +6,7 @@ import { PostList, PostCreate, PostEdit, PostShow } from '../components/ra/posts
 import { UserList} from '../components/ra/users';
 
 export default [
-    <Route exact path="/admin/posts" hasCreate render={(routeProps) => <PostList resource="posts" {...routeProps} />} />,
+    <Route exact path="/admin/posts" hasCreate render={(routeProps) => <PostList basePath="/" resource="posts" {...routeProps} />} />,
     <Route exact path="/admin/posts/create" render={(routeProps) => <PostCreate resource="posts" {...routeProps} />} />,
     <Route exact path="/admin/posts/:id" hasShow hasDelete render={(routeProps) => <PostEdit resource="posts" {...routeProps} />} />,
     <Route exact path="/admin/posts/:id/show" hasEdit render={(routeProps) => <PostShow resource="posts" {...routeProps} />} />,

@@ -1,7 +1,10 @@
 import { fetchUtils } from 'react-admin';
-// import { stringify } from 'query-string';
+import * as constants from '../../utils/constants'
+import { stringify } from 'query-string';
 // const apiUrl = 'https://my.api.com/';
 // const apiUrl = 'https://jsonplaceholder.typicode.com';
+const apiUrl = constants.API_BASE_URL;
+
 const httpClient = fetchUtils.fetchJson;
 import jsonServerProvider from 'ra-data-json-server';
 const dataProvider = jsonServerProvider('https://jsonplaceholder.typicode.com');
