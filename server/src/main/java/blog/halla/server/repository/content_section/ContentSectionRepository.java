@@ -14,5 +14,5 @@ import java.util.Set;
 
 @Repository
 public interface ContentSectionRepository extends JpaRepository<ContentSection, String> {
-    Set<ContentSection> findByContentUuid(@Param("content_uuid") String id);
+    Set<ContentSection> findByContentId(@Param("content_id") String id);
 }

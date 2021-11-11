@@ -33,7 +33,8 @@ const AdminApp = (props) => {
         >
             <Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} />
             <Resource name="users" list={UserList} icon={UserIcon} />
-            <Resource name="article" list={ArticleList} icon={ArticleIcon} />
+            {/* <Resource name="article" list={ArticleList} icon={ArticleIcon} /> */}
+            <Resource name="content" list={ArticleList} icon={ArticleIcon} />
         </Admin>
     )
 }

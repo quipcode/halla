@@ -85,9 +85,9 @@ public class ContentController {
     }
 
     @GetMapping("/{uuid}")
-    public ResponseEntity<?> getContentByUuid(@PathVariable("uuid") String uuid, Pageable pageable) {
-        Map<String, Object> content = contentService.getContentById(uuid);
-        Set<ContentSection> contentSections = contentSectionRepository.findByContentUuid(uuid);
+    public ResponseEntity<?> getContentByUuid(@PathVariable("id") String id, Pageable pageable) {
+        Map<String, Object> content = contentService.getContentById(id);
+        Set<ContentSection> contentSections = contentSectionRepository.findByContentId(id);
 
         Map<String,Object> returningContent =new HashMap<>();
         returningContent.put("article", content);
@@ -143,8 +143,8 @@ public ResponseEntity<?> updateContent(@Valid @RequestBody EditRequest editReque
     List<ContentSection> sectionList = new ArrayList<ContentSection>();
     if(sentSections != null){
         for(ContentSection section : sentSections){
-            ContentSection storedSection = contentSectionRepository.getById(section.getUuid());
-            storedSection.setContentUuid(content.getUuid());
+            ContentSection storedSection = contentSectionRepository.getById(section.getId());
+            storedSection.setContentId(content.getId());
             storedSection.setContent(section.getContent());
             storedSection.setTitle(section.getTitle());
             storedSection.setSummary(section.getSummary());
@@ -198,7 +198,7 @@ public ResponseEntity<?> updateContent(@Valid @RequestBody EditRequest editReque
         content.setMetaTitle(inComingArticle.getMetaTitle());
         Content savedArticle = contentRepository.save(content);
         inComingSections.forEach(section -> {
-                    section.setContentUuid(savedArticle.getUuid());
+                    section.setContentId(savedArticle.getId());
                     section.setAssociatedContent(savedArticle);
                     logger.error("content Sections: {}", section);
                     logger.error("content: {}", savedArticle);

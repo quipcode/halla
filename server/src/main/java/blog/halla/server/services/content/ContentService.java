@@ -35,7 +35,7 @@ public class ContentService {
     public Page<Content> getContentByUser(Long authorId, Pageable pageable){
         Page<Content> contents = contentRepository.findByAuthorId(authorId, pageable);
         for(Content content : contents){
-            Set<ContentSection> associatedSection = contentSectionRepository.findByContentUuid(content.getUuid());
+            Set<ContentSection> associatedSection = contentSectionRepository.findByContentId(content.getId());
             content.setContentSections(associatedSection);
         }
         return  contents;

@@ -17,7 +17,7 @@ import java.util.UUID;
 @AuditTable("content_section_audit")
 @Table(name = "content_section",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = "uuid")
+                @UniqueConstraint(columnNames = "id")
         }
 )
 @JsonIdentityInfo(
@@ -27,7 +27,7 @@ import java.util.UUID;
 )
 public class ContentSection {
     @Id
-    private String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+    private String id = UUID.randomUUID().toString().replaceAll("-", "");
 
     @JoinColumn(name = "sectionType", insertable = false, updatable = false)
     @ManyToOne(targetEntity = SectionTypes.class, fetch = FetchType.EAGER)
@@ -42,8 +42,8 @@ public class ContentSection {
     @JsonIgnore
     private Content associatedContent;
 
-    @Column(name = "contentUuid")
-    private String contentUuid;
+    @Column(name = "contentId")
+    private String contentId;
 
     @Column(name = "content")
     private String content;
@@ -55,7 +55,7 @@ public class ContentSection {
     private Integer idx;
     @Override
     public String toString(){
-        return String.format("title: %s, summary: %s, uuid:%s, content:%s, sectionTypes: %s, idx: %s, contentUuid:%s", title, summary, uuid, content, sectionType, idx, contentUuid);
+        return String.format("title: %s, summary: %s, Id:%s, content:%s, sectionTypes: %s, idx: %s, contentId:%s", title, summary, id, content, sectionType, idx, contentId);
 
     }
 

@@ -22,7 +22,7 @@ import java.util.*;
 @AuditTable("content_audit")
 @Table(name = "content",
         uniqueConstraints = {
-            @UniqueConstraint(columnNames = "uuid")
+            @UniqueConstraint(columnNames = "id")
         }
 )
 public class Content {
@@ -31,12 +31,13 @@ public class Content {
 
     @Id
 //    private String uuid;
-    private String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+    private String id = UUID.randomUUID().toString().replaceAll("-", "");
 
     @Column(name = "author")
     private long authorId;
 
-
+    private String title;
+    private String summary;
 //    @ManyToOne(fetch = FetchType.EAGER)
 //    @JoinColumn(name = "parent_uuid")
 //    @JsonBackReference
@@ -84,7 +85,7 @@ public class Content {
 
     @Override
     public String toString(){
-        return String.format("metatitle: %s, author: %s, uuid:%s, slug:%s, published:%s", metaTitle, authorId, uuid, slug, published);
+        return String.format("metatitle: %s, author: %s, uuid:%s, slug:%s, published:%s", metaTitle, authorId, id, slug, published);
 //        return String.format(" uuid:%s", uuid);
 //        return String.format("parent: %s", parent);
 
@@ -95,14 +96,16 @@ public class Content {
     @ElementCollection(targetClass = ContentSection.class)
     public Set<ContentSection> contentSections;
 
-    public Content(String uuid, boolean published){
-        this.uuid = uuid;
+    public Content(String id, boolean published){
+        this.id = id;
         this.published = published;
     }
 
-    public Content(String metaTitle, String slug, boolean published){
+    public Content(String metaTitle, String slug, boolean published, String title, String summary){
         this.metaTitle = metaTitle;
         this.slug = slug;
         this.published = published;
+        this.title = title;
+        this.summary = summary;
     }
 }
