@@ -2,8 +2,8 @@ import { fetchUtils } from 'react-admin';
 import * as constants from '../../utils/constants'
 import { stringify } from 'query-string';
 // const apiUrl = 'https://my.api.com/';
-// const apiUrl = 'https://jsonplaceholder.typicode.com';
-const apiUrl = constants.API_BASE_URL;
+const apiUrl = 'https://jsonplaceholder.typicode.com';
+// const apiUrl = constants.API_BASE_URL;
 
 const httpClient = fetchUtils.fetchJson;
 import jsonServerProvider from 'ra-data-json-server';
@@ -19,9 +19,11 @@ export default dataProvider;
 //             filter: JSON.stringify(params.filter),
 //         };
 //         const url = `${apiUrl}/${resource}?${stringify(query)}`;
-//         return httpClient(url).then(({ headers, json }) => ({
+//         return httpClient(url).then(({ headers, json }) =>( {
+            
 //             data: json,
-//             total: parseInt(headers.get('content-range').split('/').pop(), 10),
+//             total:10
+//             // total: parseInt(headers.get('content-range').split('/').pop(), 10),
 //         }));
 //     },
 //     getOne: (resource, params) =>
