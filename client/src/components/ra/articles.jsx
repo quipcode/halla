@@ -39,3 +39,20 @@ export const ArticleList = (props) => {
         </List>
     );
 }
+
+const ArticleTitle = ({ record }) => {
+    return <span>Article {record ? `"${record.title}"` : ''}</span>;
+};
+
+export const ArticleEdit = props => (
+    <Edit title={<ArticleTitle />} {...props}>
+        <SimpleForm>
+            <TextInput disabled source="id" />
+            {/* <ReferenceInput source="userId" reference="users">
+                <SelectInput optionText="name" />
+            </ReferenceInput> */}
+            <TextInput source="title" />
+            {/* <TextInput multiline source="body" /> */}
+        </SimpleForm>
+    </Edit>
+);

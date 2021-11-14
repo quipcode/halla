@@ -84,7 +84,7 @@ public class ContentController {
         return contentService.getContentByUser(authorId, pageable);
     }
 
-    @GetMapping("/{uuid}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getContentByUuid(@PathVariable("id") String id, Pageable pageable) {
         Map<String, Object> content = contentService.getContentById(id);
         Set<ContentSection> contentSections = contentSectionRepository.findByContentId(id);

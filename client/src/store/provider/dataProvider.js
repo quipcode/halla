@@ -34,10 +34,10 @@ export default {
         // var myHeaders = new Headers({
         //     'Authorization': `Bearer ${authToken}`
         // });
-        var myHeaders = new Headers();
+        // var myHeaders = new Headers();
 
-        myHeaders.append('Content-Type', 'text/xml');
-        myHeaders.get('Content-Type') // should return 'text/xml'
+        // myHeaders.append('Content-Type', 'text/xml');
+        // myHeaders.get('Content-Type') // should return 'text/xml'
 
         let mineHeaders = new Headers()
         mineHeaders.set('Authorization', `Bearer ${authToken}`)
@@ -45,7 +45,7 @@ export default {
         // options.headers = { Authorization: `Bearer ${authToken}` } 
         options.headers = mineHeaders
         // options.leftNut = "hello ther"
-        console.log(mineHeaders.get("Authorization"), myHeaders, myHeaders.has("Content-Type"))
+        // console.log(mineHeaders.get("Authorization"), myHeaders, myHeaders.has("Content-Type"))
         
         // return axios.get(`${constants.API_BASE_URL}/content/${uuid}`, { headers: { Authorization: `Bearer ${authToken}` } })
         // const httpClient = (url, options = {}) => {
@@ -56,7 +56,7 @@ export default {
         //     return fetchUtils.fetchJson(url, options);
         // }
         // `?${stringify(query)}`;
-        console.log(options)
+        // console.log(options)
         return httpClient(url, options).then(({ headers, json }) =>( {
             
             data: json,
@@ -64,10 +64,20 @@ export default {
             // total: parseInt(headers.get('content-range').split('/').pop(), 10),
         }));
     },
-    getOne: (resource, params) =>
-        httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
-            data: json,
-        })),
+    getOne: (resource, params) =>{
+        const url = `${apiUrl}/${resource}/${params.id}`
+        const options = {}
+        let authToken = localStorage.getItem("token")
+
+        let mineHeaders = new Headers()
+        mineHeaders.set('Authorization', `Bearer ${authToken}`)
+        options.headers = mineHeaders
+        return httpClient(url, options).then(({ json }) => ({
+                data: json,
+            }))
+    },
+
+    
     getMany: (resource, params) => {
         const query = {
             filter: JSON.stringify({ id: params.ids }),
