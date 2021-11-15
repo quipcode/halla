@@ -4,7 +4,7 @@ import blog.halla.server.controller.content.ContentController;
 import blog.halla.server.models.User;
 import blog.halla.server.models.article.Article;
 import blog.halla.server.models.article_section.ArticleSection;
-import blog.halla.server.payload.request.article.Update;
+import blog.halla.server.payload.request.article.ArticleRequest;
 import blog.halla.server.repository.article.ArticleRepository;
 import blog.halla.server.repository.article_section.ArticleSectionRepository;
 import blog.halla.server.repository.security.UserRepository;
@@ -54,9 +54,8 @@ public class ArticleController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateArticle(@Valid @RequestBody Update updateRequest, @PathVariable("id") String id) throws JsonMappingException, JsonProcessingException{
+    public ResponseEntity<?> updateArticle(@Valid @RequestBody ArticleRequest updateRequest, @PathVariable("id") String id) throws JsonMappingException, JsonProcessingException{
         Article incomingArticle = updateRequest.getArticle();
-//        Set<ArticleSection> incomingSections = updateRequest.getSections();
         Set<ArticleSection> incomingSections = incomingArticle.getSections();
         User author = null;
 
@@ -78,10 +77,8 @@ public class ArticleController {
             author = userRepository.getById(author_id);
         }
         article.setAuthorId(author.getId());
-//        Article updatedArticle = articleRepository.save(article);
         if(incomingSections != null){
             for(ArticleSection section : incomingSections){
-                logger.error("in for loop id is: {}, and the body is: {}", section.getId(), section.getBody());
                 if(articleSectionRepository.existsById(section.getId())){
                     ArticleSection storedSection = articleSectionRepository.getById(section.getId());
                     storedSection.setArticleId(article.getId());
@@ -97,13 +94,44 @@ public class ArticleController {
                     section.setArticleId(article.getId());
                     articleSectionRepository.save(section);
                 }
-
             }
         }
         Article updatedArticle = articleRepository.save(article);
         Map<String,Object> returningArticle =new HashMap<>();
         returningArticle.put("article", updatedArticle);
         return ResponseEntity.status(200).body(returningArticle);
+    }
+
+    @PostMapping("")
+    public ResponseEntity<?> createNewArticle(@Valid @RequestBody ArticleRequest creationRequest){
+        Article incomingArticle = creationRequest.getArticle();
+        Set<ArticleSection> incomingSections = incomingArticle.getSections();
+        Article article = new Article();
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long author_id = null;
+        if(principal instanceof UserDetailsImpl){
+            author_id = (((UserDetailsImpl) principal).getId());
+        }
+        User author = null;
+        Article parent = null;
+        if(author_id == null){
+            throw  new RuntimeException("Error: Author_id required");
+        }else{
+            author = userRepository.getById(author_id);
+        }
+        article.setPublished(false);
+        article.setAuthorId(author.getId());
+        article.setSlug(incomingArticle.getSlug());
+        article.setMetaTitle(incomingArticle.getMetaTitle());
+        article.setTitle(incomingArticle.getTitle());
+        article.setSummary(incomingArticle.getSummary());
+        Article savedArticle = articleRepository.save(article);
+        incomingSections.forEach( section -> {
+            section.setArticleId(savedArticle.getId());
+            articleSectionRepository.save(section);
+        });
+        Article newlyCreatedArticle = articleRepository.getById(savedArticle.getId());
+        return ResponseEntity.status(200).body(newlyCreatedArticle);
     }
 
 }
