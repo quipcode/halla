@@ -46,7 +46,7 @@ public class Article {
     @OneToMany(mappedBy = "article", fetch = FetchType.EAGER)
     @JsonIdentityReference
     @ElementCollection(targetClass = ArticleSection.class)
-    public Set<ArticleSection> articleSections;
+    public Set<ArticleSection> sections;
 
     public Article(String id, boolean published){
         this.id = id;

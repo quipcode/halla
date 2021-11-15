@@ -1,5 +1,6 @@
 package blog.halla.server.controller.article;
 
+import blog.halla.server.controller.content.ContentController;
 import blog.halla.server.models.User;
 import blog.halla.server.models.article.Article;
 import blog.halla.server.models.article_section.ArticleSection;
@@ -11,6 +12,8 @@ import blog.halla.server.services.UserDetailsImpl;
 import blog.halla.server.services.article.ArticleService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +39,8 @@ public class ArticleController {
     @Autowired
     ArticleSectionRepository articleSectionRepository;
 
+    Logger logger = LoggerFactory.getLogger(ContentController.class);
+
     @GetMapping("/")
     public List<Article> getAllArticles(Pageable pageable){
         List<Article> articles = articleRepository.findAll();
@@ -51,7 +56,8 @@ public class ArticleController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateArticle(@Valid @RequestBody Update updateRequest, @PathVariable("id") String id) throws JsonMappingException, JsonProcessingException{
         Article incomingArticle = updateRequest.getArticle();
-        Set<ArticleSection> incomingSections = updateRequest.getSections();
+//        Set<ArticleSection> incomingSections = updateRequest.getSections();
+        Set<ArticleSection> incomingSections = incomingArticle.getSections();
         User author = null;
 
         Optional<Article> articleStored = articleService.getArticle(id);
@@ -75,16 +81,23 @@ public class ArticleController {
 //        Article updatedArticle = articleRepository.save(article);
         if(incomingSections != null){
             for(ArticleSection section : incomingSections){
-                ArticleSection storedSection = articleSectionRepository.getById(section.getId());
-                storedSection.setArticleId(article.getId());
-                storedSection.setBody(section.getBody());
-                storedSection.setTitle(section.getTitle());
-                storedSection.setSummary(section.getSummary());
-                storedSection.setIdx(section.getIdx());
-                storedSection.setIsTitleSelected(section.getIsTitleSelected());
-                storedSection.setIsSummarySelected(section.getIsSummarySelected());
-                storedSection.setSectionTypeId(section.getSectionTypeId());
-                articleSectionRepository.save(storedSection);
+                logger.error("in for loop id is: {}, and the body is: {}", section.getId(), section.getBody());
+                if(articleSectionRepository.existsById(section.getId())){
+                    ArticleSection storedSection = articleSectionRepository.getById(section.getId());
+                    storedSection.setArticleId(article.getId());
+                    storedSection.setBody(section.getBody());
+                    storedSection.setTitle(section.getTitle());
+                    storedSection.setSummary(section.getSummary());
+                    storedSection.setIdx(section.getIdx());
+                    storedSection.setIsTitleSelected(section.getIsTitleSelected());
+                    storedSection.setIsSummarySelected(section.getIsSummarySelected());
+                    storedSection.setSectionTypeId(section.getSectionTypeId());
+                    articleSectionRepository.save(storedSection);
+                }else{
+                    section.setArticleId(article.getId());
+                    articleSectionRepository.save(section);
+                }
+
             }
         }
         Article updatedArticle = articleRepository.save(article);

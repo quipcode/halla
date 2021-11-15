@@ -30,7 +30,7 @@ public class ArticleService {
         Page<Article> articles = articleRepository.findByAuthorId(authorId, pageable);
         for(Article article : articles){
             Set<ArticleSection> associatedSections = articleSectionRepository.findByArticleId(article.getId());
-            article.setArticleSections(associatedSections);
+            article.setSections(associatedSections);
         }
         return articles;
     }
