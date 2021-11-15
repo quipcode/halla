@@ -64,7 +64,11 @@ const ArticleEdi = props => (
 const TabbedArticle = props => (
     <Edit 
     {...props}
+    title={`: ${props.record.title}`}
+    // title="hi"
+    //     title={props.record.title}
     >
+        
         <TabbedForm syncWithLocation={false}>
             <FormTab label="Meta">
                 <TextInput disabled label="Id" source="id" />

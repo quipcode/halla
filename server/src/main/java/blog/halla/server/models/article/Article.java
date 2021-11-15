@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.util.*;
 
 import blog.halla.server.models.article_section.ArticleSection;
+import org.hibernate.envers.NotAudited;
 
 @Data
 @NoArgsConstructor
@@ -27,6 +28,7 @@ public class Article {
     @Column(name = "author")
     private long authorId;
     private String title;
+    @NotAudited
     private String summary;
     private String metaTitle;
     private String slug;

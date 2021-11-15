@@ -40,16 +40,16 @@ public class ArticleSection {
     @Column(name = "sectionTypeId")
     private Integer sectionTypeId;
 
-    @JoinColumn(name = "associatedArticle", insertable = false, updatable = false)
+    @JoinColumn(name = "article", insertable = false, updatable = false)
     @ManyToOne(targetEntity = Article.class, fetch = FetchType.EAGER)
     @JsonIgnore
-    private Article associatedArticle;
+    private Article article;
 
     @Column(name = "articleId")
     private String articleId;
 
-    @Column(name = "article")
-    private String article;
+    @Column(name = "body")
+    private String body;
 
     private String title;
     private String summary;
@@ -58,7 +58,7 @@ public class ArticleSection {
     private Integer idx;
     @Override
     public String toString(){
-        return String.format("title: %s, summary: %s, Id:%s, article:%s, sectionTypes: %s, idx: %s, articleId:%s", title, summary, id, article, sectionType, idx, articleId);
+        return String.format("title: %s, summary: %s, Id:%s, body:%s, sectionTypes: %s, idx: %s, articleId:%s", title, summary, id, body, sectionType, idx, articleId);
 
     }
 }
