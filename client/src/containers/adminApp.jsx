@@ -6,19 +6,11 @@ import { PostList, PostCreate, PostEdit } from '../components/ra/posts'
 import { UserList } from '../components/ra/users';
 import authProvider from '../store/provider/authProvider.js';
 import dataProvider from '../store/provider/dataProvider';
-// import history from '../utils/history'
-import { createBrowserHistory } from 'history';
+import adminHistory from '../utils/adminHistory';
 import customRoutes from '../routes/customRoutes'
 import { ArticleList, ArticleEdit} from '../components/ra/articles'
 import ArticleIcon from '@mui/icons-material/Article';
 
-
-const history = createBrowserHistory(
-    {
-        basename: '/admin'
-    }
-)
-// export default history
 
 const AdminApp = (props) => {
     return (
@@ -26,7 +18,7 @@ const AdminApp = (props) => {
         <Admin
             authProvider={authProvider}
             dataProvider={dataProvider}
-            history={history}
+            history={adminHistory}
             title="My Admin"
             customRoutes={customRoutes}
         // layout={MyLayout}

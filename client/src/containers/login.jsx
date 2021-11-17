@@ -50,7 +50,7 @@ class Login extends Component {
     }
     onSubmit(values) {
 
-
+        
         this.props.loginUser(values)
 
 
@@ -72,7 +72,7 @@ class Login extends Component {
 
     render() {
         let { username, password } = this.state
-
+        const { history } = this.props;
 
         return (
             <div className="container" >
@@ -99,6 +99,7 @@ class Login extends Component {
                                     onSubmit={(values, { resetForm }) => {
                                         this.onSubmit(values);
                                         resetForm({ values: "" });
+                                        history.push('/admin');
                                     }}
                                     initialValues={{ username, password }}
                                     validationSchema={validationSchema}

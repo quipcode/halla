@@ -43,7 +43,7 @@ public class Article {
         return String.format("metatitle: %s, author: %s, uuid:%s, slug:%s, published:%s, summary:%s. title:%s", metaTitle, authorId, id, slug, published, summary, title);
     }
 
-    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "articleId", fetch = FetchType.EAGER)
     @JsonIdentityReference
     @ElementCollection(targetClass = ArticleSection.class)
     public Set<ArticleSection> sections;

@@ -32,18 +32,18 @@ public class ArticleSection {
     @Id
     private String id = UUID.randomUUID().toString().replaceAll("-", "");
 
-    @JoinColumn(name = "sectionType", insertable = false, updatable = false)
-    @ManyToOne(targetEntity = SectionTypes.class, fetch = FetchType.EAGER)
-    @JsonIgnore
-    private SectionTypes sectionType;
+//    @JoinColumn(name = "sectionType", insertable = false, updatable = false)
+//    @ManyToOne(targetEntity = SectionTypes.class, fetch = FetchType.EAGER)
+//    @JsonIgnore
+//    private SectionTypes sectionType;
 
     @Column(name = "sectionTypeId")
     private Integer sectionTypeId;
 
-    @JoinColumn(name = "article", insertable = false, updatable = false)
-    @ManyToOne(targetEntity = Article.class, fetch = FetchType.EAGER)
-    @JsonIgnore
-    private Article article;
+//    @JoinColumn(name = "article", insertable = false, updatable = false)
+//    @ManyToOne(targetEntity = Article.class, fetch = FetchType.EAGER)
+//    @JsonIgnore
+//    private Article article;
 
     @Column(name = "articleId")
     private String articleId;
@@ -58,7 +58,7 @@ public class ArticleSection {
     private Integer idx;
     @Override
     public String toString(){
-        return String.format("title: %s, summary: %s, Id:%s, body:%s, sectionTypes: %s, idx: %s, articleId:%s", title, summary, id, body, sectionType, idx, articleId);
+        return String.format("title: %s, summary: %s, Id:%s, body:%s, sectionTypeId: %s, idx: %s, articleId:%s", title, summary, id, body, sectionTypeId, idx, articleId);
 
     }
 }

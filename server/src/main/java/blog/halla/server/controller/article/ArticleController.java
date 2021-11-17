@@ -130,8 +130,9 @@ public class ArticleController {
             section.setArticleId(savedArticle.getId());
             articleSectionRepository.save(section);
         });
-        Article newlyCreatedArticle = articleRepository.getById(savedArticle.getId());
-        return ResponseEntity.status(200).body(newlyCreatedArticle);
+//        Article newlyCreatedArticle = articleRepository.getById(savedArticle.getId());
+        Map<String, Object> newlyCreatedArticle = articleService.getArticleById(savedArticle.getId());
+        return ResponseEntity.status(200).body(newlyCreatedArticle.get("article"));
     }
 
 }

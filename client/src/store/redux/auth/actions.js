@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 import history from '../../../utils/history'
+import adminHistory from '../../../utils/adminHistory'
 import constants from '../../../utils/constants'
-// import history from '../../../utils/'
 
 import * as ActionTypes from './actionTypes'
 
@@ -32,8 +32,11 @@ export const loginUser = (credentials) => dispatch => {
             dispatch(loginSuccess(res))
             dispatch(successfulJwtLogin(res.data.username, res.data.token))
             document.title = "Halla-Blogs"
-            // history.push('/')
+            history.push('/admin/')
         })
+        // .then( () =>{
+           
+        // })
         .catch((error) => dispatch(loginFailed(error)))
 }
 
