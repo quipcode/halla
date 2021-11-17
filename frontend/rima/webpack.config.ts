@@ -1,7 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-// import MiniCssExtractPlugin from "mini-css-extract-plugin"
-// import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 const htmlWebPackPlugin = new HtmlWebpackPlugin({
     template: path.join(__dirname, 'src', 'index.html')
