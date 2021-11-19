@@ -37,7 +37,14 @@ const htmlWebPackPlugin = new HtmlWebpackPlugin({
 // })
 
 const moduleFederationPlugin = new ModuleFederationPlugin({
-    name: "react-admin-app",
+    name: "adminApp",
+    library: { type: "var", name: "adminApp" },
+    filename: "remoteEntry.js",
+    exposes: {
+        // expose each component
+        "./Header": "./src/Header"
+    },
+    remotes: {},
     shared: {
         ...dependencies,
         react: {
@@ -52,13 +59,13 @@ const moduleFederationPlugin = new ModuleFederationPlugin({
 })
 
 module.exports = {
-    mode: 'none',
+    mode: 'development',
     entry: {
         app: path.join(__dirname, 'src', 'index.tsx')
     },
     target: 'web',
     resolve: {
-        extensions: ['.ts', '.tsx', '.js']
+        extensions: [".tsx", ".ts", ".jsx", ".js", ".json"],
     },
     module: {
         rules: [
@@ -83,14 +90,17 @@ module.exports = {
 
         ],
     },
+    // output: {
+    //     filename: '[name].js',
+    //     path: path.resolve(__dirname, 'dist')
+    // },
     output: {
-        filename: '[name].js',
-        path: path.resolve(__dirname, 'dist')
+        publicPath: 'http://localhost:3001/',
     },
     plugins: [htmlWebPackPlugin, moduleFederationPlugin],
     devServer: {
         static: path.join(__dirname, "dist"),
         compress: true,
-        port: 4000,
+        port: 3001,
     },
 }
