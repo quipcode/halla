@@ -59,7 +59,9 @@ export default {
         //     return fetchUtils.fetchJson(url, options);
         // }
         // `?${stringify(query)}`;
-        // console.log(options)
+        // window.alert("supp")
+        // console.log("hi there ")
+        console.log(options)
         return httpClient(url, options).then(({ headers, json }) => ({
 
             data: json,

@@ -1,9 +1,9 @@
 import { createBrowserHistory } from 'history';
 
 const history = createBrowserHistory(
-    {
-        basename: '/admin'
-    }
+    // {
+    //     basename: '/admin'
+    // }
 )
 
 export default history
