@@ -1,9 +1,10 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 const dependencies = require("./package.json").dependencies
+
 module.exports = {
     output: {
-        publicPath: "http://localhost:3000/",
+        publicPath: "http://localhost:3002/",
     },
 
     resolve: {
@@ -11,7 +12,7 @@ module.exports = {
     },
 
     devServer: {
-        port: 3000,
+        port: 3002,
     },
 
     module: {
@@ -39,14 +40,13 @@ module.exports = {
 
     plugins: [
         new ModuleFederationPlugin({
-            name: "cairn",
+            name: "halla",
             filename: "remoteEntry.js",
-            remotes: {
-                "nodus": "nodus@http://localhost:3001/remoteEntry.js",
-                "halla": "halla@http://localhost:3002/remoteEntry.js"
+            remotes: {},
+            exposes: {
+                "./Button": "./src/Button",
             },
-            exposes: {},
-            shared:{ ...dependencies,}
+            shared: { ...dependencies }
         }),
         new HtmlWebPackPlugin({
             template: "./src/index.html",
