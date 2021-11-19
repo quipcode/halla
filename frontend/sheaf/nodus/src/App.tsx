@@ -3,10 +3,27 @@ import ReactDOM from "react-dom";
 
 import Header from "./Header";
 
+import { Admin, Resource } from 'react-admin';
+import { ArticleList } from './articles'
+import authProvider from "./authProvider";
+import dataProvider from "./dataProvider";
+import history from './utils/history'
+
 import "./index.css";
 
 const App = () => (
     <div>
+        
+        <Admin
+            authProvider={authProvider}
+            dataProvider={dataProvider}
+            history={history}
+            title="Nodus"
+            // customRoutes={customRoutes}
+        // layout={MyLayout}
+        >
+            <Resource name="articles" list={ArticleList}/>
+            </Admin>
         <Header
             border="none"
             color="orange"
