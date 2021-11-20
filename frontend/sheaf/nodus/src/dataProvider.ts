@@ -1,14 +1,17 @@
 import { fetchUtils } from 'react-admin';
-import {constants} from './utils/constants'
 import { stringify } from 'query-string';
-// const apiUrl = 'https://my.api.com/';
-// const apiUrl = 'https://jsonplaceholder.typicode.com';
-const apiUrl = constants.API_BASE_URL
+import { constants } from './utils/constants'
 
+// const apiUrl = constants.API_BASE_URL
+const apiUrl = "http://localhost:5000/api"
+// const apiUrl = 'https://my.api.com/';
 const httpClient = fetchUtils.fetchJson;
-// import jsonServerProvider from 'ra-data-json-server';
-// const dataProvider = jsonServerProvider('https://jsonplaceholder.typicode.com');
-// export default dataProvider;
+
+import axios from "axios";
+import IAllArticlesData from './types/article.types';
+
+
+
 export default {
     getList: (resource, params) => {
         const { page, perPage } = params.pagination;
@@ -18,78 +21,71 @@ export default {
             range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
             filter: JSON.stringify(params.filter),
         };
-        const url = `${apiUrl}/${resource}/`;
+        const url = `${apiUrl}/${resource}`;
         let authToken = localStorage.getItem("token")
-        // const options = { headers: { Authorization: `Bearer ${authToken}` } }
-        // const options = {
-        //     [key: Object]: header
-        // }
-        let options: { [key: string]: any }
-        // options.user = {
-        //     authenticated: true,
-        //     token: authToken,
-        //     Authorization: `Bearer ${authToken}`
-        // }
-        // options.Authorization = `Bearer ${authToken}`
-        // options.headers = {
-        //     Authorization: `Bearer ${authToken}`
-        // }
-        // var myHeaders = new Headers({
-        //     'Authorization': `Bearer ${authToken}`
-        // });
-        // var myHeaders = new Headers();
-
-        // myHeaders.append('Content-Type', 'text/xml');
-        // myHeaders.get('Content-Type') // should return 'text/xml'
-
+        // let options: { [headers: string]: any }
+        console.log("big daddy")
         let mineHeaders = new Headers()
         mineHeaders.set('Authorization', `Bearer ${authToken}`)
-        // mineHeaders.append('Content-Type', 'text/xml');  
-        // options.headers = { Authorization: `Bearer ${authToken}` } 
-        options.headers = mineHeaders
-        // options.leftNut = "hello ther"
-        // console.log(mineHeaders.get("Authorization"), myHeaders, myHeaders.has("Content-Type"))
 
-        // return axios.get(`${constants.API_BASE_URL}/content/${uuid}`, { headers: { Authorization: `Bearer ${authToken}` } })
-        // const httpClient = (url, options = {}) => {
-        //     options.user = {
-        //         authenticated: true,
-        //         token: 'SRTRDFVESGNJYTUKTYTHRG'
-        //     }
-        //     return fetchUtils.fetchJson(url, options);
-        // }
-        // `?${stringify(query)}`;
-        // window.alert("supp")
-        // console.log("hi there ")
-        console.log(options)
-        return httpClient(url, options).then(({ headers, json }) => ({
 
-            data: json,
-            total: 10
-            // total: parseInt(headers.get('content-range').split('/').pop(), 10),
-        }));
+        // options.headers = mineHeaders
+        // let options : {[Authorization: string] : string}
+        // var options = {
+        //     headers: mineHeaders,
+        // };
+        type Options = {
+            Headers: any,
+            
+        }
+        type Headers = {
+            Authorization: string
+        }
+        let headers = new Headers({ 'Authorization': `Bearer ${authToken}`, 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+        // let options = new RequestOptions({ headers: headers });
+        // const options = {} as Options
+        // const auth = {} as Headers
+        // auth.Authorization = `Bearer ${authToken}`
+        // options.Headers = auth;
+        
+        
+        // console.log(options)
+        return axios.create({
+            baseURL: apiUrl,
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": `Bearer ${authToken}`,
+                "Access-Control-Allow-Origin": "*"
+            }
+        }).get("/articles").then((response: any) => {
+            // this.setState({
+            //     tutorials: response.data
+            // });
+            console.log(response.data);
+        })
+            .catch((e: Error) => {
+                console.log(e);
+            });
+        ;
+        // return httpClient(url, options).then(({ headers, json }) => ({
+        //     data: json,
+        //     total: parseInt(headers.get('content-range').split('/').pop(), 10),
+        // }));
     },
-    getOne: (resource, params) => {
-        const url = `${apiUrl}/${resource}/${params.id}`
-        let options: { [key: string]: any }
-        let authToken = localStorage.getItem("token")
 
-        let mineHeaders = new Headers()
-        mineHeaders.set('Authorization', `Bearer ${authToken}`)
-        options.headers = mineHeaders
-        return httpClient(url, options).then(({ json }) => ({
+    getOne: (resource, params) =>
+        httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
             data: json,
-        }))
-    },
-
+        })),
 
     getMany: (resource, params) => {
         const query = {
-            filter: JSON.stringify({ id: params.ids }),
+            filter: JSON.stringify({ ids: params.ids }),
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
         return httpClient(url).then(({ json }) => ({ data: json }));
     },
+
     getManyReference: (resource, params) => {
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
@@ -102,16 +98,19 @@ export default {
             }),
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
+
         return httpClient(url).then(({ headers, json }) => ({
             data: json,
             total: parseInt(headers.get('content-range').split('/').pop(), 10),
         }));
     },
+
     update: (resource, params) =>
         httpClient(`${apiUrl}/${resource}/${params.id}`, {
             method: 'PUT',
             body: JSON.stringify(params.data),
         }).then(({ json }) => ({ data: json })),
+
     updateMany: (resource, params) => {
         const query = {
             filter: JSON.stringify({ id: params.ids }),
@@ -121,6 +120,7 @@ export default {
             body: JSON.stringify(params.data),
         }).then(({ json }) => ({ data: json }));
     },
+
     create: (resource, params) =>
         httpClient(`${apiUrl}/${resource}`, {
             method: 'POST',
@@ -128,16 +128,19 @@ export default {
         }).then(({ json }) => ({
             data: { ...params.data, id: json.id },
         })),
+
     delete: (resource, params) =>
         httpClient(`${apiUrl}/${resource}/${params.id}`, {
             method: 'DELETE',
         }).then(({ json }) => ({ data: json })),
+
     deleteMany: (resource, params) => {
         const query = {
             filter: JSON.stringify({ id: params.ids }),
         };
         return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
             method: 'DELETE',
+            body: JSON.stringify(params.data),
         }).then(({ json }) => ({ data: json }));
-    }
+    },
 };

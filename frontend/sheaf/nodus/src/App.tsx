@@ -10,10 +10,17 @@ import dataProvider from "./dataProvider";
 import history from './utils/history'
 import "./index.css";
 import { Provider } from 'react-redux';
+import jsonServerProvider from 'ra-data-json-server';
+import { PostList, PostCreate } from './posts';
+import { UserList } from './users'
 // import { AppContainer } from 'react-hot-loader';
+import PostIcon from '@material-ui/icons/Book';
+import UserIcon from '@material-ui/icons/Group';
 
 
 import createAdminStore from './store';
+
+// const dataProvider = jsonServerProvider('https://jsonplaceholder.typicode.com');
 
 const App = () => (
     
@@ -32,6 +39,8 @@ const App = () => (
                     history={history}
                     title="Nodus"
                 >
+                {/* <Resource name="posts" list={PostList} create={PostCreate} icon={PostIcon} />
+                <Resource name="users" list={UserList} icon={UserIcon} /> */}
                     <Resource name="articles" list={ArticleList} />
                 </Admin>
             </Provider>
