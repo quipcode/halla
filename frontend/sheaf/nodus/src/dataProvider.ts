@@ -21,27 +21,13 @@ export default {
             range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
             filter: JSON.stringify(params.filter),
         };
-        const url = `${apiUrl}/${resource}`;
+        const url = `${apiUrl}/${resource}/`;
         let authToken = localStorage.getItem("token")
-        // let options: { [headers: string]: any }
-        console.log("big daddy")
         let mineHeaders = new Headers()
         mineHeaders.set('Authorization', `Bearer ${authToken}`)
-
-
-        // options.headers = mineHeaders
-        // let options : {[Authorization: string] : string}
-        // var options = {
-        //     headers: mineHeaders,
-        // };
-        type Options = {
-            Headers: any,
-            
-        }
-        type Headers = {
-            Authorization: string
-        }
-        let headers = new Headers({ 'Authorization': `Bearer ${authToken}`, 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+        const options = {} as any;
+        options.headers = mineHeaders
+        // console.log(options.headers.get("Authorization"))
         // let options = new RequestOptions({ headers: headers });
         // const options = {} as Options
         // const auth = {} as Headers
@@ -50,33 +36,53 @@ export default {
         
         
         // console.log(options)
-        return axios.create({
-            baseURL: apiUrl,
-            headers: {
-                "Content-type": "application/json",
-                "Authorization": `Bearer ${authToken}`,
-                "Access-Control-Allow-Origin": "*"
+        // return axios.create({
+        //     baseURL: apiUrl,
+        //     headers: {
+        //         "Content-type": "application/json",
+        //         "Authorization": `Bearer ${authToken}`,
+        //         "Access-Control-Allow-Origin": "*"
+        //     }
+        // }).get("/articles").then((response: any) => {
+        //     // this.setState({
+        //     //     tutorials: response.data
+        //     // });
+        //     console.log(response.data);
+        // })
+        //     .catch((e: Error) => {
+        //         console.log(e);
+        //     });
+        // ;
+        return httpClient(url, options).then(({ headers, json }) => (
+            // console.log(headers.entries().next())
+            // console.log(headers.has('content-range'))
+            {
+                data:json,
+                total:10
             }
-        }).get("/articles").then((response: any) => {
-            // this.setState({
-            //     tutorials: response.data
-            // });
-            console.log(response.data);
-        })
-            .catch((e: Error) => {
-                console.log(e);
-            });
-        ;
+     
+        ))
         // return httpClient(url, options).then(({ headers, json }) => ({
         //     data: json,
         //     total: parseInt(headers.get('content-range').split('/').pop(), 10),
         // }));
     },
 
-    getOne: (resource, params) =>
-        httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
+    getOne: (resource, params) =>{
+        const url = `${apiUrl}/${resource}/${params.id}`
+        const options = {} as any;
+        let authToken = localStorage.getItem("token")
+        let mineHeaders = new Headers()
+        mineHeaders.set('Authorization', `Bearer ${authToken}`)
+        options.headers = mineHeaders
+    
+    
+        return httpClient(url, options).then(({ json }) => ({
             data: json,
-        })),
+        }))},
+        // httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
+        //     data: json,
+        // })),
 
     getMany: (resource, params) => {
         const query = {
