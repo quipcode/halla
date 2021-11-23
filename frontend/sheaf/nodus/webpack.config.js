@@ -1,6 +1,12 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 const dependencies = require("./package.json").dependencies
+const Dotenv = require('dotenv-webpack');
+const path = require("path");
+const webpack = require('webpack');
+const dotenv = require('dotenv').config({
+    path: path.join(__dirname, '.env')
+});
 
 module.exports = {
     output: {
@@ -9,11 +15,28 @@ module.exports = {
 
     resolve: {
         extensions: [".tsx", ".ts", ".jsx", ".js", ".json"],
+        fallback: {
+            "fs": false,
+            "os": false,
+            "path": false,
+            // "tls": false,
+            // "net": false,
+            
+            // "zlib": false,
+            // "http": false,
+            // "https": false,
+            // "stream": false,
+            // "crypto": false,
+            
+            // "crypto-browserify": require.resolve('crypto-browserify'), //if you want to use this module also don't forget npm i crypto-browserify 
+        }
     },
 
     devServer: {
         port: 3001,
     },
+    target: 'web',
+
 
     module: {
         rules: [
@@ -35,6 +58,11 @@ module.exports = {
                     loader: "babel-loader",
                 },
             },
+            // {
+            //     test: /\.ts$/,
+            //     use: 'ts-loader',
+            //     exclude: /node-modules/,
+            // },
         ],
     },
 
@@ -51,5 +79,9 @@ module.exports = {
         new HtmlWebPackPlugin({
             template: "./src/index.html",
         }),
+        new Dotenv(),
+        // new webpack.DefinePlugin({
+        //     "process.env": dotenv.parsed
+        // }),
     ],
 };

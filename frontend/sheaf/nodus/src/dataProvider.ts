@@ -16,6 +16,7 @@ export default {
     getList: (resource, params) => {
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
+        
         const query = {
             sort: JSON.stringify([field, order]),
             range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
@@ -27,6 +28,7 @@ export default {
         mineHeaders.set('Authorization', `Bearer ${authToken}`)
         const options = {} as any;
         options.headers = mineHeaders
+        
         // console.log(options.headers.get("Authorization"))
         // let options = new RequestOptions({ headers: headers });
         // const options = {} as Options
@@ -53,6 +55,8 @@ export default {
         //         console.log(e);
         //     });
         // ;
+        console.log("big daddy")
+        console.log(url)
         return httpClient(url, options).then(({ headers, json }) => (
             // console.log(headers.entries().next())
             // console.log(headers.has('content-range'))

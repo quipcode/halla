@@ -32,11 +32,11 @@ import {
 } from 'react-admin';
 import RichTextInput from 'ra-input-rich-text';
 
-const ArticlePanel = ({ id, record, resource }) => (
-    <div dangerouslySetInnerHTML={{ __html: record.summary }} />
-);
+// const ArticlePanel = ({ id, record, resource }) => (
+//     <div dangerouslySetInnerHTML={{ __html: record.summary }} />
+// );
 
-const ArticleShow = props => (
+const ArticleShow = (props) => (
     <Show
         {...props}
         /* disable the app title change when shown */
@@ -144,25 +144,31 @@ export const ArticleList = (props) => {
 //     return <span>Article {record ? `"${record.title}"` : ''}</span>;
 // };
 
-// export const ArticleEdit = props => (
-//     <Edit title={<ArticleTitle />} {...props}>
-//         <SimpleForm>
-//             <TextInput disabled source="id" />
-//             {/* <ReferenceInput source="userId" reference="users">
-//                 <SelectInput optionText="name" />
-//             </ReferenceInput> */}
-//             <TextInput source="title" />
-//             <RichTextInput options={{
-//                 modules: {
-//                     history: { // History module
-//                         delay: 2000,
-//                         maxStack: 500,
-//                         userOnly: true
-//                     }
-//                 },
-//                 theme: "snow"
-//             }} source="summary" />
-//             <BooleanInput label="Publish" source="published" />
-//         </SimpleForm>
-//     </Edit>
-// );
+const ArticleTitle =  record => (
+    <span>Article {record ? `"${record.title}"` : ''}</span>
+)
+    
+
+
+export const ArticleEdit = props => (
+    <Edit title={<ArticleTitle />} {...props}>
+        <SimpleForm>
+            <TextInput disabled source="id" />
+            {/* <ReferenceInput source="userId" reference="users">
+                <SelectInput optionText="name" />
+            </ReferenceInput> */}
+            <TextInput source="title" />
+            <RichTextInput options={{
+                modules: {
+                    history: { // History module
+                        delay: 2000,
+                        maxStack: 500,
+                        userOnly: true
+                    }
+                },
+                theme: "snow"
+            }} source="summary" />
+            <BooleanInput label="Publish" source="published" />
+        </SimpleForm>
+    </Edit>
+);
