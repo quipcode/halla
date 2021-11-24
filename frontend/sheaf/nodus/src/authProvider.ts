@@ -1,68 +1,36 @@
-// export default {
-//     // called when the user attempts to log in
-//     login: ({ username }) => {
-//         localStorage.setItem('username', username);
-//         // accept all username/password combinations
-//         return Promise.resolve();
-//     },
-//     // called when the user clicks on the logout button
-//     logout: () => {
-//         localStorage.removeItem('username');
-//         return Promise.resolve();
-//     },
-//     // called when the API returns an error
-//     checkError: ({ status }) => {
-//         if (status === 401 || status === 403) {
-//             localStorage.removeItem('username');
-//             return Promise.reject();
-//         }
-//         return Promise.resolve();
-//     },
-//     // called when the user navigates to a new location, to check for authentication
-//     checkAuth: () => {
-//         return localStorage.getItem('username')
-//             ? Promise.resolve()
-//             : Promise.reject();
-//     },
-//     // called when the user navigates to a new location, to check for permissions / roles
-//     getPermissions: () => Promise.resolve(),
-// };
-
+import { API_ROOT} from './utils/enironmentConstants'
 
 export const authProvider = {
     // authentication
     login: (user: { username: string , password : string }) => {
-        console.log("in login function")
-        console.log(user.username, user.password)
-        // let env = process.env["NODE_ENV"]
-        let url = process.env["API_BASE_URL"]
+        let url = API_ROOT
         console.log( url)
-        console.log(process)
-        // const request = new Request(
-            
-        //     process.env.REACT_APP_API_BASE_URL + '/auth/login',
-        //     {
-        //         method: 'POST',
-        //         body: JSON.stringify({ username: username, password }),
-        //         headers: new Headers({ 'Content-Type': 'application/json' }),
-        //     }
-        // );
-        // return fetch(request)
-        //     .then((response) => {
-        //         if (response.status < 200 || response.status >= 300) {
-        //             throw new Error(response.statusText);
-        //         }
-        //         return response.json();
-        //     })
-        //     .then((auth) => {
-        //         localStorage.setItem(
-        //             'auth',
-        //             JSON.stringify({ ...auth, fullName: username })
-        //         );
-        //     })
-        //     .catch(() => {
-        //         throw new Error('Network error');
-        //     });
+        url += '/auth/login'
+        const request = new Request(
+            url,
+            {
+                method: 'POST',
+                body: JSON.stringify({ username: user.username, password: user.password }),
+                headers: new Headers({ 'Content-Type': 'application/json' }),
+            }
+        );
+        return fetch(request)
+            .then((response) => {
+                if (response.status < 200 || response.status >= 300) {
+                    throw new Error(response.statusText);
+                }
+                return response.json();
+            })
+            .then((auth) => {
+                localStorage.setItem(
+                    'auth',
+                    JSON.stringify({ ...auth})
+                );
+                localStorage.setItem('token', auth.token)
+            })
+            .catch(() => {
+                throw new Error('Network error');
+            });
     },
     checkError: (error: {status: number} ) => {
         const status = error.status;
@@ -81,13 +49,13 @@ export const authProvider = {
         localStorage.removeItem('auth');
         return Promise.resolve();
     },
-    // getIdentity: () => {
-    //     try {
-    //         const { id, fullName, avatar } = JSON.parse(localStorage.getItem('auth'));
-    //         return Promise.resolve({ id, fullName, avatar });
-    //     } catch (error) {
-    //         return Promise.reject(error);
-    //     }
-    // },
+    getIdentity: () => {
+        try {
+            const { id, fullName, avatar } = JSON.parse(localStorage.getItem('auth'));
+            return Promise.resolve({ id, fullName, avatar });
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    },
     getPermissions: (params : any) => Promise.resolve(),
 };

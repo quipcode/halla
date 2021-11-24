@@ -67,15 +67,15 @@ module.exports = {
     },
 
     plugins: [
-        new ModuleFederationPlugin({
-            name: "nodus",
-            filename: "remoteEntry.js",
-            remotes: {},
-            exposes: {
-                "./Header": "./src/Header",
-            },
-            shared: { ...dependencies}
-        }),
+        // new ModuleFederationPlugin({
+        //     name: "nodus",
+        //     filename: "remoteEntry.js",
+        //     remotes: {},
+        //     exposes: {
+        //         "./Header": "./src/Header",
+        //     },
+        //     shared: { ...dependencies}
+        // }),
         new HtmlWebPackPlugin({
             template: "./src/index.html",
         }),

@@ -1,19 +1,14 @@
 import { fetchUtils } from 'react-admin';
-import { stringify } from 'query-string';
+import { stringify } from 'querystring';
 import { constants } from './utils/constants'
+import { API_ROOT } from './utils/enironmentConstants'
 
-// const apiUrl = constants.API_BASE_URL
-const apiUrl = "http://localhost:5000/api"
-// const apiUrl = 'https://my.api.com/';
+
+const apiUrl = API_ROOT
 const httpClient = fetchUtils.fetchJson;
 
-import axios from "axios";
-import IAllArticlesData from './types/article.types';
-
-
-
 export default {
-    getList: (resource, params) => {
+    getList: (resource:string , params: any) => {
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
         
@@ -27,44 +22,13 @@ export default {
         let mineHeaders = new Headers()
         mineHeaders.set('Authorization', `Bearer ${authToken}`)
         const options = {} as any;
-        options.headers = mineHeaders
-        
-        // console.log(options.headers.get("Authorization"))
-        // let options = new RequestOptions({ headers: headers });
-        // const options = {} as Options
-        // const auth = {} as Headers
-        // auth.Authorization = `Bearer ${authToken}`
-        // options.Headers = auth;
-        
-        
-        // console.log(options)
-        // return axios.create({
-        //     baseURL: apiUrl,
-        //     headers: {
-        //         "Content-type": "application/json",
-        //         "Authorization": `Bearer ${authToken}`,
-        //         "Access-Control-Allow-Origin": "*"
-        //     }
-        // }).get("/articles").then((response: any) => {
-        //     // this.setState({
-        //     //     tutorials: response.data
-        //     // });
-        //     console.log(response.data);
-        // })
-        //     .catch((e: Error) => {
-        //         console.log(e);
-        //     });
-        // ;
-        console.log("big daddy")
-        console.log(url)
+        options.headers = mineHeaders        
+   
         return httpClient(url, options).then(({ headers, json }) => (
-            // console.log(headers.entries().next())
-            // console.log(headers.has('content-range'))
             {
                 data:json,
                 total:10
             }
-     
         ))
         // return httpClient(url, options).then(({ headers, json }) => ({
         //     data: json,
@@ -72,7 +36,7 @@ export default {
         // }));
     },
 
-    getOne: (resource, params) =>{
+    getOne: (resource:string, params: any) =>{
         const url = `${apiUrl}/${resource}/${params.id}`
         const options = {} as any;
         let authToken = localStorage.getItem("token")
@@ -88,7 +52,7 @@ export default {
         //     data: json,
         // })),
 
-    getMany: (resource, params) => {
+    getMany: (resource:string, params:any) => {
         const query = {
             filter: JSON.stringify({ ids: params.ids }),
         };
@@ -96,7 +60,7 @@ export default {
         return httpClient(url).then(({ json }) => ({ data: json }));
     },
 
-    getManyReference: (resource, params) => {
+    getManyReference: (resource:string, params:any) => {
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
         const query = {
@@ -115,13 +79,13 @@ export default {
         }));
     },
 
-    update: (resource, params) =>
+    update: (resource: string, params: any) =>
         httpClient(`${apiUrl}/${resource}/${params.id}`, {
             method: 'PUT',
             body: JSON.stringify(params.data),
         }).then(({ json }) => ({ data: json })),
 
-    updateMany: (resource, params) => {
+    updateMany: (resource: string, params: any) => {
         const query = {
             filter: JSON.stringify({ id: params.ids }),
         };
@@ -131,7 +95,7 @@ export default {
         }).then(({ json }) => ({ data: json }));
     },
 
-    create: (resource, params) =>
+    create: (resource: string, params: any) =>
         httpClient(`${apiUrl}/${resource}`, {
             method: 'POST',
             body: JSON.stringify(params.data),
@@ -139,12 +103,12 @@ export default {
             data: { ...params.data, id: json.id },
         })),
 
-    delete: (resource, params) =>
+    delete: (resource: string, params: any) =>
         httpClient(`${apiUrl}/${resource}/${params.id}`, {
             method: 'DELETE',
         }).then(({ json }) => ({ data: json })),
 
-    deleteMany: (resource, params) => {
+    deleteMany: (resource: string, params: any) => {
         const query = {
             filter: JSON.stringify({ id: params.ids }),
         };

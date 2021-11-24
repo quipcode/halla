@@ -36,7 +36,7 @@ import RichTextInput from 'ra-input-rich-text';
 //     <div dangerouslySetInnerHTML={{ __html: record.summary }} />
 // );
 
-const ArticleShow = (props) => (
+const ArticleShow = (props: any) => (
     <Show
         {...props}
         /* disable the app title change when shown */
@@ -48,7 +48,7 @@ const ArticleShow = (props) => (
     </Show>
 );
 
-const ArticleEdi = props => (
+const ArticleEdi = (props: any) => (
     <Edit
         {...props}
         /* disable the app title change when shown */
@@ -63,7 +63,7 @@ const ArticleEdi = props => (
     </Edit>
 );
 
-const TabbedArticle = props => (
+const TabbedArticle = (props: any) => (
     <Edit
         {...props}
         title={`: ${props.record.title}`}
@@ -105,18 +105,14 @@ const TabbedArticle = props => (
 
 
 
-export const ArticleList = (props) => {
+export const ArticleList = (props: any) => {
     const theme = useTheme();
-    const isSmall = useMediaQuery(theme.breakpoints.up('sm'));
+    const isNotSmall = useMediaQuery(theme.breakpoints.up('sm'));
+    
     return (
         <List {...props}>
-            {isSmall ? (
-                <SimpleList
-                    primaryText={record => record.title}
-                    secondaryText={record => `${record.views} views`}
-                    tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
-                />
-            ) : (
+            {isNotSmall ? (
+
                 <Datagrid
                     expand={<TabbedArticle />}
                 // isRowExpandable={row => row.has_detail}
@@ -135,7 +131,15 @@ export const ArticleList = (props) => {
                     {/* <BooleanInput source="published"/> */}
                     <EditButton />
                 </Datagrid>
-            )}
+
+            ) : (
+                <SimpleList
+                    primaryText={record => record.title}
+                    secondaryText={record => `${record.views} views`}
+                    tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+                />
+            )
+            } 
         </List>
     );
 }
@@ -144,13 +148,13 @@ export const ArticleList = (props) => {
 //     return <span>Article {record ? `"${record.title}"` : ''}</span>;
 // };
 
-const ArticleTitle =  record => (
+const ArticleTitle =  (record: any) => (
     <span>Article {record ? `"${record.title}"` : ''}</span>
 )
     
 
 
-export const ArticleEdit = props => (
+export const ArticleEdit = (props: any) => (
     <Edit title={<ArticleTitle />} {...props}>
         <SimpleForm>
             <TextInput disabled source="id" />
@@ -171,4 +175,16 @@ export const ArticleEdit = props => (
             <BooleanInput label="Publish" source="published" />
         </SimpleForm>
     </Edit>
+);
+
+export const ArticleCreate = (props: any) => (
+    <Create {...props} >
+        <SimpleForm>
+            <ReferenceInput source="userId" reference="users" >
+                <SelectInput optionText="name" />
+            </ReferenceInput >
+            <TextInput source="title" />
+            <TextInput multiline source="body" />
+        </SimpleForm >
+    </Create >
 );
