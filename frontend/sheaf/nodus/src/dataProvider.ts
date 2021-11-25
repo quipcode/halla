@@ -7,6 +7,11 @@ import { API_ROOT } from './utils/enironmentConstants'
 const apiUrl = API_ROOT
 const httpClient = fetchUtils.fetchJson;
 
+let authToken = localStorage.getItem("token")
+let mineHeaders = new Headers()
+mineHeaders.set('Authorization', `Bearer ${authToken}`)
+const options = {} as any;
+options.headers = mineHeaders
 export default {
     getList: (resource:string , params: any) => {
         const { page, perPage } = params.pagination;
@@ -18,11 +23,7 @@ export default {
             filter: JSON.stringify(params.filter),
         };
         const url = `${apiUrl}/${resource}/`;
-        let authToken = localStorage.getItem("token")
-        let mineHeaders = new Headers()
-        mineHeaders.set('Authorization', `Bearer ${authToken}`)
-        const options = {} as any;
-        options.headers = mineHeaders        
+   
    
         return httpClient(url, options).then(({ headers, json }) => (
             {
@@ -79,11 +80,47 @@ export default {
         }));
     },
 
-    update: (resource: string, params: any) =>
-        httpClient(`${apiUrl}/${resource}/${params.id}`, {
-            method: 'PUT',
-            body: JSON.stringify(params.data),
-        }).then(({ json }) => ({ data: json })),
+    update: (resource: string, params: any) =>{
+        let temp = `${apiUrl}/${resource}/` + params.id
+
+        console.log(temp)
+        console.log(params)
+        options.headers.set('Content-Type', 'application/json' )
+        console.log(options.headers)
+        options.method = 'PUT'
+        options.body = JSON.stringify({ article: params.data})
+        console.log(options)
+        // httpClient(`${apiUrl}/${resource}/${params.id}`, {
+        //     method: 'PUT',
+        //     body: JSON.stringify(params.data),
+        // }).then(({ json }) => ({ data: json }))
+
+        // { method: 'post',
+        //     headers: new Headers({
+        //         'Authorization': 'Basic ' + btoa('username:password'),
+        //         'Content-Type': 'application/x-www-form-urlencoded'
+        //     }),
+        //         body: 'A=1&B=2'}
+
+        return httpClient(`${apiUrl}/${resource}/${params.id}`,options )
+        .then(({ json }) => (
+            { data: json.article })
+            
+        )
+
+        // httpClient(`${apiUrl}/${resource}/${params.id}`, {
+        //     method: "PUT",
+        //     body: JSON.stringify({article: params.data}),
+        //     headers: new Headers({
+        //         'Authorization': `Bearer ${localStorage.getItem("token")}`,
+        //     })
+        // })
+        //     .then(({ json }) => (
+        //         { data: json })
+
+        //     ).then(json => console.log(json))
+    }
+    ,
 
     updateMany: (resource: string, params: any) => {
         const query = {
