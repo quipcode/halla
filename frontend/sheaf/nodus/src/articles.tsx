@@ -180,11 +180,23 @@ export const ArticleEdit = (props: any) => (
 export const ArticleCreate = (props: any) => (
     <Create {...props} >
         <SimpleForm>
-            <ReferenceInput source="userId" reference="users" >
+            {/* <ReferenceInput source="userId" reference="users" >
                 <SelectInput optionText="name" />
-            </ReferenceInput >
+            </ReferenceInput > */}
             <TextInput source="title" />
-            <TextInput multiline source="body" />
+            <TextInput source="metaTitle" />
+            <TextInput multiline source="slug" />
+            <RichTextInput options={{
+                modules: {
+                    history: { // History module
+                        delay: 2000,
+                        maxStack: 500,
+                        userOnly: true
+                    }
+                },
+                theme: "snow"
+            }} source="summary" />
+            {/* <TextInput multiline source="body" /> */}
         </SimpleForm >
     </Create >
 );

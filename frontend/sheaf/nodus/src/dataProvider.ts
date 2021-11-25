@@ -81,44 +81,15 @@ export default {
     },
 
     update: (resource: string, params: any) =>{
-        let temp = `${apiUrl}/${resource}/` + params.id
-
-        console.log(temp)
-        console.log(params)
         options.headers.set('Content-Type', 'application/json' )
-        console.log(options.headers)
         options.method = 'PUT'
         options.body = JSON.stringify({ article: params.data})
-        console.log(options)
-        // httpClient(`${apiUrl}/${resource}/${params.id}`, {
-        //     method: 'PUT',
-        //     body: JSON.stringify(params.data),
-        // }).then(({ json }) => ({ data: json }))
-
-        // { method: 'post',
-        //     headers: new Headers({
-        //         'Authorization': 'Basic ' + btoa('username:password'),
-        //         'Content-Type': 'application/x-www-form-urlencoded'
-        //     }),
-        //         body: 'A=1&B=2'}
 
         return httpClient(`${apiUrl}/${resource}/${params.id}`,options )
         .then(({ json }) => (
             { data: json.article })
             
         )
-
-        // httpClient(`${apiUrl}/${resource}/${params.id}`, {
-        //     method: "PUT",
-        //     body: JSON.stringify({article: params.data}),
-        //     headers: new Headers({
-        //         'Authorization': `Bearer ${localStorage.getItem("token")}`,
-        //     })
-        // })
-        //     .then(({ json }) => (
-        //         { data: json })
-
-        //     ).then(json => console.log(json))
     }
     ,
 
@@ -132,13 +103,24 @@ export default {
         }).then(({ json }) => ({ data: json }));
     },
 
-    create: (resource: string, params: any) =>
-        httpClient(`${apiUrl}/${resource}`, {
-            method: 'POST',
-            body: JSON.stringify(params.data),
-        }).then(({ json }) => ({
+    create: (resource: string, params: any) =>{
+        options.headers.set('Content-Type', 'application/json')
+        options.method = 'POST'
+        options.body = JSON.stringify({ article: params.data })
+
+
+        return httpClient(`${apiUrl}/${resource}`, options
+        ).then(({ json }) => ({
             data: { ...params.data, id: json.id },
-        })),
+        }))
+
+        // httpClient(`${apiUrl}/${resource}`, {
+        //     method: 'POST',
+        //     body: JSON.stringify(params.data),
+        // }).then(({ json }) => ({
+        //     data: { ...params.data, id: json.id },
+        // }))
+    },
 
     delete: (resource: string, params: any) =>
         httpClient(`${apiUrl}/${resource}/${params.id}`, {

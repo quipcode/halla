@@ -126,11 +126,14 @@ public class ArticleController {
         article.setTitle(incomingArticle.getTitle());
         article.setSummary(incomingArticle.getSummary());
         Article savedArticle = articleRepository.save(article);
-        incomingSections.forEach( section -> {
-            section.setArticleId(savedArticle.getId());
-            articleSectionRepository.save(section);
-        });
-//        Article newlyCreatedArticle = articleRepository.getById(savedArticle.getId());
+
+        if(incomingSections != null){
+            incomingSections.forEach( section -> {
+                section.setArticleId(savedArticle.getId());
+                articleSectionRepository.save(section);
+            });
+        }
+
         Map<String, Object> newlyCreatedArticle = articleService.getArticleById(savedArticle.getId());
         return ResponseEntity.status(200).body(newlyCreatedArticle.get("article"));
     }
