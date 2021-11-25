@@ -8,7 +8,7 @@ export const constants = {
     LOGIN_TITLE: "Login",
     REGISTER_TITLE: "Register",
     ERR_401: "Request failed with status code 401",
-    // TINYMCE_API_KEY: process.env.TINYMCE_API_KEY,
+    TINYMCE_API_KEY: process.env.TINYMCE_API_KEY,
     CONTENT: "content",
     MYCONTENT: "mycontent",
     U: "u",
