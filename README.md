@@ -32,7 +32,7 @@ Utilizes a MySQL DB, nothing too fancy, some relationships are maintained
 
 
 #### Testing:
-* To be honest I really should start testing my code...if you want to call me a hypocrite because of this I understand
+To be honest I really should start testing my code...if you want to call me a hypocrite because of this I understand
 
 	
 #### Deployment:
