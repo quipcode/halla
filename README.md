@@ -49,7 +49,7 @@ Slow you're roll buddy...we aren't there...yet...
     * mostly spent this month writing simply routes to make sure I can write APIs
     * struggled implementing tinymce editor into my front end
     * struggled configuring backend properties
-*__August:__
+* __August:__
 	* Finally able to write to and read from my MySQL Database
 	* Added Hibernate Envers to enable auditing
 	* Beefed up my APIs to allow full CRUD operations
