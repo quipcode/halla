@@ -1,0 +1,74 @@
+// {
+//   "compilerOptions": {
+//     "target": "es5",
+//     "lib": [
+//       "dom",
+//       "dom.iterable",
+//       "esnext"
+//     ],
+//     "allowJs": true,
+//     "skipLibCheck": true,
+//     "esModuleInterop": true,
+//     "allowSyntheticDefaultImports": true,
+//     "strict": true,
+//     "forceConsistentCasingInFileNames": true,
+//     "noFallthroughCasesInSwitch": true,
+//     "module": "esnext",
+//     "moduleResolution": "node",
+//     "resolveJsonModule": true,
+//     "isolatedModules": true,
+//     "noEmit": true,
+//     "jsx": "react-jsx"
+//   },
+//   "include": [
+//     "src"
+//   ]
+// }
+{
+    "compilerOptions": {
+        "outDir": "./dist",
+        "target": "es5",
+        "jsx": "react",
+        "moduleResolution": "node",
+        "module": "esnext",
+        "noImplicitAny": true,
+        "allowSyntheticDefaultImports": true
+    },
+    "include": ["src"]
+}
+// {
+//     "compilerOptions": {
+//         "target": "ES2019",
+//         "sourceMap": true,
+//         "module": "commonjs",
+//         "esModuleInterop": true,
+//         "declaration": true,
+//         "resolveJsonModule": true,
+//         "removeComments": true,
+//         "emitDecoratorMetadata": true,
+//         "experimentalDecorators": true,
+//         "importHelpers": true,
+//         "skipLibCheck": true,
+//         "outDir": "../../dist/server",
+//         "lib": [
+//             "ES2019"
+//         ],
+//         "moduleResolution": "node",
+//         "types": [
+//             "node"
+//         ],
+//         "incremental": true,
+//         "composite": true
+//     },
+//     "include": [
+//         "**/*.ts"
+//     ],
+//     "exclude": [
+//         "**/*.test.ts"
+//     ],
+//     // "references": [
+//     //     {
+//     //         "path": "../shared"
+//     //     }
+//     // ]
+// }
