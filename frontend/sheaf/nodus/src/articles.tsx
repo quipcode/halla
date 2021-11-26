@@ -87,7 +87,7 @@ const TabbedArticle = (props: any) => (
                 <RichTextInput source="summary" validate={required()} addLabel={false} />
 
             </FormTab>
-            <FormTab label="latlongs">
+            {/* <FormTab label="latlongs">
                 <Edit {...props}>
                     <SimpleForm >
                     <span>
@@ -97,11 +97,11 @@ const TabbedArticle = (props: any) => (
                     </span>
                     </SimpleForm>
                 </Edit>
-            </FormTab>
+            </FormTab> */}
             <FormTab label="sections">
               
                 <SimpleForm fullWidth>
-                    <Article/>
+                    <Editor/>
                     </SimpleForm>
              
             </FormTab>
