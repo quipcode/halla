@@ -74,10 +74,10 @@ interface MyTheme {
   
 
 const Article = (props: any) => {
-  const classes = useStyles(props)
+  const stylingClasses = useStyles(props)
   // const sampleArticle = { uuid, authorId, metaTitle, slug, published}
   const sampleArticle = { metaTitle : "", slug : "", published : false }
-  const sampleSections = { idx: 0, isSummarySelected: false, summary: {}, title: "", isTitleSelected: true, sectionTypeId: 1, sectionTypes: [ {id: 1, name: "Visible"}, {id: 2, name: "Hidden"}] }
+  const sampleSections = { idx: 0, isSummarySelected: false, summary: {}, title: "", content: "", isTitleSelected: true, sectionTypeId: 1, sectionTypes: [ {id: 1, name: "Visible"}, {id: 2, name: "Hidden"}] }
   const options = sampleSections.sectionTypes.map((d, i) => 
     <MenuItem value={d.id} key={i}>{d.name}</MenuItem>
   );
@@ -95,30 +95,33 @@ const Article = (props: any) => {
 
   const [displayIsSaving, setDisplayIsSaving] = useState(false);
 
-  const handlePublish = (event: Event) => {
+  const handlePublish = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setDisplayIsSaving(true)
     // throttledSaveToServer();
     console.log("publish was pressed: ", content, sections)
     event.preventDefault();
   }
 
-  const handleSubmit = (event: Event) => {
+  const handleSubmit = (event: any) => {
     setDisplayIsSaving(true)
     event.preventDefault()
     props.createArticle(content)    
     setDisplayIsSaving(false)
   }
 
-  const handleCancel = (event: Event) => {
+  const handleCancel = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
   }
 
 
-  const handleCheckboxSelection = (idx : number, event: Event) => {
-    const newSectionsArray = sections.map(i => {
+  const handleCheckboxSelection = (idx: number, event: React.FormEvent<HTMLInputElement>) => {
+    const newSectionsArray = sections.map( (i: any) => {
       if (idx === i.idx) {
           console.log(event)
-        i[event.currentTarget.name] = event.target.checked
+        i[event.currentTarget.name] = event.currentTarget.checked
+        // i[event.target.name] = event.target.checked
+        // if (event.target instanceof HTMLDivElement) {
+        // }        
       }
       return i;
     })
@@ -127,18 +130,18 @@ const Article = (props: any) => {
     
   }
 
-  const handleSectionInput = (idx, event) => {
-    const newSectionsArray = sections.map(i => {
+  const handleSectionInput = (idx: number, event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const newSectionsArray = sections.map((i: any) => {
       if (idx === i.idx) {
-        i[event.target.name] = event.target.value
+        i[event.currentTarget.name] = event.currentTarget.value
       }
       return i;
     })
     setSections(newSectionsArray);
     content.sections = newSectionsArray
   }
-  const handleEditorInput = (idx, event, name) => {
-    const newSectionsArray = sections.map(i => {
+  const handleEditorInput = (idx: number, event: React.SyntheticEvent<any, Event>, name: string) => {
+    const newSectionsArray = sections.map( (i: any) => {
       if (idx === i.idx) {
         i[name] = event
       }
@@ -149,9 +152,10 @@ const Article = (props: any) => {
   }
 
   const handleAddFields = () => {
-    setSections([...sections, { idx: sections.length, isSummarySelected: false, summary: null, title: "", isTitleSelected: false, content: null, content: null, sectionTypeId: 1, sectionTypes: [{ id: 1, name: "visible" }, { id: 2, name: "hidden" }] }]  )
+    // setSections([...sections, { idx: sections.length, isSummarySelected: false, summary: null, title: "", isTitleSelected: false, content: null, content: null, sectionTypeId: 1, sectionTypes: [{ id: 1, name: "visible" }, { id: 2, name: "hidden" }] }]  )
+    setSections([...sections, { idx: sections.length, isSummarySelected: false, summary: null, title: "", isTitleSelected: false, content: "", sectionTypeId: 1, sectionTypes: [{ id: 1, name: "visible" }, { id: 2, name: "hidden" }] }])
   }
-  const handleRemoveFields = idx => {
+  const handleRemoveFields = (idx: number) => {
     const values = [...sections];
     values.splice(values.findIndex(value => 
       value.idx === idx
@@ -160,9 +164,9 @@ const Article = (props: any) => {
     setSections(values);
   }
 
-  const handleArticleInput = (event) => {
-    let name = event.target.name;
-    let value = event.target.value
+  const handleArticleInput = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    let name = event.currentTarget.name;
+    let value = event.currentTarget.value
     let newArticle = { ...article}
     newArticle[name] = value;
     setArticle(newArticle)
@@ -171,7 +175,7 @@ const Article = (props: any) => {
   return (
     
     <Container>
-      <form className={classes.root} onSubmit={handleSubmit}>
+      <form className={stylingClasses.root} onSubmit={handleSubmit}>
         <StatusBar
           displayIsSaving={displayIsSaving}
         />
@@ -238,7 +242,7 @@ const Article = (props: any) => {
                 }
                 label={constants.INCLUDE_TITLE}
               />        
-              <FormControl className={classes.f.formControl}>
+              {/* <FormControl>
                 <Select
                   value={sectionField.sectionTypeId}
                   onChange={(e) =>
@@ -250,14 +254,14 @@ const Article = (props: any) => {
                 </Select>
 
                 <FormHelperText>Section Type</FormHelperText>
-              </FormControl>
+              </FormControl> */}
             </FormGroup>
             {sectionField.isTitleSelected ? <TextField
               fullWidth
               name="title"
               label="Title"
               value={sectionField.title}
-              onChange={event => {
+              onChange={(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
                 handleSectionInput(sectionField.idx, event)
               }}
             /> : null }
@@ -267,7 +271,7 @@ const Article = (props: any) => {
               label="Summary"
               height={300}
               value={sectionField.summary}
-              onChange={e =>
+              onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
                 handleEditorInput(sectionField.idx, e, "summary")
               }
             /> : null }
@@ -278,7 +282,7 @@ const Article = (props: any) => {
               label="Content"
               value={sectionField.content}
               height={600}
-              onChange={e =>
+              onChange={(e: React.SyntheticEvent<any, Event>) =>
                 handleEditorInput(sectionField.idx, e, "content")
               }
             />
@@ -295,7 +299,7 @@ const Article = (props: any) => {
         ))}
        
         {/* <Button
-          className={classes.button}
+          className={stylingClasses.button}
           variant="contained"
           color="primary"
           type="submit"
@@ -303,14 +307,14 @@ const Article = (props: any) => {
           onClick={handleSubmit}
         >Send</Button> */}
         {content.article.uuid ? 
-        <Button color="secondary" variant="contained" type="submit" onClick={(e) => { handlePublish(e) }} > Publish </Button > 
-        : <Button color="secondary" variant="contained" type="submit" disabled onClick={(e) => { handlePublish(e) }} >  Publish </Button >}
+        <Button color="secondary" variant="contained" type="submit" onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => { handlePublish(e) }} > Publish </Button > 
+        : <Button color="secondary" variant="contained" type="submit" disabled onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => { handlePublish(e) }} >  Publish </Button >}
         
         
         <Button color="primary" variant="contained" type="submit" onClick={(e) => { handleSubmit(e) }} >
           Save
         </Button>
-        <Button color="error" variant="contained" type="reset" onClick={(e) => { handleCancel(e) }}>
+        <Button color="error" variant="contained" type="reset" onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => { handleCancel(e) }}>
           Cancel
         </Button>
       </form>
