@@ -8,7 +8,9 @@ Hibernate Envers, Redux, Webpack, Typescipt, Javacript, Java, React, SpringBoot 
 _Determination_, JSON, JWT, RBAC, Micro-Frontend, React-Admin, _Persistence_, TinyMce, Material UI
 
 #### Architecture:
-Follows(at least it should) a generic [layered/tiered model](https://en.wikipedia.org/wiki/Multitier_architecture): __Presentation__ -> __Business__ -> __Services__ -> __Persistence__ -> __Database__
+Follows(at least it should) a generic [layered/tiered model](https://en.wikipedia.org/wiki/Multitier_architecture): 
+
+__Presentation__ -> __Business__ -> __Services__ -> __Persistence__ -> __Database__
 
 #### Database:
 Utilizes a MySQL DB, nothing too fancy, some relationships are maintained
