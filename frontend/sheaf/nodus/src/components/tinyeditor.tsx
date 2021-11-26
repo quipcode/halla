@@ -5,7 +5,7 @@ import { constants } from '../utils/constants';
 import StatusBar from './statusbar';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-
+import { TINYMCE_API_KEY} from '../utils/enironmentConstants'
 // import constants from '../utils/constants';
 // import StatusBar from './statusbar';
 // import * as _ from "lodash";
@@ -77,7 +77,7 @@ function TinyEditor(props: any){
     return (
 
                 <Editor
-                    apiKey={constants.TINYMCE_API_KEY}
+                    apiKey={TINYMCE_API_KEY}
                     // ref={props.referral}
                     // onInit={props.onInit}
                     // value={props.value}

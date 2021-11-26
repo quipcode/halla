@@ -64,11 +64,11 @@ interface MyTheme {
         backgroundColor: props.backgroundColor,
         color: theme.color,
         '& .MuiTextField-root': {
-            margin: theme.spacing(1),
+            // margin: theme.spacing(1),
         },
     }),
     button: {
-        margin: theme.spacing(1),
+        // margin: theme.spacing(1),
     }
   }));
   
@@ -175,6 +175,7 @@ const Article = (props: any) => {
   return (
     
     <Container>
+        {console.log(props)}
       <form className={stylingClasses.root} onSubmit={handleSubmit}>
         <StatusBar
           displayIsSaving={displayIsSaving}

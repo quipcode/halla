@@ -30,7 +30,11 @@ import {
     ReferenceManyField,
     DateField
 } from 'react-admin';
+import { Field } from 'react-final-form';
 import RichTextInput from 'ra-input-rich-text';
+
+import Article from "./components/article";
+import Editor from './components/tinyeditor'
 
 // const ArticlePanel = ({ id, record, resource }) => (
 //     <div dangerouslySetInnerHTML={{ __html: record.summary }} />
@@ -82,6 +86,24 @@ const TabbedArticle = (props: any) => (
 
                 <RichTextInput source="summary" validate={required()} addLabel={false} />
 
+            </FormTab>
+            <FormTab label="latlongs">
+                <Edit {...props}>
+                    <SimpleForm >
+                    <span>
+                        <Field name="lat" component="input" type="number" placeholder="latitude"  />
+                        &nbsp;
+                        <Field name="lng" component="input" type="number" placeholder="longitude" />
+                    </span>
+                    </SimpleForm>
+                </Edit>
+            </FormTab>
+            <FormTab label="sections">
+              
+                <SimpleForm fullWidth>
+                    <Article/>
+                    </SimpleForm>
+             
             </FormTab>
             {/* <FormTab label="Miscellaneous">
                 <TextInput label="Password (if protected post)" source="password" type="password" />
