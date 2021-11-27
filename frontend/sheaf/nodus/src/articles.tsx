@@ -33,8 +33,41 @@ import {
 import { Field } from 'react-final-form';
 import RichTextInput from 'ra-input-rich-text';
 
+// import {
+//     TextField,
+    
+// } from "@material-ui/core";
+
+import {TextField as MuiTextField} from '@mui/material';
+
 import Article from "./components/article";
 import Editor from './components/tinyeditor'
+
+
+import { useField } from 'react-final-form';
+
+const BoundedTextField = ({ name, label }) => {
+    const {
+        input: { onChange },
+        meta: { touched, error }
+    } = useField(name);
+    return (
+        <MuiTextField
+            name={name}
+            label={label}
+            onChange={onChange}
+            error={!!(touched && error)}
+            helperText={touched && error}
+        />
+    );
+};
+const LatLngInput = () => (
+    <span>
+        <BoundedTextField name="lat" label="latitude" />
+        &nbsp;
+        <BoundedTextField name="lng" label="longitude" />
+    </span>
+);
 
 // const ArticlePanel = ({ id, record, resource }) => (
 //     <div dangerouslySetInnerHTML={{ __html: record.summary }} />
@@ -87,24 +120,24 @@ const TabbedArticle = (props: any) => (
                 <RichTextInput source="summary" validate={required()} addLabel={false} />
 
             </FormTab>
-            {/* <FormTab label="latlongs">
+            <FormTab label="latlongs">
                 <Edit {...props}>
-                    <SimpleForm >
-                    <span>
-                        <Field name="lat" component="input" type="number" placeholder="latitude"  />
-                        &nbsp;
-                        <Field name="lng" component="input" type="number" placeholder="longitude" />
-                    </span>
-                    </SimpleForm>
+
+                <LatLngInput />
                 </Edit>
-            </FormTab> */}
-            <FormTab label="sections">
+                {/* <Edit {...props}> */}
+                    {/* <SimpleForm >
+                        
+                    </SimpleForm> */}
+                {/* </Edit> */}
+            </FormTab>
+            {/* <FormTab label="sections">
               
                 <SimpleForm fullWidth>
-                    <Editor/>
+                    <Editor />
                     </SimpleForm>
              
-            </FormTab>
+            </FormTab> */}
             {/* <FormTab label="Miscellaneous">
                 <TextInput label="Password (if protected post)" source="password" type="password" />
                 <DateInput label="Publication date" source="published_at" />
