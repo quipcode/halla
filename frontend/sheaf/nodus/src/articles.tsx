@@ -189,7 +189,7 @@ const TabbedArticle = (props: any) => (
                 <SectionInput />
             </FormTab>
             <FormTab label="rasections">
-                <RaSections {...props}/>
+                <RaSections />
             </FormTab>
             {/* <FormTab label="Miscellaneous">
                 <TextInput label="Password (if protected post)" source="password" type="password" />
