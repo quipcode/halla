@@ -42,7 +42,8 @@ import {TextField as MuiTextField} from '@mui/material';
 
 import Article from "./components/article";
 import Editor from './components/tinyeditor'
-
+import Sections from './components/sections'
+import RaSections from "./components/ra_sections";
 
 import { useField } from 'react-final-form';
 
@@ -68,6 +69,46 @@ const LatLngInput = () => (
         <BoundedTextField name="lng" label="longitude" />
     </span>
 );
+
+// const BoundedEditor =({name, label}) =>{
+//     const {
+//         input: { onChange },
+//         meta: { touched, error }
+//     } = useField(name);
+//     return (
+//         <Editor
+//             name={name}
+//             label={label}
+//             onChange={onChange}
+//         />
+//     )
+// }
+
+// const EditorInput = () => (
+//     <span>
+//         <BoundedEditor name="obama" label="Obama"/>
+//     </span>
+// )
+
+const BoundedSections = ({ name, label }) => {
+    const {
+        input: { onChange },
+        meta: { touched, error }
+    } = useField(name);
+    return (
+        <Sections
+            name={name}
+            label={label}
+            onChange={onChange}
+        />
+    )
+}
+
+const SectionInput = () => (
+    <span>
+        <BoundedSections name="obama" label="Obama" />
+    </span>
+)
 
 // const ArticlePanel = ({ id, record, resource }) => (
 //     <div dangerouslySetInnerHTML={{ __html: record.summary }} />
@@ -101,13 +142,15 @@ const ArticleEdi = (props: any) => (
 );
 
 const TabbedArticle = (props: any) => (
+    
     <Edit
+        
         {...props}
         title={`: ${props.record.title}`}
     // title="hi"
     //     title={props.record.title}
     >
-
+        
         <TabbedForm syncWithLocation={false}>
             <FormTab label="Meta">
                 <TextInput disabled label="Id" source="id" />
@@ -131,13 +174,23 @@ const TabbedArticle = (props: any) => (
                     </SimpleForm> */}
                 {/* </Edit> */}
             </FormTab>
-            {/* <FormTab label="sections">
-              
+            <FormTab label="sections">
+                {/* <Edit {...props} fullWidth>
                 <SimpleForm fullWidth>
-                    <Editor />
+                <SectionInput  />
                     </SimpleForm>
-             
-            </FormTab> */}
+                    </Edit> */}
+                {/* <Edit {...props} fullWidth>
+                        <SectionInput />
+                </Edit> */}
+                    {/* <SimpleForm fullWidth>
+                        <SectionInput />
+                    </SimpleForm> */}
+                <SectionInput />
+            </FormTab>
+            <FormTab label="rasections">
+                <RaSections {...props}/>
+            </FormTab>
             {/* <FormTab label="Miscellaneous">
                 <TextInput label="Password (if protected post)" source="password" type="password" />
                 <DateInput label="Publication date" source="published_at" />
@@ -166,10 +219,11 @@ export const ArticleList = (props: any) => {
     
     return (
         <List {...props}>
+            
             {isNotSmall ? (
-
+                
                 <Datagrid
-                    expand={<TabbedArticle />}
+                    expand={<TabbedArticle  />}
                 // isRowExpandable={row => row.has_detail}
 
                 >
