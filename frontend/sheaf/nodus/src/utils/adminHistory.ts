@@ -1,9 +1,7 @@
-import { createBrowserHistory } from 'history';
-
-const adminHistory = createBrowserHistory(
+import { createHashHistory } from 'history';
+const history = createHashHistory(
     {
         basename: '/admin'
     }
-)
-
-export default adminHistory
+);
+export default history

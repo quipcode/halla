@@ -29,7 +29,7 @@ import { API_ROOT} from './utils/enironmentConstants'
 
 
 import adminHistory from "./utils/adminHistory";
-const history = createBrowserHistory();
+
 import createAdminStore from './store';
 
 // const dataProvider = jsonServerProvider('https://jsonplaceholder.typicode.com');
@@ -77,7 +77,6 @@ import createAdminStore from './store';
     
 // );
 
-
 const App = () => (
         <Admin
             authProvider={authProvider}
@@ -117,7 +116,7 @@ const App = () => (
     
 
 // );
-export default withRouter((App))
+export default App
 // ReactDOM.render(<App />, document.getElementById("app"));
 // ReactDOM.render(withRouter((App)), document.getElementById("app"));
 

@@ -11,7 +11,16 @@ import createAdminStore from './store';
 import { authProvider } from "./authProvider";
 import dataProvider from "./dataProvider";
 import App from './App';
-import history from './utils/history'
+// import history from './utils/history'
+// const createHistory = require("history").createBrowserHistory
+// const history = createHistory();
+
+import { createHashHistory } from 'history';
+const history = createHashHistory(
+    {
+        basename: '/admin'
+    }
+);
 
 // import("./App");
 
@@ -31,11 +40,7 @@ render((<AppContainer>
                 dataProvider,
                 history,
             })}>
-                <ConnectedRouter history={history}>
-        <Switch>
-            <Route path="/" component={App} />
-        </Switch>
-        </ConnectedRouter>
+                <App/>
         </Provider>
         
      
