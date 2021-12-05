@@ -28,7 +28,9 @@ import {
     number,
     minValue,
     ReferenceManyField,
-    DateField
+    DateField,
+    ArrayInput,
+    SimpleFormIterator
 } from 'react-admin';
 import { Field } from 'react-final-form';
 import RichTextInput from 'ra-input-rich-text';
@@ -190,6 +192,14 @@ const TabbedArticle = (props: any) => (
             </FormTab>
             <FormTab label="rasections">
                 <RaSections />
+            </FormTab>
+            <FormTab label="misc">
+                <ArrayInput source="backlinks">
+                    <SimpleFormIterator>
+                        <DateInput source="date" />
+                        <TextInput source="url" validate={required()} />
+                    </SimpleFormIterator>
+                </ArrayInput>
             </FormTab>
             {/* <FormTab label="Miscellaneous">
                 <TextInput label="Password (if protected post)" source="password" type="password" />

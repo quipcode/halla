@@ -35,6 +35,7 @@ const App = () => (
             <Resource name="articles" list={ArticleList} edit={ArticleEdit} create={ArticleCreate} />
             <Resource name="users" />
             <Resource name="sections"/>
+            <Resource name="articlesections" />
         </Admin>
     
 

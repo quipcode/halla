@@ -14,6 +14,7 @@ const options = {} as any;
 options.headers = mineHeaders
 export default {
     getList: (resource:string , params: any) => {
+        console.log("in get list", resource, params)
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
         
@@ -25,12 +26,21 @@ export default {
         const url = `${apiUrl}/${resource}/`;
    
    
+        
+        
+        // httpClient(url, options).then(({ headers, json }) => (
+        //    {
+        //         data:json,
+        //         total:10
+        //     }
+        // )).then((json) => console.log(json))
         return httpClient(url, options).then(({ headers, json }) => (
             {
-                data:json,
-                total:10
+                data: json,
+                total: 10
             }
         ))
+        
         // return httpClient(url, options).then(({ headers, json }) => ({
         //     data: json,
         //     total: parseInt(headers.get('content-range').split('/').pop(), 10),
@@ -54,11 +64,31 @@ export default {
         // })),
 
     getMany: (resource:string, params:any) => {
-        const query = {
-            filter: JSON.stringify({ ids: params.ids }),
-        };
-        const url = `${apiUrl}/${resource}?${stringify(query)}`;
-        return httpClient(url).then(({ json }) => ({ data: json }));
+        console.log("in get many", resource, params.ids)
+        // const { page, perPage } = params.pagination;
+        // const { field, order } = params.sort;
+
+        
+        const url = `${apiUrl}/${resource}/`;
+
+             httpClient(url, options).then(({ headers, json }) => (
+           {
+                data:json,
+                total:10
+            }
+        )).then((json) => console.log(json))
+
+        return httpClient(url, options).then(({ headers, json }) => (
+            {
+                data: json,
+                total: 10
+            }
+        ))
+        // const query = {
+        //     filter: JSON.stringify({ ids: params.ids }),
+        // };
+        // const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        // return httpClient(url).then(({ json }) => ({ data: json }));
     },
 
     getManyReference: (resource:string, params:any) => {
