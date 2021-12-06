@@ -155,7 +155,7 @@ const TabbedArticle = (props: any) => (
         
         <TabbedForm syncWithLocation={false}>
             <FormTab label="rasections">
-                <RaSections />
+                <RaSections {...props} />
             </FormTab>
             <FormTab label="Meta">
                 <TextInput disabled label="Id" source="id" />
@@ -233,7 +233,7 @@ export const ArticleList = (props: any) => {
             {isNotSmall ? (
                 
                 <Datagrid
-                    expand={<TabbedArticle  />}
+                    expand={<TabbedArticle {...props} />}
                 // isRowExpandable={row => row.has_detail}
 
                 >

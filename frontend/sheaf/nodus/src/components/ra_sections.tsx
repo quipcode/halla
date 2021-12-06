@@ -4,7 +4,7 @@ import RichTextInput from 'ra-input-rich-text';
 import { useGetManyReference } from 'react-admin';
 import Article from './article';
 
-const RaSections = () => {
+const RaSections = (props: any) => {
     return(
         <div>
             <ReferenceField
@@ -36,8 +36,24 @@ const RaSections = () => {
 
                 </ReferenceManyField>
 
-            
-
+            <TextInput disabled label="Id" source="id" />
+            <ArrayInput source="sections">
+                <SimpleFormIterator disableRemove >
+                    <TextInput source="title" />
+                    <TextInput source="summary" multiline />
+                    <RichTextInput source="body" />
+                    <FormDataConsumer>
+                        {({ getSource, scopedFormData }) => {
+                            return (
+                                <TextField
+                                    source={getSource('id')}
+                                    record={scopedFormData}
+                                />
+                            );
+                        }}
+                    </FormDataConsumer>
+                </SimpleFormIterator>
+            </ArrayInput>
 
 
             {/* <ArrayInput source="articlesections" >
