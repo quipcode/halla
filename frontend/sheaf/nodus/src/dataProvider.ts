@@ -94,19 +94,35 @@ export default {
     getManyReference: (resource:string, params:any) => {
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
-        const query = {
+       const query = {
             sort: JSON.stringify([field, order]),
             range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
             filter: JSON.stringify({
                 ...params.filter,
                 [params.target]: params.id,
             }),
+        }; 
+        const queryJustFilter = {
+            filter: JSON.stringify({
+                ...params.filter,
+                [params.target]: params.id,
+            }),
         };
-        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        // const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        const url = `${apiUrl}/${resource}/?${stringify(queryJustFilter)}`;
+        console.log("in getmanyreference")
 
-        return httpClient(url).then(({ headers, json }) => ({
+        httpClient(url, options).then(({ headers, json }) => (
+            {
+                data: json,
+                total: 10
+            }
+        )).then((json) => console.log(json))
+
+        return httpClient(url, options).then(({ headers, json }) => ({
             data: json,
-            total: parseInt(headers.get('content-range').split('/').pop(), 10),
+            total: 10
+            //  parseInt(headers.get('content-range').split('/').pop(), 10),
         }));
     },
 

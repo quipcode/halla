@@ -154,6 +154,9 @@ const TabbedArticle = (props: any) => (
     >
         
         <TabbedForm syncWithLocation={false}>
+            <FormTab label="rasections">
+                <RaSections />
+            </FormTab>
             <FormTab label="Meta">
                 <TextInput disabled label="Id" source="id" />
                 <TextInput source="title" validate={required()} />
@@ -189,9 +192,6 @@ const TabbedArticle = (props: any) => (
                         <SectionInput />
                     </SimpleForm> */}
                 <SectionInput />
-            </FormTab>
-            <FormTab label="rasections">
-                <RaSections />
             </FormTab>
             <FormTab label="misc">
                 <ArrayInput source="backlinks">
