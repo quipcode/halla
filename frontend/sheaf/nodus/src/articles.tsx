@@ -162,61 +162,8 @@ const TabbedArticle = (props: any) => (
                 <TextInput source="title" validate={required()} />
                 <TextInput multiline source="metaTitle" validate={required()} />
                 <TextInput source="slug" />
-            </FormTab>
-            <FormTab label="summary">
-
                 <RichTextInput source="summary" validate={required()} addLabel={false} />
-
             </FormTab>
-            <FormTab label="latlongs">
-                <Edit {...props}>
-
-                <LatLngInput />
-                </Edit>
-                {/* <Edit {...props}> */}
-                    {/* <SimpleForm >
-                        
-                    </SimpleForm> */}
-                {/* </Edit> */}
-            </FormTab>
-            <FormTab label="sections">
-                {/* <Edit {...props} fullWidth>
-                <SimpleForm fullWidth>
-                <SectionInput  />
-                    </SimpleForm>
-                    </Edit> */}
-                {/* <Edit {...props} fullWidth>
-                        <SectionInput />
-                </Edit> */}
-                    {/* <SimpleForm fullWidth>
-                        <SectionInput />
-                    </SimpleForm> */}
-                <SectionInput />
-            </FormTab>
-            <FormTab label="misc">
-                <ArrayInput source="backlinks">
-                    <SimpleFormIterator>
-                        <DateInput source="date" />
-                        <TextInput source="url" validate={required()} />
-                    </SimpleFormIterator>
-                </ArrayInput>
-            </FormTab>
-            {/* <FormTab label="Miscellaneous">
-                <TextInput label="Password (if protected post)" source="password" type="password" />
-                <DateInput label="Publication date" source="published_at" />
-                <NumberInput source="average_note" validate={[number(), minValue(0)]} />
-                <BooleanInput label="Allow comments?" source="commentable" defaultValue />
-                <TextInput disabled label="Nb views" source="views" />
-            </FormTab> */}
-            {/* <FormTab label="comments">
-                <ReferenceManyField reference="comments" target="post_id" addLabel={false}>
-                    <Datagrid>
-                        <TextField source="body" />
-                        <DateField source="created_at" />
-                        <EditButton />
-                    </Datagrid>
-                </ReferenceManyField>
-            </FormTab> */}
         </TabbedForm>
     </Edit>
 )
@@ -292,6 +239,7 @@ export const ArticleEdit = (props: any) => (
                 theme: "snow"
             }} source="summary" />
             <BooleanInput label="Publish" source="published" />
+            <RaSections {...props}/>
         </SimpleForm>
     </Edit>
 );

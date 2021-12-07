@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +42,17 @@ public class ArticleController {
 
     Logger logger = LoggerFactory.getLogger(ContentController.class);
 
+
+    @GetMapping("")
+    public List<Article> getAllArticlesBland(Pageable pageable){
+        logger.error("in the basic");
+        List<Article> articles = articleRepository.findAll();
+        return articles;
+    }
+
     @GetMapping("/")
     public List<Article> getAllArticles(Pageable pageable){
+        logger.error("in the slash");
         List<Article> articles = articleRepository.findAll();
         return articles;
     }
@@ -99,7 +109,12 @@ public class ArticleController {
         Article updatedArticle = articleRepository.save(article);
         Map<String,Object> returningArticle =new HashMap<>();
         returningArticle.put("article", updatedArticle);
-        return ResponseEntity.status(200).body(returningArticle);
+        HttpHeaders responseHeaders = new HttpHeaders();
+//        responseHeaders.set("Content-Range",
+//                "posts 0-"+userRepository.findAll().size()+"/"+userRepository.findAll().size());
+        responseHeaders.set("nick", "john");
+        return ResponseEntity.ok().headers(responseHeaders).body(returningArticle);
+//        return ResponseEntity.status(200).body(returningArticle);
     }
 
     @PostMapping("")

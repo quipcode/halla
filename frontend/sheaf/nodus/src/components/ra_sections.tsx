@@ -38,7 +38,7 @@ const RaSections = (props: any) => {
 
             <TextInput disabled label="Id" source="id" />
             <ArrayInput source="sections">
-                <SimpleFormIterator disableRemove >
+                <SimpleFormIterator >
                     <TextInput source="title" />
                     <TextInput source="summary" multiline />
                     <RichTextInput source="body" />

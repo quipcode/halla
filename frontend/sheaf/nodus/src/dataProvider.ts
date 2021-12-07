@@ -5,7 +5,20 @@ import { API_ROOT } from './utils/enironmentConstants'
 
 
 const apiUrl = API_ROOT
-const httpClient = fetchUtils.fetchJson;
+// const httpClient = fetchUtils.fetchJson;
+const httpClient = (url: string, options: any) => {
+    if (!options.headers) {
+        options.headers = new Headers({ Accept: 'application/json' });
+        // options.headers = new Headers({ 'Access-Control-Allow-Origin': "*"});
+    }
+    // add your own headers here
+    options.headers.set("Access-Control-Expose-Headers", "Content-Range")
+    options.headers.set("Access-Control-Expose-Headers", "X-Total-Count")
+    // Access-Control-Expose-Headers: X-Total-Count
+    // Access-Control-Expose-Headers: Content-Range
+    options.headers.set('Access-Control-Allow-Origin', "*");
+    return fetchUtils.fetchJson(url, options);
+}
 
 let authToken = localStorage.getItem("token")
 let mineHeaders = new Headers()
@@ -13,21 +26,21 @@ mineHeaders.set('Authorization', `Bearer ${authToken}`)
 const options = {} as any;
 options.headers = mineHeaders
 export default {
-    getList: (resource:string , params: any) => {
+    getList: (resource: string, params: any) => {
         console.log("in get list", resource, params)
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
-        
+
         const query = {
             sort: JSON.stringify([field, order]),
             range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
             filter: JSON.stringify(params.filter),
         };
         const url = `${apiUrl}/${resource}/`;
-   
-   
-        
-        
+
+
+
+
         // httpClient(url, options).then(({ headers, json }) => (
         //    {
         //         data:json,
@@ -40,45 +53,40 @@ export default {
                 total: 10
             }
         ))
-        
+
         // return httpClient(url, options).then(({ headers, json }) => ({
         //     data: json,
         //     total: parseInt(headers.get('content-range').split('/').pop(), 10),
         // }));
     },
 
-    getOne: (resource:string, params: any) =>{
+    getOne: (resource: string, params: any) => {
         const url = `${apiUrl}/${resource}/${params.id}`
         const options = {} as any;
         let authToken = localStorage.getItem("token")
         let mineHeaders = new Headers()
         mineHeaders.set('Authorization', `Bearer ${authToken}`)
         options.headers = mineHeaders
-    
-    
+        console.log("in get one")
+
         return httpClient(url, options).then(({ json }) => ({
             data: json,
-        }))},
-        // httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
-        //     data: json,
-        // })),
+        }))
+    },
+    // httpClient(`${apiUrl}/${resource}/${params.id}`).then(({ json }) => ({
+    //     data: json,
+    // })),
 
-    getMany: (resource:string, params:any) => {
-        console.log("in get many", resource, params.ids)
+    getMany: (resource: string, params: any) => {
+        console.log("in get many", resource, params, options)
         // const { page, perPage } = params.pagination;
         // const { field, order } = params.sort;
+        // options.headers.set('Content-Type', 'application/json')
+        // options.headers.set("Access-Control-Allow-Origin", "*")
 
-        
+        // options.headers.set("Access-Control-Allow-Origin", "http://localhost:5000")
         const url = `${apiUrl}/${resource}/`;
-
-             httpClient(url, options).then(({ headers, json }) => (
-           {
-                data:json,
-                total:10
-            }
-        )).then((json) => console.log(json))
-
-        return httpClient(url, options).then(({ headers, json }) => (
+        return httpClient(url, options).then(({ json }) => (
             {
                 data: json,
                 total: 10
@@ -91,17 +99,17 @@ export default {
         // return httpClient(url).then(({ json }) => ({ data: json }));
     },
 
-    getManyReference: (resource:string, params:any) => {
+    getManyReference: (resource: string, params: any) => {
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
-       const query = {
+        const query = {
             sort: JSON.stringify([field, order]),
             range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
             filter: JSON.stringify({
                 ...params.filter,
                 [params.target]: params.id,
             }),
-        }; 
+        };
         const queryJustFilter = {
             filter: JSON.stringify({
                 ...params.filter,
@@ -126,16 +134,18 @@ export default {
         }));
     },
 
-    update: (resource: string, params: any) =>{
-        options.headers.set('Content-Type', 'application/json' )
+    update: (resource: string, params: any) => {
+        options.headers.set('Content-Type', 'application/json')
+        options.headers.set("Access-Control-Allow-Origin", "*")
+        // Access-Control-Allow-Origin: *
         options.method = 'PUT'
-        options.body = JSON.stringify({ article: params.data})
+        options.body = JSON.stringify({ article: params.data })
+        console.log("in update", resource, params)
+        return httpClient(`${apiUrl}/${resource}/${params.id}`, options)
+            .then(({ json }) => (
+                { data: json.article })
 
-        return httpClient(`${apiUrl}/${resource}/${params.id}`,options )
-        .then(({ json }) => (
-            { data: json.article })
-            
-        )
+            )
     }
     ,
 
@@ -143,13 +153,14 @@ export default {
         const query = {
             filter: JSON.stringify({ id: params.ids }),
         };
+        console.log("in updatemany")
         return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
             method: 'PUT',
             body: JSON.stringify(params.data),
         }).then(({ json }) => ({ data: json }));
     },
 
-    create: (resource: string, params: any) =>{
+    create: (resource: string, params: any) => {
         options.headers.set('Content-Type', 'application/json')
         options.method = 'POST'
         options.body = JSON.stringify({ article: params.data })
