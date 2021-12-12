@@ -23,7 +23,9 @@ const httpClient = (url: string, options: any) => {
 let authToken = localStorage.getItem("token")
 let mineHeaders = new Headers()
 mineHeaders.set('Authorization', `Bearer ${authToken}`)
+// mineHeaders.append('Access-Control-Allow-Origin', 'http://localhost:3001');
 const options = {} as any;
+// ‘Access-Control-Allow-Origin
 options.headers = mineHeaders
 export default {
     getList: (resource: string, params: any) => {

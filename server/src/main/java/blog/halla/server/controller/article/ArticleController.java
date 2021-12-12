@@ -52,6 +52,7 @@ public class ArticleController {
 
     @GetMapping("/")
     public List<Article> getAllArticles(Pageable pageable){
+
         logger.error("in the slash");
         List<Article> articles = articleRepository.findAll();
         return articles;

@@ -126,7 +126,7 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = jwtUtils.generateJwtToken(authentication);
-
+        logger.error("in the /login: {}", jwt);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
         List<String> permissions = userDetails.getAuthorities().stream()
