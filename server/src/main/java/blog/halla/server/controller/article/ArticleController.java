@@ -45,15 +45,12 @@ public class ArticleController {
 
     @GetMapping("")
     public List<Article> getAllArticlesBland(Pageable pageable){
-        logger.error("in the basic");
         List<Article> articles = articleRepository.findAll();
         return articles;
     }
 
     @GetMapping("/")
     public List<Article> getAllArticles(Pageable pageable){
-
-        logger.error("in the slash");
         List<Article> articles = articleRepository.findAll();
         return articles;
     }

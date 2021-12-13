@@ -19,16 +19,20 @@ const httpClient = (url: string, options: any) => {
     options.headers.set('Access-Control-Allow-Origin', "*");
     return fetchUtils.fetchJson(url, options);
 }
-
-let authToken = localStorage.getItem("token")
-let mineHeaders = new Headers()
-mineHeaders.set('Authorization', `Bearer ${authToken}`)
 // mineHeaders.append('Access-Control-Allow-Origin', 'http://localhost:3001');
-const options = {} as any;
-// ‘Access-Control-Allow-Origin
-options.headers = mineHeaders
+const defineOptions = () => {
+    let authToken = localStorage.getItem("token")
+    let mineHeaders = new Headers()
+    mineHeaders.set('Authorization', `Bearer ${authToken}`)
+    let options = {} as any;
+    options.headers = mineHeaders
+    return options;
+}
+
+
 export default {
     getList: (resource: string, params: any) => {
+        let options = defineOptions()
         console.log("in get list", resource, params)
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
@@ -64,11 +68,7 @@ export default {
 
     getOne: (resource: string, params: any) => {
         const url = `${apiUrl}/${resource}/${params.id}`
-        const options = {} as any;
-        let authToken = localStorage.getItem("token")
-        let mineHeaders = new Headers()
-        mineHeaders.set('Authorization', `Bearer ${authToken}`)
-        options.headers = mineHeaders
+        let options = defineOptions()
         console.log("in get one")
 
         return httpClient(url, options).then(({ json }) => ({
@@ -80,6 +80,7 @@ export default {
     // })),
 
     getMany: (resource: string, params: any) => {
+        let options = defineOptions()
         console.log("in get many", resource, params, options)
         // const { page, perPage } = params.pagination;
         // const { field, order } = params.sort;
@@ -102,6 +103,7 @@ export default {
     },
 
     getManyReference: (resource: string, params: any) => {
+        let options = defineOptions()
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
         const query = {
@@ -137,6 +139,7 @@ export default {
     },
 
     update: (resource: string, params: any) => {
+        let options = defineOptions()
         options.headers.set('Content-Type', 'application/json')
         options.headers.set("Access-Control-Allow-Origin", "*")
         // Access-Control-Allow-Origin: *
@@ -152,6 +155,7 @@ export default {
     ,
 
     updateMany: (resource: string, params: any) => {
+        let options = defineOptions()
         const query = {
             filter: JSON.stringify({ id: params.ids }),
         };
@@ -163,6 +167,7 @@ export default {
     },
 
     create: (resource: string, params: any) => {
+        let options = defineOptions()
         options.headers.set('Content-Type', 'application/json')
         options.method = 'POST'
         options.body = JSON.stringify({ article: params.data })
