@@ -12,4 +12,5 @@ public interface ArticleRepository extends JpaRepository<Article, String> {
     Page<Article> findByAuthorId(Long authorId, Pageable pageable);
     List<Article> findByAuthorId(Long authorId);
     List<Article> findAll();
+    List<Article> findAllByActiveAndPublished(boolean active, boolean published);
 }

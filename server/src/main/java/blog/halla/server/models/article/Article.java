@@ -33,6 +33,9 @@ public class Article {
     private String metaTitle;
     private String slug;
 
+    @Column(nullable = false)
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private boolean active;
 
     @Column(nullable = false)
     @Type(type = "org.hibernate.type.NumericBooleanType")

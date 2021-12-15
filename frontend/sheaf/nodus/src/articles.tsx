@@ -30,7 +30,12 @@ import {
     ReferenceManyField,
     DateField,
     ArrayInput,
-    SimpleFormIterator
+    SimpleFormIterator,
+    Toolbar,
+    SaveButton,
+    DeleteButton,
+    Layout,
+    Button
 } from 'react-admin';
 import { Field } from 'react-final-form';
 import RichTextInput from 'ra-input-rich-text';
@@ -217,12 +222,30 @@ export const ArticleList = (props: any) => {
 const ArticleTitle =  (record: any) => (
     <span>Article {record ? `"${record.title}"` : ''}</span>
 )
+
+const deactivateButtonText = <p> b         Click Me</p>
+
+const DeactivateButton = (props: any) => {
+
+    return (
+    // <Box sx={{ flexGrow: 1 }} />
+    <Button children={deactivateButtonText} />
+    )
+}
+
+const ArticleEditToolbar = (props: any) => (
+    <Toolbar {...props} >
+        <SaveButton />
+        <DeactivateButton/>
+    </Toolbar>
+);
+
     
 
 
 export const ArticleEdit = (props: any) => (
     <Edit title={<ArticleTitle />} {...props}>
-        <SimpleForm>
+        <SimpleForm toolbar={<ArticleEditToolbar />}>
             <TextInput disabled source="id" />
             {/* <ReferenceInput source="userId" reference="users">
                 <SelectInput optionText="name" />

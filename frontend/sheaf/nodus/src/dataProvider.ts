@@ -186,10 +186,12 @@ export default {
         // }))
     },
 
-    delete: (resource: string, params: any) =>
-        httpClient(`${apiUrl}/${resource}/${params.id}`, {
-            method: 'DELETE',
-        }).then(({ json }) => ({ data: json })),
+    delete: (resource: string, params: any) =>{
+        let options = defineOptions()
+        options.headers.set('Content-Type', 'application/json')
+        options.method = 'DELETE'
+        return httpClient(`${apiUrl}/${resource}/${params.id}`, options).then(({ json }) => ({ data: json }))
+    },
 
     deleteMany: (resource: string, params: any) => {
         const query = {
