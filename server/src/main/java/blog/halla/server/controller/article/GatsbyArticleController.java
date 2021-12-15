@@ -24,9 +24,11 @@ public class GatsbyArticleController {
     ArticleRepository articleRepository;
 
     @GetMapping("")
-    public List<Article> getAllActiveAndPublishedArticles(Pageable pageable){
-        List<Article> articles = articleRepository.findAllByActiveAndPublished(true,true);
-        return articles;
+    public ResponseEntity<?>  getAllActiveAndPublishedArticles(Pageable pageable){
+//        List<Article> articles = articleRepository.findAllByActiveAndPublished(true,true);
+//        Map<String, Object> article = articleService.getArticleById(id);
+        Map<String, Object> articles = articleService.getArticlesActiveAndPublished();
+        return ResponseEntity.status(200).body(articles);
     }
 
     @GetMapping("/")

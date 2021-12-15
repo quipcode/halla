@@ -5,7 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface ArticleRepository extends JpaRepository<Article, String> {
     Page<Article> findById(String id, Pageable pageable);

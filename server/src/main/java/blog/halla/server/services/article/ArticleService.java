@@ -26,6 +26,15 @@ public class ArticleService {
         return article;
     }
 
+    public Map<String, Object> getArticlesActiveAndPublished(){
+        List<Article> articles = articleRepository.findAllByActiveAndPublished(true, true);
+        Map<String, Object> response = new HashMap<>();
+        for(Article article: articles){
+            response.put(article.getId(), article);
+        }
+        return response;
+    }
+
     public Page<Article> getArticleByUser(Long authorId, Pageable pageable){
         Page<Article> articles = articleRepository.findByAuthorId(authorId, pageable);
         for(Article article : articles){
